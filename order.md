@@ -12,6 +12,9 @@ Préparation du travail
 ----------------------
 
 * Choix des technos
+  ** Ubuntu Server
+  ** C++
+  ** 
 * Environnement de travail, rythmes, versionning etc..
 * Répartition des premières tâches
 * Calendrier des premières tâches
