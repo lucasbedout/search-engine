@@ -1,0 +1,9 @@
+http://mikhailberis.github.io/cpp-netlib/
+http://www.cs.wustl.edu/~schmidt/ACE.html
+http://www.boost.org/doc/libs/1_36_0/doc/html/boost_asio.html
+http://fr.wikipedia.org/wiki/Scrapy
+http://www.codeproject.com/Articles/8667/FTP-Client-Class
+http://stackoverflow.com/questions/4278024/a-very-simple-c-web-crawler-spider
+http://www.codeproject.com/Articles/8667/FTP-Client-Class
+http://stackoverflow.com/questions/8813624/how-do-websites-use-c-and-other-programming-languages-as-their-backend
+http://thrift.apache.org/
