@@ -4,6 +4,28 @@ http://www.boost.org/doc/libs/1_36_0/doc/html/boost_asio.html
 http://fr.wikipedia.org/wiki/Scrapy
 http://www.codeproject.com/Articles/8667/FTP-Client-Class
 http://stackoverflow.com/questions/4278024/a-very-simple-c-web-crawler-spider
-http://www.codeproject.com/Articles/8667/FTP-Client-Class
 http://stackoverflow.com/questions/8813624/how-do-websites-use-c-and-other-programming-languages-as-their-backend
 http://thrift.apache.org/
+
+-----------------------------------------------------------------------------
+
+Compte rendu 20-01-2014
+
++Environnement : 
+  -Debian si on ne peut pas mettre les containers, ubuntu si on peut
+
++BDD
+  -Cluser MySQL validé
+
++Communication entre le frontend et le backend : Node.js (http://www.nodejs.org/)
+  -Utilisation possible de cette librairie pour la communication entre le c++ et node.js (http://thrift.apache.org/)
+
++Librairies réseau pour le C++ à choisir : 
+  -http://mikhailberis.github.io/cpp-netlib/ (connue et probablement la principale)
+  -deux librairies venant des mêmes personnes : 
+    ~http://www.cs.wustl.edu/~schmidt/ACE.html
+    ~http://www.boost.org/doc/libs/1_36_0/doc/html/boost_asio.html
+  -Peu connue mais intéressante pour le FTP (dont aucune librairie ne parle spécifiquement) :
+  http://www.codeproject.com/Articles/8667/FTP-Client-Class
+  
++Rappel de ce notre projet : http://stackoverflow.com/questions/4278024/a-very-simple-c-web-crawler-spider
