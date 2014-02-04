@@ -18,3 +18,9 @@ Suvi des liens
 --------------
 
 - Solution 1 : Lecture du document, chaque lien parsé est ajouté à la base de données 
+
+Divers
+-------------
+
+- Le crawler crée un objet JSON dans un fichier
+  - Une classe est instanciée, chargée de porter tous les objets JSON en base de données pour libérer les crawlers
