@@ -24,3 +24,4 @@ Divers
 
 - Le crawler crée un objet JSON dans un fichier
   - Une classe est instanciée, chargée de porter tous les objets JSON en base de données pour libérer les crawlers
+  - Pages reconnues par leur URL, si URL identique en BDD, on overwrite -> travail de la classe qui entre la data en BDD
