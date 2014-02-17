@@ -1,0 +1,26 @@
+
+pile //stockage url a crawler
+liste_url_crawler
+
+
+
+
+Tant que (pile !=vide)
+{
+	prendre 1er url de la pile
+	si (url != liste_url_crawler && url = http)
+	{
+		liste_url_crawler =+ url
+		si (robots.txt/disallow=url)
+			{retour tant que}
+		ouverture url
+		parcourir le fichier html
+		extraction texte  // pour génération des mot clefs et stockage
+		extraction metadonnés  //pour génération des mots clefs
+		si (autres liens)
+		{
+			si (!=liste_url_crawler)
+			{ajout a la pile}
+		}
+	}
+}

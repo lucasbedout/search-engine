@@ -1,0 +1,151 @@
+/*--------------------------------------------------------------------------------------------------------------------------------------|
+|Cette agolrythme a pour but de faire le ranking.											|
+|																	|
+|Deux étapes :																|
+|1.Attribué des points a chaque page en fonction de la pertinance lier a la recherche utilisateur					|
+|2.Trier les pages en fonctions du score de chaque page.										|
+|																	|
+|Le niveau de pertinance est évaluer dans cette ordre décroissant :									|
+|1.Le titre																|
+|2.Le nom de domaine															|
+|3.Les mots clés															|
+|4.L'url																|
+|5.Le texte de la page															|
+|																	|
+|Chaque niveau de pertinance ont un coefficient. Ces coefficients peuvent facillement changer sans changer l'intégrallité du code.	|
+|																	|
+|PARAMETRE ALGORITHME EN ENTRER :													|
+|pageFound[1 ... n] : Page => Est un tableau de n valeur de type Page. Ce sont les pages en base de données.				|
+|rechercheUser[1 ... m] : CHAINE => tableau de m chaine de caractère. Si l'utilisateur a rentrer "Hello world !",			|
+|				   Celui-ci sera de la taille de 3 est contiendra : "hello","world","!"					|
+|																	|
+|PARAMETRE ALGORITHME EN SORTIE :													|
+|pageRanked[1 ... z] : Page => Les pages trie dans l'ordre de pertinance.								|
+|																	|
+|VERSION 0.9 ALPHA															|
+|																	|
+|IDEE D AMELIORATION :															|
+|-Si URL entré dans la recherche, directement comparait les URL des pages sans le reste							|
+|-Le text prends beaucoup de temps a être traiter et influance peu le classement : traiter le texte pour les 10 premier			|
+|-suprimer les pages trouver ayant un score égale a 0											|
+|-Transformer la comparaison mot : 2 types : mots exacte ( coef elever ) et bout de mot dans certain contenue ( coef faible ) =>	|
+|ralentissement de l'algo mais meilleur qualité de rank											|
+|-Ajouter les liens entrant/sortant dans le ranking											|
+|																	|
+|A noter :																|
+|-Recherche utilisateur doit être trier ( article suprimer de la recherche, etc ...)							|
+---------------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+
+
+
+
+
+STRUCTURE Page
+DEBUTSTRUCTURE
+	ID : ENTIER
+	Keywords[1 ... o] : CHAINE
+	Text : CHAINE
+	Title : CHAINE
+	Url : CHAINE
+FINSTRUCTURE
+
+--------------------------------
+
+FONCTION RANKING (pageFound[1 ... n] : Page, rechercheUser[1 ... m] : CHAINE)
+
+VAR
+score[1 ... sizeof(pageFound) ] : ENTIER
+i : ENTIER
+j : ENTIER
+coefTitle<-16 : ENTIER CONST
+coefDomaineName<-8 : ENTIER CONST
+coefKeyword<-4 : ENTIER CONST
+coefUrl<-2 : ENTIER CONST
+coefText<-1 : ENTIER CONST
+
+DEBUT
+
+//------------------ETAPE 1----------------------
+//Parcour de toute les pages
+POUR i ALLANT DE 1 A n AU PAS DE 1
+	//parcour toute la recherche user
+	POUR j ALLANT DE 1 A m AU PAS DE 1
+		score[i]+=coefTitle*nbWord(pageFound[i].Title,rechercheUser[j])
+		score[i]+=coefDomaineName*nbWord(domaineName(pageFound[i].Url),rechercheUser[j])+prioriterDomaine(pageFound[i].Url)
+		POUR k ALLANT de 1 A o AU PAS DE 1
+			score[i]+=coefKeyword*nbWord(pageFound[i].Keywords[o],rechercheUser[j])
+		FINPOUR
+		score[i]+=coefUrl*nbWord(pageFound[i].Url,rechercheUser[j])
+		score[i]+=coefText*nbWord(pageFound[i].Text,rechercheUser[j])
+	FINPOUR
+FINPOUR
+
+//------------------ETAPE 2----------------------
+
+quickSort(score,pageFound,1,sizeof(pageFound))
+
+return pageFound
+
+
+FIN
+
+------------------------
+PROCEDURE quickSort(E/S : tableau[1 ... n] : ENTIER,E/S page[1 ... m] : Page,E : debut : ENTIER,E : fin : ENTIER)
+
+VAR
+gauche = debut-1 : ENTIER
+droite = fin+1 : ENTIER
+pivot = tableau[debut] : ENTIER CONST
+
+DEBUT
+
+SI(debut >= fin)
+ALORS
+     return
+FINSI
+
+    TANT QUE TOUJOURS
+    FAIRE
+        REPETER
+		droite--
+	JUSQU'A(tableau[droite] > pivot)
+
+        REPETER 
+		gauche++ 
+	JUSQU'A(tableau[gauche] < pivot)
+
+        SI(gauche < droite)
+	ALORS
+            echanger(tableau, gauche, droite)
+        SINON
+		break
+	FINSI
+    FINTANTQUE
+
+    quickSort(tableau, debut, droite)
+    quickSort(tableau, droite+1, fin)
+FIN
+--------------------------
+
+PROCEDURE echanger(E/S : tableau[1 ... n] : ENTIER, E/S page[1 ... m] : Page,E : a : ENTIER,E : b : ENTIER)
+
+VAR 
+tmp : Page
+
+DEBUT
+
+//Trie score
+tableau[a] ^= tableau[b]
+tableau[b] ^= tableau[a]
+tableau[a] ^= tableau[b]
+
+//Trie page
+tmp=page[a]
+page[a]=page[b]
+page[b]=tmp
+
+FIN

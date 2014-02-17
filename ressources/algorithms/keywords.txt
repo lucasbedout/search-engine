@@ -1,0 +1,196 @@
+Etapes : 
+
+- Strip punctuation, special caracters, etc.
+- Split on Spaces
+- Strip "simple" words
+- Stemming (going => go, cars => car, etc.) nop
+- Loop (if word doesn't exist, create it, else increment it)
+
+Algo :
+
+E/S : Page : Page
+
+
+	structures utilisées
+/*-------------------------------
+STRUCTURE Page
+DEBUTSTRUCTURE
+	ID : ENTIER
+	Text : CHAINE
+	Title : CHAINE
+	Url : CHAINE
+	Keywords[1...o] : Keyword
+	Html_content[1...p] : Html_content
+FINSTRUCTURE
+
+STRUCTURE Html_content
+DEBUTSTRUCTURE
+	ID : ENTIER
+	Type : CHAINE
+	Content : CHAINE
+FINSTRUCTURE
+
+STRUCTURE Keyword
+DEBUTSTRUCTURE
+	ID : ENTIER
+	Word : CHAINE
+	Value : ENTIER
+FINSTRUCTURE
+--------------------------------*/
+
+FONCTION keywords(E/S Page : Page)
+VAR
+DEBUT
+	extract_datas(Page)
+	extract_keywords(Page)
+FIN
+
+FONCTION extract_datas (E/S Page : Page)
+VAR
+i<-0 : ENTIER
+DEBUT
+	Page.Html_content[i].Content = parse("h1",Page.Text)
+	Page.Html_content[i].Type = "h1"
+	i++
+	Page.Html_content[i].Content = parse("meta",Page.Text)
+	Page.Html_content[i].Type = "meta"
+	i++
+	Page.Html_content[i].Content = parse("h2",Page.Text)
+	Page.Html_content[i].Type = "h2"
+	i++
+	Page.Html_content[i].Content = parse("h3",Page.Text)
+	Page.Html_content[i].Type = "h3"
+	i++
+	Page.Html_content[i].Content = parse("h4",Page.Text)
+	Page.Html_content[i].Type = "h4"
+	i++
+	Page.Html_content[i].Content = parse("h5",Page.Text)
+	Page.Html_content[i].Type = "h5"
+	i++
+	Page.Html_content[i].Content = parse("p",Page.Text)
+	Page.Html_content[i].Type = "p"
+	i++
+	Page.Html_content[i].Content = parse("italic",Page.Text)
+	Page.Html_content[i].Type = "italic"
+	i++
+	Page.Html_content[i].Content = parse("bold",Page.Text)
+	Page.Html_content[i].Type = "bold"
+FIN
+
+FONCTION extract_keywords (E/S tableau[1...p] : Html_content, E/S Page : Page)
+VAR
+i<-1 : ENTIER
+j<-1 : ENTIER
+k<-1 : ENTIER
+test<-false : BOOL
+words[1...r] : Keyword
+DEBUT
+	POUR i ALLANT DE 1 A p AU PAS DE 1
+		removePunctuation(tableau[i].Content)
+		words = split_string(tableau[i].Content, ' ', value_of_type(tableau[i].Type))
+		remove_simple_words(words)
+		POUR j ALLANT DE 1 A r AU PAS DE 1 //tableau words
+			POUR k ALLANT DE 1 A o AU PAS DE 1 //tableau keywords de la page
+				SI (Page.Keywords[k].Word == words[j].Word)
+					test = true
+					Page.Keywords[k].Value+=words[j].Value
+				FINSI
+			FINPOUR
+			SI(test == false)
+				o++ //on ajoute une case (push)
+				Page.Keywords[o].Word=words[j].Word
+				Page.Keywords[o].Value+=words[j].Value
+			SINON
+				test = false
+			FINSI
+			FINPOUR
+	FINPOUR
+FIN
+
+FONCTION value_of_type(E Type : CHAINE, S Value : ENTIER)
+VAR
+	Value : ENTIER //déclaration des valeurs des types parsés
+DEBUT
+	SI (Type == "meta")
+		Value = 10
+	FINSI
+	SI (Type == "h1" || Type == "strong")
+		Value = 5
+	FINSI
+	SINON SI (Type == "h2" || Type == "italic" || Type == "bold")
+		Value = 4
+	FINSI
+	SINON SI (Type == "h3")
+		Value = 3
+	FINSI
+	SINON SI (Type == "h4" || Type == "h5")
+		Value = 2
+	FINSI
+	SINON
+		Value = 1
+	FINSI
+	RETURN Value
+FIN
+
+FONCTION removePunctuation (E/S Content : CHAINE)
+VAR
+i<-1 : ENTIER //passer par un string::iterator
+DEBUT
+	POUR i ALLANT DE 1 A Content.length() AU PAS DE 1
+		SI (Content[i] == "," ||
+			Content[i] == ";" || 
+			Content[i] == ":" ||
+			Content[i] == "!" || 
+			Content[i] == "?" ||
+			Content[i] == "." || //on supprime les caractères spéciaux communs
+			Content[i] == ")" ||
+			Content[i] == "(" || 
+			Content[i] == "\"" ||
+			Content[i] == "\'" || 
+			Content[i] == "}" ||
+			Content[i] == "{" || 
+			Content[i] == "]" ||
+			Content[i] == "[" || 
+			Content[i] == "§" || 
+			Content[i] == "$" || 
+			Content[i] == "£" || 
+			Content[i] == "€" || 
+			Content[i] == "<" || 
+			Content[i] == ">" || 
+			Content[i] == "\/" || 
+			Content[i] == "\\" || 
+			Content[i] == "_")
+		ALORS
+			Content.erase(i)
+		FINSI
+	FINPOUR
+	RETURN Content
+FIN
+
+FONCTION remove_simple_words (E/S Words[1...t] : Keyword)
+VAR
+i<-1 : ENTIER //passer par un string::iterator
+DEBUT
+	POUR i ALLANT DE 1 A t AU PAS DE 1
+		SI (Words[i].Word == "le" || 
+			Words[i].Word == "la" ) // et tous les mots communs (liste)
+			Words[i].Word == "" //on supprime le mot
+	FINPOUR
+	RETURN Words
+FIN
+
+FONCTION split_string (E/S Content : CHAINE, S tableau[1...q] : Keyword, E delim : CHAR, E Value : ENTIER)
+VAR
+	ss(Content) : STRINGSTREAM
+	item : CHAINE
+	tableau[1...q] : CHAINE
+	i<-1 : ENTIER
+DEBUT
+	TANT QUE (getline(ss, item, delim)) // ici on utilise une fonction de base de la classe std
+	FAIRE	
+		tableau[i] = item
+		tableau[i].Value = Value
+		i+1
+	FINTANTQUE
+	RETURN tableau
+FIN
