@@ -8,7 +8,7 @@
 |Le niveau de pertinance est évaluer dans cette ordre décroissant :									|
 |1.Le titre																|
 |2.Le nom de domaine															|
-|3.Les mots clés															|
+|3.Les mots clés => prise en compte du nombre total de mot dans la page et fait un calcul pondéré					|
 |4.L'url																|
 |5.Le texte de la page															|
 |																	|
@@ -34,6 +34,9 @@
 |																	|
 |A noter :																|
 |-Recherche utilisateur doit être trier ( article suprimer de la recherche, etc ...)							|
+|																	|
+|RAJOUT :																|
+|-adaptation a la classe + calcul pondéré sur les keyword mit en place + optimisation opération de calcul sur les keyword		|
 ---------------------------------------------------------------------------------------------------------------------------------------*/
 
 
@@ -53,7 +56,36 @@ DEBUTSTRUCTURE
 	Url : CHAINE
 FINSTRUCTURE
 
+STRUCTURE Search
+DEBUTSTRUCTURE
+	DATE : DateTime
+	ID : ENTIER
+	iP : CHAINE
+	search_word : String
+	user_agent : String
+FINSTRUCTURE
+
 --------------------------------
+
+PROGRAMME MAIN_TEST_RANKING
+
+VAR
+search : Search
+page : Page
+tabSearchWord[1 ... N] : CHAINE
+
+DEBUT 
+
+demandeUserSearch(search)
+getPage(page)
+
+tabSearchWord=getWordByWord(search.search_word)
+
+RANKING(page,tabSearchWord)
+
+END
+
+------------------------------------------------------------------------
 
 FONCTION RANKING (pageFound[1 ... n] : Page, rechercheUser[1 ... m] : CHAINE)
 
@@ -61,11 +93,13 @@ VAR
 score[1 ... sizeof(pageFound) ] : ENTIER
 i : ENTIER
 j : ENTIER
+//mot trouver dans une page 
+wordUserPage : ENTIER
 coefTitle<-16 : ENTIER CONST
 coefDomaineName<-8 : ENTIER CONST
 coefKeyword<-4 : ENTIER CONST
 coefUrl<-2 : ENTIER CONST
-coefText<-1 : ENTIER CONST
+coefText<-10 : ENTIER CONST
 
 DEBUT
 
@@ -74,13 +108,14 @@ DEBUT
 POUR i ALLANT DE 1 A n AU PAS DE 1
 	//parcour toute la recherche user
 	POUR j ALLANT DE 1 A m AU PAS DE 1
-		score[i]+=coefTitle*nbWord(pageFound[i].Title,rechercheUser[j])
-		score[i]+=coefDomaineName*nbWord(domaineName(pageFound[i].Url),rechercheUser[j])+prioriterDomaine(pageFound[i].Url)
+		score[i] += coefTitle * nbWord(pageFound[i].Title,rechercheUser[j])
+		score[i] += coefDomaineName * nbWord( domaineName(pageFound[i].Url) , rechercheUser[j]) + prioriterDomaine( pageFound[i].Url ) )
 		POUR k ALLANT de 1 A o AU PAS DE 1
-			score[i]+=coefKeyword*nbWord(pageFound[i].Keywords[o],rechercheUser[j])
+			 wordUserPage += nbWord( pageFound[i].Keywords[o] , rechercheUser[j] )
 		FINPOUR
-		score[i]+=coefUrl*nbWord(pageFound[i].Url,rechercheUser[j])
-		score[i]+=coefText*nbWord(pageFound[i].Text,rechercheUser[j])
+		score[i] += coefKeyword * wordUserPage
+		score[i]  += coefUrl * nbWord( pageFound[i].Url , rechercheUser[j] )
+		score[i]+= coefText * ( nbWord( pageFound[i].Text , rechercheUser[j] ) / totalWord( pageFound[i].Text ) )
 	FINPOUR
 FINPOUR
 
@@ -93,7 +128,7 @@ return pageFound
 
 FIN
 
-------------------------
+------------------------------------------------------------------------
 PROCEDURE quickSort(E/S : tableau[1 ... n] : ENTIER,E/S page[1 ... m] : Page,E : debut : ENTIER,E : fin : ENTIER)
 
 VAR
