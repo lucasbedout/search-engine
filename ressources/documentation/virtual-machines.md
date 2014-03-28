@@ -8,23 +8,25 @@ Toutes les machines ont un serveur SSH installé dessus.
 
 Elles sont configurées pour être utilisées localement ou sur une Freebox V5, sur VmWare VM > Settings > Network adapter > Host-only pour une configuration locale. En théorie pas d'accès à internet dans ce cas-là.
 
-- **Master 1 : Management Node 1 + SQL Node 1**
+- **Master : HAProxy - DNS - SQL Management - Crawler**
     - 192.168.1.24
-    - hostname : master1, FQDN : master1.project.lan (pingable depuis le hostname sur le réseau privé bien sur)
+    - 4 Go de RAM, 2 coeurs de processeur
+    - hostname : master, FQDN : master.project.lan (pingable depuis le hostname sur le réseau privé bien sur)
     - Serveur DNS principal
+    - Serveur HAProxy (répartition de charge pour les serveurs web)
     
-- **Master 2 : Management Node 2 + SQL Node 2**
+- **Slave 1 : MySQL - Node.js**
     - 192.168.1.25
-    - hostname : master2, FQDN : master2.project.lan
+    - hostname : slave1, FQDN : slave1.project.lan
 
-- **Data 1 : Data Node 1**
+- **Slave 1 : MySQL - Node.js**
     - 192.168.1.26
-    - hostname : data1, FQDN : data1.project.lan
+    - hostname : slave2, FQDN : slave2.project.lan
     
-- **Data 2 : Data Node 3**
-    - 192.168.1.26
-    - hostname : data1, FQDN : data1.project.lan
-        
+- **Slave 1 : MySQL - Node.js**
+    - 192.168.1.27
+    - hostname : slave3, FQDN : slave3.project.lan
+    - 
 Toutes les machines ont la même configuration user/passwords, c'est simple, tout est *bitnami* : 
 
 - root password : *bitnami*
