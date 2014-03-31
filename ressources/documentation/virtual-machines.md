@@ -96,7 +96,8 @@ Testez avec différents navigateurs, vous devriez voir des messages type <code> 
 ** Cluster MySQL **
 
 Le cluster MySQL est composé des 3 serveurs slave1, slave2 et mysql.
-Démarrez mysql sur les 3 serveurs avec la commande <code>sudo service mysql start </code>
+Démarrez MySQL sur le serveur mysql (mysql.project.lan) avec la commande suivante <code>service mysql start --wsrep-new-cluster</code>
+Démarrez mysql sur les 2 autres serveurs (slave1 slave2) avec la commande <code>sudo service mysql start </code>
 
 Entre la commande suivante pour vérifier que tout le monde est bien opérationnel 
 
