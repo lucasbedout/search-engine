@@ -47,6 +47,10 @@ Tester et utiliser la config
 
 ** Cluster Node.js **
 
+Le cluster est configuré de façon à répartir la charge en round robin sur les 3 nodes. 
+Afin de ne pas perdre les sockets d'un client, un cookie est mis en place sur son navigateur afin qu'il interroge toujours le même serveur.
+Un certificat SSL a été mis en place afin de crypter les connexions.
+
 Sur *master*, démarrer le service haproxy 
 
 <code>sudo service haproxy start</code>
