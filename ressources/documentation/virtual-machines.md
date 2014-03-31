@@ -45,4 +45,9 @@ Toutes les machines ont la même configuration user/passwords, c'est simple, tou
 Tester et utiliser la config
 ------------------
 
+** Cluster Node.js **
+
+Sur *master*, démarrer le service haproxy 
+
+<code>sudo service haproxy start</code>
 
