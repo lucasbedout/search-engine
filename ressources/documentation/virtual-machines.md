@@ -45,7 +45,7 @@ Toutes les machines ont la même configuration user/passwords, c'est simple, tou
 Tester et utiliser la config
 ------------------
 
-** Cluster Node.js **
+**Cluster Node.js**
 
 Le cluster est configuré de façon à répartir la charge en round robin sur les 3 nodes. 
 Afin de ne pas perdre les sockets d'un client, un cookie est mis en place sur son navigateur afin qu'il interroge toujours le même serveur.
@@ -93,7 +93,7 @@ Lancer ensuite le serveur
 Puis envoyez une requête HTTP vers le port 80 de master (http://192.168.1.24 depuis votre navigateur windows), vous devriez voir "Hello world" s'afficher en HTTPS.
 Testez avec différents navigateurs, vous devriez voir des messages type <code> /request </code> sur les terminaux des serveurs web.
 
-** Cluster MySQL **
+**Cluster MySQL**
 
 Le cluster MySQL est composé des 3 serveurs slave1, slave2 et mysql.
 Démarrez MySQL sur le serveur mysql (mysql.project.lan) avec la commande suivante <code>service mysql start --wsrep-new-cluster</code>
