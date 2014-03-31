@@ -52,28 +52,12 @@ Sur *master*, démarrer le service haproxy
 <code>sudo service haproxy start</code>
 
 Créer un fichier hello.js identique sur les 3 serveurs web, y placer ce code 
-<code>
-//
-// A JavaScript based on Node.js
-//
-// Nicolas Hennion (aka) Nicolargo
-//
-// GPL v3.0
-//
- 
-var http = require('http');
+<pre>
+ var http = require('http');
 var url = require('url');
 var spawn = require ('child_process').spawn;
  
-//**********
-// Variables
-//**********
- 
 var listenport = 1337;
- 
-//**********
-// Functions
-//**********
  
 // Chomp function (delete the \n)
 String.prototype.chomp = function () {
@@ -88,10 +72,6 @@ res.write('Hello World');
 res.end();
 };
  
-//*************
-// Main program
-//*************
- 
 // Create the HTTP server
 http.createServer(onRequest).listen(listenport);
  
@@ -101,10 +81,29 @@ listenaddress.stdout.on('data', function (data) {
 var fqdn = new String(data);
 console.log('Server running listenning http://'+fqdn.chomp()+':'+listenport+'/');
 });
-</code
+</pre>
 
 Lancer ensuite le serveur
 <code>node hello.js</code>
 
 Puis envoyez une requête HTTP vers le port 80 de master (http://192.168.1.24 depuis votre navigateur windows), vous devriez voir "Hello world" s'afficher en HTTPS.
+Testez avec différents navigateurs, vous devriez voir des messages type <code> /request </code> sur les terminaux des serveurs web.
 
+** Cluster MySQL **
+
+Le cluster MySQL est composé des 3 serveurs slave1, slave2 et mysql.
+Démarrez mysql sur les 3 serveurs avec la commande <code>sudo service mysql start </code>
+
+Entre la commande suivante pour vérifier que tout le monde est bien opérationnel 
+
+<code> mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS WHERE VARIABLE_NAME="wsrep_cluster_size"'</code>
+
+La sortie devrait être celle-ci 
+
+<pre>
++--------------+
+| cluster size |
++--------------+
+| 3            |
++--------------+
+</pre>
