@@ -53,6 +53,21 @@ int main()
     clock_t t;
     t = clock();
 
+    /*---------CREATION PAGE-----------*/
+    vector<Page> allPage();
+    //page 1 : Sur le traitement des bateaux
+    vector<string> listWord;
+    string titrePage="Les bateaux sont cool.", urlPage="http://www.bateau-cool.com",textPage="Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !";
+    listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation");
+
+    //page 2 : informatique
+    titrePage="Informatique pour geek", urlPage="http://www.geek.com", textPage="Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.";
+    listWord.clear();
+    listWord.push_back("Informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool");
+
+
+    /*--------FIN---------------------*/
+
 //    ranking();
 
     cout <<"Temps prit : "<< (t-clock()) <<  endl;
