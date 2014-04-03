@@ -1,23 +1,12 @@
-#include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <vector>
+
+#include "ranking.h"
 
 #define NB_ALEA_GENE 10
 #define MAX_LENGHT 50
 
 using namespace std;
-
-class Page{
-public :
-    int ID;
-	vector<string> Keywords;
-	string Text;
-	string Title;
-	string Url;
-
-	Page(vector<string> Keywords,string Text,string Title,string Url);
-};
 
 int nbWord(string chaine,string word);
 vector<Page> ranking(vector<Page> pageFound,vector<string> rechercheUser);
@@ -59,16 +48,17 @@ int main()
     vector<string> listWord;
     string titrePage="Les bateaux sont cool.", urlPage="http://www.bateau-cool.com",textPage="Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !";
     listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation");
+    allPage.push_back(Page(listWord,textPage,titrePage,urlPage) );
 
     //page 2 : informatique
     titrePage="Informatique pour geek", urlPage="http://www.geek.com", textPage="Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.";
     listWord.clear();
     listWord.push_back("Informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool");
-
+    allPage.push_back(Page(listWord,textPage,titrePage,urlPage) );
 
     /*--------FIN---------------------*/
 
-//    ranking();
+    //ranking(allPage,keywordSearch);
 
     cout <<"Temps prit : "<< (t-clock()) <<  endl;
 
