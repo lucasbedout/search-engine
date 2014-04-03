@@ -23,13 +23,14 @@ module.exports = {
   	password: {
   		type: 'string',
   		required: true
-  	}
-  	toJSON: function() {
-  		var obj = this.toObject();
-  		delete obj.password;
-  		return obj;
-  	}   
+  	}	
   },
+
+  toJSON: function() {
+      var obj = this.toObject();
+      delete obj.password;
+      return obj;
+  }   
 
   beforeCreate: function(user, cb) {
   	bcrypt.genSalt(10, function(err, salt) {
