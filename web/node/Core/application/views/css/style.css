@@ -1,0 +1,10 @@
+body {
+	background-color:#CCC;
+}
+.centerbox {
+	text-align:center;
+	margin:auto;
+	width: 400px;
+	height: auto;
+	border: 1px solid gray;
+}
