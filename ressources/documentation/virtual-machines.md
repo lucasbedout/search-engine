@@ -21,14 +21,14 @@ Elles sont configurées pour être utilisées localement ou sur une Freebox V5, 
     - hostname : slave1, FQDN : slave1.project.lan
     - Serveur MySQL - clusterisé via Galera
 
-- **Slave 1 : MySQL - Node.js**
+- **Slave 2 : MySQL - Node.js**
     - 192.168.1.26
     - 1 Go de RAM
     - hostname : slave2, FQDN : slave2.project.lan
     - Serveur MySQL - clusterisé via Galera
 
     
-- **Slave 1 : MySQL - Node.js**
+- **mysql : MySQL - Node.js**
     - 192.168.1.27
     - 1 Go de RAM
     - hostname : slave3, FQDN : slave3.project.lan
