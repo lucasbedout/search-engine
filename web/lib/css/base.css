@@ -1,0 +1,16 @@
+body {
+	font-family: 'Lato', sans-serif;
+	color: white;
+	background-image: url('img/bg.jpg');
+	background-size: 100%;
+}
+
+h1 {
+	font-weight: 300;
+	font-size: 48px;
+}
+
+h2 {
+	font-weight: 300;
+	font-size: 28px;
+}

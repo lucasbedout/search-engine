@@ -1,0 +1,44 @@
+/* Inputs -> text, password, emails, etc... */
+
+input {
+	background-color: rgba(255, 255, 255, 0.2);
+	border-color: transparent;
+	color: white;
+	padding: 4px;
+
+	/* Background properties */
+
+	background-size: 10%;
+	background-repeat: no-repeat;
+	background-position: 95%;
+}
+
+.input-user {
+	background-image: url('img/user.png');
+}
+
+.input-password {
+	background-image: url('img/lock.png');
+}
+
+.input-email {
+	background-image: url('img/email.png');
+}
+
+/* Buttons */
+
+.button {
+	padding: 4px;
+	min-width: 75px;
+}
+
+.button-sky {
+	background-color: rgb(103, 176, 209);
+	outline: none;
+	-webkit-box-shadow: 0 0 2px 1px rgb(30, 90, 100);
+	box-shadow: 0 0 2px 1px rgb(30, 90, 100);
+}
+
+.button-sky:hover {
+	background-color: rgb(90, 160, 190);
+}
