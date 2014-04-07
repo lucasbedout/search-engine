@@ -11,7 +11,8 @@
         "optimist": "0.3.4",
         "passport": "~0.1.16",
         "passport-local": "~0.1.6",
-        "bcrypt": "~0.7.6"
+        "bcrypt": "~0.7.6",
+        "sails-mysql": "~0.9.9"
     },
     "scripts": {
         "start": "node app.js",
