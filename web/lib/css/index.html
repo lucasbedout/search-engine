@@ -6,7 +6,8 @@
         <link rel="stylesheet" type="text/css" href="forms.css">
         <link rel="stylesheet" type="text/css" href="base.css">
 		<!--<link href="buttons/css/component.css" type="text/css" rel="stylesheet"></link>-->
-		<script src="buttons/js/modernizr.custom.js"></script>
+		<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="js/forms.js"></script>
         <title>Tests for CSS classes</title>
     </head>
 
@@ -17,9 +18,15 @@
     	<input type="password" class="input-password" placeholder="Password"/><br />
     	<input type="email" class="input-email" placeholder="Email" /><br />
     	<h2>Buttons</h2>
-    	<input type="submit" class="btn btn-blue" value="Log in" />
-    	<input type="submit" class="btn btn-red" value="Sign up" />
-    	<input type="submit" class="btn btn-yellow" value="Search" />
-    	<input type="submit" class="btn btn-green" value="Get lucky" />
+    	<p>
+	    	<input type="submit" class="btn btn-blue" value="Log in" />
+	    	<input type="submit" class="btn btn-red" value="Sign up" />
+	    	<input type="submit" class="btn btn-yellow" value="Search" />
+	    	<input type="submit" class="btn btn-green" value="Get lucky" />
+	    </p>
+	    <p class="double-btn">
+	    	<input type="submit" class="btn btn-blue active" value="First choice" /><a href="#" class="btn btn-blue swapper active btn-arrow-bottom"></a>
+	    	<input type="submit" class="btn btn-yellow inactive" value="Second choice" /><a href="#" class="btn btn-yellow swapper inactive btn-arrow-up"></a>
+	    </p>
     </body>
 </html>
