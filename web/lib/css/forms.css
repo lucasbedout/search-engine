@@ -147,18 +147,19 @@ input {
 	background-size: 40%;
 	margin: 0;
 	margin-right: 1px;
-	position: relative;
 	float: left;
+	min-height: 26px;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 .btn-arrow-bottom {
 	background-image: url('img/arrow-bottom.png');
-	height: 16px;
 }
 
 .btn-arrow-up {
 	background-image: url('img/arrow-up.png');
-	height: 16px;
 }
 
 .inactive {
