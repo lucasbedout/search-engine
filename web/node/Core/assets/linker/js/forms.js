@@ -14,5 +14,17 @@ var button_swap = function() {
 		$(this).prev().addClass('inactive');
 		$(this).prev().removeClass('active');
 	};
+	if ($(this).hasClass('search') || $(this).hasClass('lucky')) {
+		search_swap();
+	}
 }
 
+/* Search swap function */
+
+var search_swap = function() {
+	if ($(this).hasClass('search')) {
+		$('#search-inputs').attr('action', '/search');
+	} else {
+		$('#search-inputs').attr('action', '/lucky');
+	}
+}
