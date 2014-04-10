@@ -1,6 +1,8 @@
 #Installation des librairies.
 ##Tidy :
 
+--------------
+
 - Pré-requis :
   - Cloner le répo git correspondant : https://github.com/w3c/tidy-html5
   - Puis suivre les indications : 
