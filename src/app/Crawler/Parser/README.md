@@ -9,7 +9,7 @@
       1. `sudo make -C build/gmake/`
       2. `sudo make install -C build/gmake/`
 
-
+---------------
 - Vérifier que tout est bien installé :
   - Où sont les fichiers ?
     - Un fichier de librairie devrait être ici :
