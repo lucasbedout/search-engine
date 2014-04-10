@@ -14,3 +14,60 @@ h2 {
 	font-weight: 300;
 	font-size: 28px;
 }
+
+/* Home top design */
+
+#home-top {
+	margin-bottom: 10%;
+}
+
+#home-top #login {
+	text-align: right;
+}
+
+#home-top #login input {
+	height: 18px;
+}
+
+#home-top #login .btn {
+	height: 25px;
+	vertical-align: top;
+}
+
+/* Logo */
+
+#logo {
+	background-image: url('img/logo.png');
+	width: 538px;
+	height: 190px;
+	margin: auto;
+	margin-bottom: 20px;
+}
+
+/* Search bar design */
+
+#search-form {
+	width: 70%;
+	margin: auto;
+	text-align: center;
+}
+
+#search-form input {
+	vertical-align: top;
+}
+
+#search-form .double-btn {
+	display: inline-block;
+	vertical-align: top;
+	margin: 0;
+}
+
+#search-form input[type="text"] {
+	height: 19px;
+	width: 70%;
+	margin-right: 15px;
+	vertical-align: middle;
+}
+
+
+
