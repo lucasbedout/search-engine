@@ -1,5 +1,5 @@
 #Installation des librairies.
 ##Tidy :
 
-- ###Pré-requis :
+- Pré-requis :
   - cloner le répo git correspondant : 
