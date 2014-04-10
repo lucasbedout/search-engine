@@ -15,37 +15,34 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-var passwport = require('passport');
+var passport = require('passport');
 
 module.exports = { 
     
-    // Affiche le formulaire de login
+    // Renvoie à l'accueil si pas de paramètres
     login: function(req, res) {
-    	res.view();
+        res.redirect('/');
     },
 
-    // Traite le formulaire envoyé par l'utilisateur
-    process: function(req, res) {
-    	passport.authenticate('local', function(err, user, info) {
-    		if ((err) || (!user)) {
-    			return res.send({
-    				message: 'login failed'
-    			});
-    			res.send(err);
-    		}
-    		req.logIn(user, function(err) {
-    			if (err) res.send(err);
-    			return res.send({
-    				message: 'login successful'
-    			});
-    		});
-    	})(req, res);
+    // Traite le formulaire envoyé par l'utilisateur, si le login échoue on renvoie à l'accueil
+    process: function(req,res){
+        passport.authenticate('local', function(err, user, info){
+            if ((err) || (!user)) {
+              res.redirect('/');
+              return;
+            }
+            req.logIn(user, function(err){
+              if (err) res.redirect('/');
+              console.log(user.username + ' is connected');
+              res.redirect('/');
+            });
+        })(req, res);
     },
 
     // Déconnexion de l'utilisateur
     logout: function (req, res) {
     	req.logout();
-    	res.send('logout successful');
+        res.redirect('/');
     }  
 };
 

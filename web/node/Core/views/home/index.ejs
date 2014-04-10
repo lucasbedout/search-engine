@@ -1,7 +1,11 @@
 <header>
 	<div id="home-top">
 		<div id="login">
-			<%- partial('../auth/partials/form.ejs') %>
+			<% if (!user) { %>		
+				<%- partial('../auth/partials/form.ejs') %>
+			<% } else { %>
+				<span class="username">Hello, <%= user.username%></span><button onclick="window.location.href='/logout';" class="btn btn-red">Logout</button>
+			<% } %>
 		</div>
 	</div>
 </header>

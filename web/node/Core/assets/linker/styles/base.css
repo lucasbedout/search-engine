@@ -29,9 +29,19 @@ h2 {
 	height: 18px;
 }
 
-#home-top #login .btn {
+#home-top #login .btn-blue {
 	height: 25px;
 	vertical-align: top;
+}
+
+#home-top #login .username {
+	font-weight: 300;
+	display: inline-block;
+}
+
+#home-top #login .btn-red {
+	margin-left: 20px;
+	margin-right: 20px;
 }
 
 /* Logo */
