@@ -8,31 +8,36 @@
 class Page{
 public :
     int ID;
-	vector<string> Keywords;
-	string Text;
-	string Title;
-	string Url;
+	std::vector<std::string> Keywords;
+	std::string Text;
+	std::string Title;
+	std::string Url;
 
     //constructeur
-	Page(vector<string> fKeywords,string fText,string fTitle,string fUrl);
+	Page(std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl);
 	//constructeur copie
-	Page& operator=(Page const& pageACopier);
+	Page& operator=(Page const& pageCopy);
 
 };
-Page::Page(vector<string> fKeywords,string fText,string fTitle,string fUrl) : Keywords(fKeywords), Text(fText), Title(fTitle), Url(fUrl)
+Page::Page(std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl) : Keywords(fKeywords), Text(fText), Title(fTitle), Url(fUrl)
 {
     //rien
 }
 
-Page& Page::operator=(Page const& pageACopier)
+Page& Page::operator=(Page const& pageCopy)
 {
-    if(this != &pageACopier)
+    if(this != &pageCopy)
     //On vérifie que l'objet n'est pas le même que celui reçu en argument
     {
-        Keywords = pageACopier.Keyword;
-        Text = pageACopier.Text;
-        Title = pageACopier.Title;
-        Url = pageACopier.Url;
+        int sizeW = pageCopy.Keywords.size();
+        for(int i = 0; i<sizeW;i++ )
+            Keywords.push_back( pageCopy.Keywords[i] ); // erreur ici
+
+        Text = pageCopy.Text;
+
+        Title = pageCopy.Title;
+
+        Url = pageCopy.Url;
     }
     return *this; //On renvoie l'objet lui-même
 }
