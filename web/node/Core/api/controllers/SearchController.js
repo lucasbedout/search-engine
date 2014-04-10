@@ -15,15 +15,42 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
+// On va utiliser la lib net 
+
+var net = require('net');
+
 module.exports = {
     
   search: function(req, res) {
-  	console.log('Recherche effectuée');
+  	var words = req.param('search-words');
+  		client = net.connect({
+  			port: 1300,
+  			host: '192.168.1.13'
+  		}, function() {
+  			client.write(words);
+  		});
+
+  		client.on('data', function(data) {
+  			console.log(data.toString());
+  		})
+
+  	console.log('Recherche : ' + words);
   	res.redirect('/');
   },
 
   luck: function(req, res) {
-  	console.log('Get lucky');
+  	var words = req.param('search-words');
+  		client = net.connect({
+  			port: 1301,
+  			host: '192.168.1.13'
+  		}, function() {
+  			client.write(words);
+  		});
+
+  		client.on('data', function(data) {
+  			console.log(data.toString());
+  		})
+  	console.log('Alors, on veut de la chance ?');
   	res.redirect('/');
   }
 
