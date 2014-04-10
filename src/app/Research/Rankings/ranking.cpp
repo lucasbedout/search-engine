@@ -3,18 +3,22 @@
 
 #include "ranking.h"
 
-#define NB_ALEA_GENE 10
-#define MAX_LENGHT 50
-
 using namespace std;
 
 int nbWord(string chaine,string word);
 vector<Page> ranking(vector<Page> pageFound,vector<string> rechercheUser);
-void echanger(int tableau[], vector<Page> page, int a, int b);
+void swapPage(int tableau[], vector<Page> page, int a, int b);
 void quickSort(int tableau[],vector<Page> page,  int debut, int fin);
 
 int main()
 {
+    //on voit le niveau de recherche que veux, l'utilisateur ( a faire après avoir réglé les bug)
+    /*int level=2;
+    cout << "Niveau de la recherche (1=tolerant;2=moderé{default};3=strict) : ";
+    cin >> level;
+
+    if(level!=1 && level!=2 && level!=3)
+        level=2;*/
 
     //on obtient la recherche user
     string recherche="",word="";
@@ -43,7 +47,8 @@ int main()
     t = clock();
 
     /*---------CREATION PAGE-----------*/
-    vector<Page> allPage();
+    vector<Page> allPage;
+    vector<Page> result;
     //page 1 : Sur le traitement des bateaux
     vector<string> listWord;
     string titrePage="Les bateaux sont cool.", urlPage="http://www.bateau-cool.com",textPage="Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !";
@@ -56,16 +61,17 @@ int main()
     listWord.push_back("Informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool");
     allPage.push_back(Page(listWord,textPage,titrePage,urlPage) );
 
+
     /*--------FIN---------------------*/
 
-    //ranking(allPage,keywordSearch);
+    ranking(allPage,keywordSearch);
 
     cout <<"Temps prit : "<< (t-clock()) <<  endl;
 
     return 0;
 }
 
-void echanger(int tableau[], vector<Page> page, int a, int b)
+void swapPage(int tableau[], vector<Page> page, int a, int b)
 {
     //variable temporaire
     Page tmp(page[a]);
@@ -95,7 +101,7 @@ void quickSort(int tableau[],vector<Page> page,  int debut, int fin)
         do gauche++; while(tableau[gauche] < pivot);
 
         if(gauche < droite)
-            echanger(tableau, page, gauche, droite);
+            swapPage(tableau, page, gauche, droite);
         else break;
     }
 
@@ -138,24 +144,32 @@ vector<Page> ranking(vector<Page> pageFound,vector<string> rechercheUser)
 
     //------------------ETAPE 1----------------------
     //Parcour de toute les pages
-    for(int i; i<pageFound.size();i++)
+    for(int i=0; i<pageFound.size();i++)
     {
+        score[i]=0;
         //parcour toute la recherche user
-        for(int j; j<rechercheUser.size();j++)
+        for(int j=0; j<rechercheUser.size();j++)
         {
             score[i]+=coefTitle*nbWord(pageFound[i].Title,rechercheUser[j]);
+            cout << "Titre : " << score[i] << ' ';
             score[i]+=coefDomaineName*nbWord(pageFound[i].Url,rechercheUser[j]);
-            for(int o; o<pageFound[i].Keywords.size();o++)
+            cout << "Domaine : " << score[i] << ' ';
+            for(int o=0; o<pageFound[i].Keywords.size();o++)
                 score[i]+=coefKeyword*nbWord(pageFound[i].Keywords[o],rechercheUser[j]);
+            cout << "Keywords : " << score[i] << ' ';
             score[i]+=coefUrl*nbWord(pageFound[i].Url,rechercheUser[j]);
+            cout << "Url : " << score[i] << ' ';
             score[i]+=coefText*nbWord(pageFound[i].Text,rechercheUser[j]);
+            cout << "Words : " << score[i] << endl;
         }
+
+        cout << score[i] << " De :" << pageFound[i].Title << endl;
     }
 
 
     //------------------ETAPE 2----------------------
 
-    quickSort(score,pageFound,1,pageFound.size());
+    //quickSort(score,pageFound,1,pageFound.size()); //erreur a réglé avant
 
     return pageFound;
 
