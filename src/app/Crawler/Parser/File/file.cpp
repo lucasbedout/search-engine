@@ -17,7 +17,7 @@ void FileHandler::extractDatas(){
     {
         while (getline(myfile,line))
         {
-          content += line + " ";
+            content += line + "\n";
         }
         myfile.close();
     }

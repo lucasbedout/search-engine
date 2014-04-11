@@ -3,16 +3,15 @@
 #include <vector>
 #include "Misc/misc.h"
 #include "File/file.h"
+#include "Parse/parse.h"
 
 using namespace std;
 
 int main()
 {
     vector<string> keywords;
-    FileHandler f = FileHandler("keywords.txt");
+    FileHandler f = FileHandler("keywords.html");
     f.extractDatas();
-    keywords = splitString(f.getContent(), ' ');
-    int i = 0;
-    for (i = 0; i < keywords.size(); i++)
-        cout << keywords[i] << endl;
+    Parser p = Parser(f.getContent());
+    p.cleanHTML();
 }
