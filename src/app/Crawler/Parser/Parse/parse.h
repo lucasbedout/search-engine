@@ -16,6 +16,7 @@ public :
 	string parse(string type);
 	void cleanHTML();
 	void findElement(string type);
+	string getContent();
 };
 
 #endif

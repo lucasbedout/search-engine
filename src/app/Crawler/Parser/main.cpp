@@ -13,5 +13,5 @@ int main()
     FileHandler f = FileHandler("keywords.html");
     f.extractDatas();
     Parser p = Parser(f.getContent());
-    p.cleanHTML();
+    p.parse("h1");
 }
