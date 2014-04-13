@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+
+//-------------------------------------------CLASS PAGE--------------------------------
 class Page{
 public :
     int ID;
@@ -29,9 +31,10 @@ Page& Page::operator=(Page const& pageCopy)
     if(this != &pageCopy)
     //On vérifie que l'objet n'est pas le même que celui reçu en argument
     {
-        int sizeW = pageCopy.Keywords.size();
+        const int sizeW = pageCopy.Keywords.vector::size();
+        Keywords.clear(); //par sécurité
         for(int i = 0; i<sizeW;i++ )
-            Keywords.push_back( pageCopy.Keywords[i] ); // erreur ici
+            Keywords.push_back(pageCopy.Keywords[i]);
 
         Text = pageCopy.Text;
 
@@ -41,5 +44,14 @@ Page& Page::operator=(Page const& pageCopy)
     }
     return *this; //On renvoie l'objet lui-même
 }
+//-------------------------------------------CLASS PAGE--------------------------------
+
+
+int nbWord(const std::string& chaine,const std::string& word,const int& level);
+void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch);
+void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b);
+void quickSort(int tableau[],std::vector<Page>& page,const int debut,const int fin);
+std::string lowerString(const std::string& str);
+
 
 #endif // RANKING_H_INCLUDED
