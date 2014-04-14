@@ -9,17 +9,15 @@ using namespace std;
 int main()
 {
     //on voit le niveau de recherche que veux, l'utilisateur
-    int level=2;
+    int level = 2;
     cout << "Niveau de la recherche (1=tolerant;2=moderé{default};3=strict) : ";
     cin >> level;
 
-    if(level!=1 && level!=2 && level!=3)
-        level=2;
+    if(level != 1 && level != 2 && level != 3)
+        level = 2;
 
     //Vidons le buffer
     cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-    cout << level <<endl;
 
     //on obtient la recherche user
     string recherche="",word="";
@@ -29,7 +27,7 @@ int main()
 
     for(int i=0; recherche[i]!='\0';i++)
     {
-        if(recherche[i]==' ')
+        if(recherche[i] == ' ')
         {
             word.push_back('\0');
             keywordSearch.push_back(word);
@@ -84,12 +82,13 @@ int main()
 
     ranking(allPage,keywordSearch,level);
 
-    for(int i=0; i < allPage.size();i++)
+    const int sizePage = allPage.size();
+    for(int i=0; i < sizePage; i++)
     {
-        cout << "Number " << i+1 << " : " << allPage[i].Title << endl;
+        cout << "Number " << i+1 << " : " << allPage[i].get_title() << endl;
     }
 
-    cout <<"Temps prit : "<< (clock()-t) <<  endl;
+    cout <<"Temps prit : "<< ( clock()-t ) << "ms" <<  endl;
 
     return 0;
 }
@@ -97,7 +96,7 @@ int main()
 void swapPage(int tableau[], vector<Page>& page,const int& a,const int& b)
 {
     //page temporaire
-    Page tmp=page[a];
+    Page tmp = page[a];
 
     //Trie score
     tableau[a] ^= tableau[b];
@@ -105,12 +104,12 @@ void swapPage(int tableau[], vector<Page>& page,const int& a,const int& b)
     tableau[a] ^= tableau[b];
 
     //Trie page
-    page[a]=page[b];
-    page[b]=tmp;
+    page[a] = page[b];
+    page[b] = tmp;
 
 }
 
-void quickSort(int tableau[],vector<Page>& page,const int debut,const int fin)
+void quickSort(int tableau[],vector<Page>& page,const int& debut,const int& fin)
 {
     int gauche = debut-1;
     int droite = fin+1;
@@ -135,14 +134,14 @@ void quickSort(int tableau[],vector<Page>& page,const int debut,const int fin)
 
 string lowerString(const string& str)
 {
-    const int lg=str.length();
+    const int lg = str.length();
     string low(str);
 
-    for(int i=0; i < lg; i++)
+    for(int i = 0; i < lg; i++)
     {
         if(low[i] >='A' && 'Z' >= low[i])
             // 'a'-'A'= 32 <=> 'A'+32='a'
-            low[i]+=32;
+            low[i] += 32;
     }
 
     return low;
@@ -154,27 +153,27 @@ If the word is seperate by space : No
 */
 int nbWord(const string& chaine,const string& word,const int& level)
 {
-    int nb(0),i(0),j(0),similaire(0);
+    int nb(0), i(0), j(0), similaire(0);
 
     //Si le niveau est strict
     if(level == 3)
     {
-        for(i=0;chaine[i] != '\0';i++)
+        for(i = 0; chaine[i] != '\0'; i++)
         {
-            if(chaine[i]==word[0])
+            if(chaine[i] == word[0])
             {
-                for(j=1;word[j]!='\0' && chaine[i+j]!='\0' ;j++)
+                for(j=1; word[j] != '\0' && chaine[i+j] != '\0'; j++)
                 {
                     if(chaine[i+j] == word[j])
                         similaire++;
                 }
 
                 // -2 car on commence a comparait a l'emplacement 0 (tab[0]) et qu'on commence similaire++ a 1.
-                if( (word.size()-2) == similaire)
+                if( (int)(word.size()-2) == similaire)
                     nb++;
 
-                i+=(j-1);
-                similaire=0;
+                i += (j-1);
+                similaire = 0;
             }
         }
     }
@@ -185,15 +184,15 @@ int nbWord(const string& chaine,const string& word,const int& level)
 
         for(i=0;chaineLow[i] != '\0';i++)
         {
-            if(chaineLow[i]==wordLow[0])
+            if(chaineLow[i] == wordLow[0])
             {
-                for(j=1;wordLow[j]!='\0' && chaineLow[i+j]!='\0';j++)
+                for(j=1; wordLow[j] != '\0' && chaineLow[i+j] != '\0'; j++)
                 {
                     if(chaineLow[i+j] == wordLow[j])
                         similaire++;
                 }
 
-                if( (wordLow.size()-2) == similaire)
+                if( (int)(wordLow.size()-2) == similaire)
                     nb++;
 
                 i+=(j-1);
@@ -221,22 +220,22 @@ int nbWord(const string& chaine,const string& word,const int& level)
             Peut ressortir des pages qui n'ont rien a voir a cause de la haute tolérance
         */
         string chaineLow(lowerString(chaine)), wordLow(lowerString(word));
-        bool chaineBin[chaineLow.size()-2];
-        int maxi=0,minSize=(int)(wordLow.size()/2);
+        bool chaineBin[ chaineLow.size() - 2 ];
+        int maxi = 0, minSize = (int)(wordLow.size()/2);
 
-        for(i=0;chaineLow[i] != '\0';i++) //on parcour la chaine
+        for(i = 0; chaineLow[i] != '\0'; i++) //on parcour la chaine
         {
-            for(int iw=0; iw < minSize+1;iw++) //on parcour le word
+            for(int iw = 0; iw < minSize+1; iw++) //on parcour le word
             {
-                if(chaineLow[i]==wordLow[iw])
+                if(chaineLow[i] == wordLow[iw])
                 {
-                    chaineBin[i]=true;
-                    for(j=1;wordLow[j+iw]!='\0' && chaineLow[i+j]!='\0' && chaineBin[i+j-1]==true;j++)
+                    chaineBin[i] = true;
+                    for(j = 1; wordLow[j+iw] != '\0' && chaineLow[i+j] != '\0' && chaineBin[i+j-1] == true; j++)
                     {
                         if(chaineLow[i+j] == wordLow[j+iw])
-                            chaineBin[i+j]=true;
+                            chaineBin[i+j] = true;
                         else
-                            chaineBin[i+j]=false;
+                            chaineBin[i+j] = false;
                     }
 
                     if(maxi < j)
@@ -245,12 +244,12 @@ int nbWord(const string& chaine,const string& word,const int& level)
             }
             if(maxi < minSize)
             {
-                for(int z=0; z<maxi; z++)
-                    chaineBin[i+z]=false;
+                for(int z = 0; z < maxi; z++)
+                    chaineBin[i+z] = false;
             }
             else
             {
-                i+=maxi-1;
+                i += maxi - 1;
                 nb++;
             }
         }
@@ -263,36 +262,38 @@ int nbWord(const string& chaine,const string& word,const int& level)
 
 void ranking(vector<Page>& pageFound,vector<string>& rechercheUser,const int& lvlSrch)
 {
-    int score[rechercheUser.size()];
-    const int coefTitle=16,coefDomaineName=8,coefKeyword=4,coefUrl=2,coefText=1;
+    int score[ rechercheUser.size() ];
+    const int coefTitle = 16, coefDomaineName = 8, coefKeyword = 4, coefUrl = 2, coefText = 1, sizePage = pageFound.size();
+    const int sizeSearch = rechercheUser.size();
 
     //------------------ETAPE 1----------------------
     //Parcour de toute les pages
-    for(int i=0; i<pageFound.size();i++)
+    for(int i = 0; i < sizePage; i++)
     {
-        score[i]=0;
+        score[i] = 0;
         //parcour toute la recherche user
-        for(int j=0; j<rechercheUser.size();j++)
+        for(int j = 0; j < sizeSearch; j++)
         {
-            score[i]+=coefTitle*nbWord(pageFound[i].Title,rechercheUser[j],lvlSrch);
+            score[i] += coefTitle * nbWord( pageFound[i].get_title(), rechercheUser[j], lvlSrch);
             //cout << "Titre : " << score[i] << ' ';
-            score[i]+=coefDomaineName*nbWord(pageFound[i].Url,rechercheUser[j],lvlSrch);
+            score[i] += coefDomaineName * nbWord( pageFound[i].get_url(), rechercheUser[j], lvlSrch);
             //cout << "Domaine : " << score[i] << ' ';
-            for(int o=0; o<pageFound[i].Keywords.size();o++)
-                score[i]+=coefKeyword*nbWord(pageFound[i].Keywords[o],rechercheUser[j],lvlSrch);
+            const int sizeKeyword = pageFound[i].get_keywords().size();
+            for(int o = 0; o < sizeKeyword; o++)
+                score[i] += coefKeyword * nbWord( pageFound[i].get_keywords()[o], rechercheUser[j], lvlSrch);
             //cout << "Keywords : " << score[i] << ' ';
-            score[i]+=coefUrl*nbWord(pageFound[i].Url,rechercheUser[j],lvlSrch);
+            score[i] += coefUrl * nbWord( pageFound[i].get_url(), rechercheUser[j], lvlSrch);
             //cout << "Url : " << score[i] << ' ';
-            score[i]+=coefText*nbWord(pageFound[i].Text,rechercheUser[j],lvlSrch);
+            score[i] += coefText * nbWord( pageFound[i].get_text(), rechercheUser[j], lvlSrch);
             //cout << "Words : " << score[i] << endl;
         }
 
-        cout << "Score : " << score[i] << " de :" << pageFound[i].Title << endl;
+        //cout << "Score : " << score[i] << " de :" << pageFound[i].Title << endl;
     }
 
 
     //------------------ETAPE 2----------------------
 
-    quickSort(score,pageFound,0,pageFound.size()-1);
+    quickSort( score, pageFound, 0, pageFound.size()-1 );
 
 }
