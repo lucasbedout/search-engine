@@ -1,0 +1,49 @@
+-------------NETWORK SERVER ASYNCHRONE :-------------------
+
+	///Rôle d'un client et d'un server (principe générale et simple) ?///
+
+Server : Le server attends qu'un client arrive pour le servir. Sont but est de répondre a une demande client.
+Client : Aller chercher le server et lui faire une demande, attendre et recevoir sa "commande". 
+
+	///Comment fonctionne grosso modo un server en C++ ?///
+
+Comme expliquer précédament, le server a pour rôle d'attendre. Il est donc logique que c'est au client de contacté en premier le server.
+En outre, avant qu'une connexion se crée, le client connait l'adresse IP du server mais le server ne connait pas l'adresse ip du client.
+Quand vous tapez sur votre navigateur internet "www.google.com" vous allez contacté le server pour lui demandé un service et celui-ci vous réponds
+par une page web. Avant de taper celà, le server ne connait pas votre adresse ip mais vous oui (grâce au DNS).
+
+En c++, un server "ecoute" sur un port spécifique qu'un client arrive. Quand un client se connecte, celui-ci donne son adresse ip et ces informations, 
+protocole, etc.. Dans une socket. Cette socket sera la base de la connexion. On dit aussi que le server Bind un port.
+
+Pour résumé : Le server attends sur un port, reçois un client, remplie la socket (la connexion est ouverte), fait ce qu'il a faire et termine la connexion. 
+Puis réhitaire le processus.
+
+
+	///Qu'est qu'un server ASYNCHRONE ?///
+
+Un server asynchrone est un server pouvant s'occupé de plusieurs clients se conenctant sur le même port contrairement au server Synchrone.
+Celui-ci utilise différente méthode comme les threads (Apache), evennement (Node.js), etc ... 
+
+
+	///La Différence entre un server ASYNCHRONE et SYNCHRONE ?///
+
+Un server synchrone ne peut gerrer un client a la fois. Si d'autre client se connecte en même temps, celà sont en "attente" dans une file. Quand le client a
+fini avec le server, celui-ci libére sa place et laisse le client suivant de la file se connecté a son tour au server.
+L'asynchrone, comme dit précédament, peut gerrer plusieurs connection en même temps et donc évite le temps d'attente dans une file mais peut crer un DDOS sur
+les ressources utilisés (car on s'occupe de plusieurs client)
+
+
+	///Pourquoi avons nous besoin d'un server asynchrone ?///
+
+Node.js est asynchrone et est monocoeur mais utilise les evennements pour être asynchrone. Ainsi on utilise un server asynchrone pour suivre les performance
+de Node.js et évité l'attente crée par les files dans les server synchrone.
+
+	///Boost asio ?///
+
+Comme nous utilisons Boost, nous allons utilisé une "sous blibliothèque" de Boost consacré dans le réseau : Boost Asio.
+Elle a besoin d'être compilé pour être utilisé.
+Dépendance :
+	Boost.System for the boost::system::error_code and boost::system::system_error classes.
+	Boost.Regex (optional) if you use any of the read_until() or async_read_until() overloads that take a boost::regex parameter. 
+
+

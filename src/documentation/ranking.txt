@@ -1,0 +1,39 @@
+RANKING DOCUMENTATION :
+
+3 ETAPES :
+
+	1.Selectionner le niveau de recherche
+		3 niveaux : tolérant(1), modéré(2) et strict(3) :
+			Strict : Recherche exactement le mot a la case sensitive. Mot pour mot. Extrèmement rapide.
+
+			Modéré : Recherche exactement le mot sans prendre en compte la case sensitive. Légérement moins rapide que le filtre strict car
+				celui-ci convertie tout les strings en minuscule.
+
+			Tolérant : recherche une partie du mot dans une phrase. Cette partie de mot doit faire au minimun la moitier de la taille du mot.
+					 Nous avons W qui est le mot rechercher et N tel que N=W.size()/2.
+           				 Si dans la chaine de caractère nous avons une suite de lettre de W de la taille de N,
+           				 Alors celui-ci est compter comme un mot.
+					Avantage :
+            					Très tolérant :
+                				Permet d'analiser si n'importe quel partie de W est identifier (exemple : Bonjour =>bonjo | jour | onjou | bonjour | bonjou | ...)
+                				Ressort plus de résultat
+                				Monte des pages en raport (exemple : Hexagone => Hexa | gone )
+        				Desavantage :
+            					Très lent a cause de plusieurs recherche
+           					Peut ressortir des pages qui n'ont rien a voir a cause de la haute tolérance
+
+
+
+	2.Mettre les mots clés de la recherche
+		Enregistré comme un string, ces mots seront ensuite splitter par l'espace puis stocké dans un vecteur de string comportant tout les keywords.
+	
+
+
+	3.Ranking
+		2 étapes :
+			1.Trouve le score de la page en fonction du niveau de recherche. On parcourt, le titre, le nom de domaine, la page, etc...
+			Le score est ensuite donnée a la page. L'analise se fait ensuite pour chaque page et dans chaqu'une de ces pages, chaque keywords 
+			rentré par l'utilisateur. Soit 10 pages et 5 keyword search => 10*5 = 50 itération.
+			
+			2.Le trie : On utilise un quicksort qui permet de faire le trie sur de grande portion. On trie le score en ordre décroissant et 
+			par la même ocasion les pages. On a au final un vector de page trie par ordre décroissant de leur score. 
