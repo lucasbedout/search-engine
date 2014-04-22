@@ -9,6 +9,8 @@
 
 #include "..\Research\Rankings\ranking.h"
 
+#define MAX_BUFFER_SEARCH_KEYWORDS 255
+
 class tcp_connection
 	: public boost::enable_shared_from_this<tcp_connection>
 {
@@ -27,29 +29,34 @@ public:
 
 	void start()
 	{
-		/*message_ = "Hello world";
-
-		boost::asio::async_write(socket_, boost::asio::buffer(message_),
-			boost::bind(&tcp_connection::handle_write, shared_from_this(),
-			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred));*/
-
-		char buf[128] = "";
-		char typeSearch[2] = { '0' };
-		int nb = 0;
-		std::string keyword;
+		char recieveSearch[MAX_BUFFER_SEARCH_KEYWORDS] = "";
+		char reciveTypeSearch[2] = { '0' }, totalPageSend[7] = "";
+		int typeSearch = 0;
+		std::string keywords;
 		boost::system::error_code error;
 
-		socket_.read_some(boost::asio::buffer(typeSearch), error);
-		socket_.read_some(boost::asio::buffer(buf), error);
+		socket_.read_some(boost::asio::buffer(reciveTypeSearch), error); // reçois le type de recherche
+		socket_.read_some(boost::asio::buffer(recieveSearch), error); //reçois la chaine de caractère
 
-		nb = atoi(typeSearch);
-		for (int i = 0; i<127 && buf[i] != '\0'; i++)
-			keyword.push_back( buf[i] );
+		typeSearch = atoi(reciveTypeSearch); //convertie un char en int
+		//Convertie le tableau static char en string
+		for (int i = 0; i<(MAX_BUFFER_SEARCH_KEYWORDS-1) && recieveSearch[i] != '\0'; i++)
+			keywords.push_back(recieveSearch[i]);
 
-		std::cout << "Type recherche : " << nb << " et texte : " << keyword << std::endl;
+		//std::cout << "Type recherche : " << typeSearch << " et texte : " << keywords << std::endl;
 
-		rank(keyword, nb);
+		std::vector<Page> page = rank(keywords, typeSearch); //ranking
+
+		//-----ENVOIT PAGE-----
+		itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
+		boost::asio::async_write(socket_, boost::asio::buffer(totalPageSend),
+			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred));
+
+		const int totalPage = page.size();
+		for (int i = 0; i < totalPage; i++)
+			sendPage(page.at(i));
 	}
 
 private:
@@ -62,13 +69,32 @@ private:
 		size_t /*bytes_transferred*/)
 	{
 	}
-	void handle_read(const boost::system::error_code& /*error*/,
-		size_t /*bytes_transferred*/)
+
+	void sendPage(Page page)
 	{
+		std::string size = "0", content;
+
+		content = "ID : "; content += std::to_string( page.get_ID() );
+		content += "\nTitle : "; content += page.get_title();
+		content += "\nUrl : "; content += page.get_url();
+		size = std::to_string( content.size() );
+
+		std::cout << "size : " << size << std::endl << "Content : " << content << std::endl;
+
+		boost::asio::async_write(socket_, boost::asio::buffer(size),
+			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred));
+
+		boost::asio::async_write(socket_, boost::asio::buffer(content),
+			boost::bind(&tcp_connection::handle_write, shared_from_this(),
+			boost::asio::placeholders::error,
+			boost::asio::placeholders::bytes_transferred));
+
+
 	}
 
 	boost::asio::ip::tcp::socket socket_;
-	std::string message_;
 };
 
 class tcp_server

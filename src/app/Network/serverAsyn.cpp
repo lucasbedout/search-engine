@@ -8,7 +8,7 @@ int main()
 	{
 		//On lance le service d'entrer et sortie de Boost
 		boost::asio::io_service io_service;
-		//Nous créons un server en indiquant son mode asynchrone
+		//Nous créons un server en indiquant son mode asynchrone 
 		tcp_server server(io_service);
 		//Nous lançons le serveur asynchrone
 		io_service.run();

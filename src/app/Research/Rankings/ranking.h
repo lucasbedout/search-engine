@@ -8,14 +8,14 @@
 
 #include "Class/Page.h"
 
-int rank(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
+std::vector<Page> rank(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
 int nbWord(const std::string& chaine,const std::string& word,const int& level); // Compte le nombre de mot (3 niveaux)
 void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch); //Attribue un score puis trie
 void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b); //échange les pages a et b ainsi que le score a et b
 void quickSort(int tableau[],std::vector<Page>& page,const int& debut,const int& fin); //Trie les pages en fonction du score
 std::string lowerString(const std::string& str); //Met une chaine de charactère en minuscule
 
-int rank(std::string recherche, int level)
+std::vector<Page> rank(std::string recherche, int level)
 {
 	//on obtient la recherche user
 	std::string word = "";
@@ -48,31 +48,31 @@ int rank(std::string recherche, int level)
 	std::vector<std::string> listWord;
 	std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !";
 	listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation"); listWord.push_back("Hexa");
-	allPage.push_back(Page(listWord, textPage, titrePage, urlPage));
+	allPage.push_back(Page(1,listWord, textPage, titrePage, urlPage));
 
 	//page 2 : informatique
 	titrePage = "Informatique pour geek", urlPage = "http://www.geek.com", textPage = "Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.";
 	listWord.clear();
 	listWord.push_back("informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool"); listWord.push_back("Gone");
-	allPage.push_back(Page(listWord, textPage, titrePage, urlPage));
+	allPage.push_back(Page(2, listWord, textPage, titrePage, urlPage));
 
 	//page 3 : Jardin
 	titrePage = "Main verte du jardin enchante", urlPage = "http://www.jardin.com", textPage = "Un Jardin c'est la vie au plein air, c est vraiment le futur de toute maison.";
 	listWord.clear();
 	listWord.push_back("Jardin"); listWord.push_back("Vert"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("fun");
-	allPage.push_back(Page(listWord, textPage, titrePage, urlPage));
+	allPage.push_back(Page(3, listWord, textPage, titrePage, urlPage));
 
 	//page 4 : Futur
 	titrePage = "Le futur du monde dans nos main", urlPage = "http://www.futur.com", textPage = "Le futur est notre avenir, nous devons y croire et aider.";
 	listWord.clear();
 	listWord.push_back("Futur"); listWord.push_back("Avenir"); listWord.push_back("Espoir"); listWord.push_back("Univer");
-	allPage.push_back(Page(listWord, textPage, titrePage, urlPage));
+	allPage.push_back(Page(4, listWord, textPage, titrePage, urlPage));
 
 	//page 2 : feu
 	titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.";
 	listWord.clear();
 	listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
-	allPage.push_back(Page(listWord, textPage, titrePage, urlPage));
+	allPage.push_back(Page(5, listWord, textPage, titrePage, urlPage));
 
 	/*--------FIN---------------------*/
 
@@ -86,7 +86,7 @@ int rank(std::string recherche, int level)
 
 	std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
 
-	return 0;
+	return allPage;
 }
 
 void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b)

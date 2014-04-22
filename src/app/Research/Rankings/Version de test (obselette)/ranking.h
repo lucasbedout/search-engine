@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-#include "Class/Page.h"
+#include "../Class/Page.h"
 
 int nbWord(const std::string& chaine,const std::string& word,const int& level);
 void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch);

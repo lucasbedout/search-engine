@@ -22,6 +22,7 @@ public :
 	Page& operator=(Page const& pageCopy);
 
 	//getter
+	int get_ID();
 	std::string get_text();
 	std::string get_title();
 	std::string get_url();
@@ -33,10 +34,9 @@ Page::Page(std::vector<std::string> fKeywords,std::string fText,std::string fTit
     //rien
 }
 
-Page::Page(int id,std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl)
+Page::Page(int id, std::vector<std::string> fKeywords, std::string fText, std::string fTitle, std::string fUrl) : _ID(id), _keywords(fKeywords), _text(fText), _title(fTitle), _url(fUrl)
 {
-    _ID=id;
-    Page(fKeywords, fText, fTitle, fUrl);
+	//rien
 }
 
 Page& Page::operator=(Page const& pageCopy)
@@ -56,6 +56,11 @@ Page& Page::operator=(Page const& pageCopy)
         _url = pageCopy._url;
     }
     return *this; //On renvoie l'objet lui-même
+}
+
+int Page::get_ID()
+{
+	return _ID;
 }
 
 std::string Page::get_text()
