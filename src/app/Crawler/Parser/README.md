@@ -38,6 +38,6 @@ Là c'est un peu plus ennuyeux ! (nan c'est une blague)
     2. `libxml2`
 
 
-##Pour compiler le tout
-sudo g++ main.cpp File/file.cpp Parse/parse.cpp Misc/misc.cpp -I/usr/local/include -L/usr/local/lib -ltidy `pkg-config --cflags --libs libxml++-2.6` -o test
+##Pour compiler le fichier test_parse_lib.cpp
+sudo g++ test_parse_lib.cpp -o test -I/usr/local/include  -L/usr/local/lib -ltidy \`pkg-config --cflags --libs libxml++-2.6\`
 
