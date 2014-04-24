@@ -8,7 +8,7 @@ using namespace std;
 
 class Keywords{
 private :
-	struct Links {
+	struct Datas {
 		vector<string> words;
 		vector<int> values;
 	};

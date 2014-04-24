@@ -43,7 +43,7 @@ void Parser::findElement(string type){
       try
       {
         xmlpp::TextReader reader("keywords.html");
-        while(reader.read())
+        do
         {
           string tmp = reader.get_name();
           if (!tmp.compare(type))
@@ -57,12 +57,67 @@ void Parser::findElement(string type){
               current_node = "";
             }
         }
+        while (reader.read());
       }
       catch(const exception& e)
       {
         cerr << "Exception caught: " << e.what() << endl;
       }
 }
+
+void Parser::getMetas(){
+  string type = "title";
+  vector<string> words;
+  string current_node = "";
+  try
+      {
+        xmlpp::TextReader reader("keywords.html");
+        while(reader.read())
+        {
+          string tmp = reader.get_name();
+          if (!tmp.compare(type))
+          {
+            current_node = tmp;
+            reader.move_to_element();
+          }
+          else if (!tmp.compare("#text") && !current_node.compare(type))
+          {
+            cout << "title : " << reader.get_value()<< endl;
+            current_node = "";
+          }
+         if(reader.has_attributes())
+          {
+          reader.move_to_first_attribute();
+          bool desc = false;
+          bool key = false;
+          do
+          {
+            if (!reader.get_value().compare("description"))
+              desc = true;
+            else if (!reader.get_value().compare("keywords"))
+              key = true;
+            else if (!reader.get_name().compare("content") && desc == true)
+              {
+                cout << "description : " << reader.get_value() << endl;
+                desc = false;
+              }
+            else if (!reader.get_name().compare("content") && key == true)
+              {
+                cout << "keywords : " << reader.get_value() << endl;
+                key = false;
+              }
+            else
+              desc = false;
+          } while(reader.move_to_next_attribute());
+          reader.move_to_element();
+        }
+      }
+  }catch(const exception& e)
+      {
+        cerr << "Exception caught: " << e.what() << endl;
+      }
+}
+
 
 string Parser::parse(string type){
     cleanHTML();

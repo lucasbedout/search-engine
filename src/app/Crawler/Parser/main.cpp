@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <string>
 #include <vector>
 #include "Misc/misc.h"
@@ -13,5 +13,5 @@ int main()
     FileHandler f = FileHandler("keywords.html");
     f.extractDatas();
     Parser p = Parser(f.getContent());
-    p.parse("h1");
+    p.getMetas();
 }

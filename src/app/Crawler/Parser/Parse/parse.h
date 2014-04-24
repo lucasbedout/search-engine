@@ -12,9 +12,10 @@ private :
 	bool parsed;
 	vector<string> parsed_content;
 public :
-	Parser(string content_to_parsee_in);
+	Parser(string content_to_parse_in);
 	string parse(string type);
 	void cleanHTML();
+	void getMetas();
 	void findElement(string type);
 	string getContent();
 };
