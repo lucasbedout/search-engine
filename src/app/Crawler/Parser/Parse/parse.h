@@ -11,10 +11,9 @@ class Parser{
 private :
 	string content_to_parse;
 	bool parsed;
-	Keywords k;
 public :
-	Parser(string content_to_parse_in);
-	string parse(string type);
+	Parser(string content_to_parse_in, Keywords* k_in);
+	void parse();
 	void cleanHTML();
 	void getMetas();
 	void findElement(string type);

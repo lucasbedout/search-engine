@@ -9,9 +9,13 @@
 
 using namespace std;
 
-Parser::Parser(string content_to_parse_in){
+Parser::Parser(string content_to_parse_in, Keywords* k_in){ //travail par référence
 	content_to_parse = content_to_parse_in;
 	parsed = false;
+  k_in->addKeyword("toto","h1");
+  /*if (content_to_parse != ""){
+    parse(k_in);
+  }*/
 }
  
 void Parser::cleanHTML(){
@@ -117,11 +121,10 @@ void Parser::getMetas(){
       }
 }
 
-
-string Parser::parse(string type){
+/*void Parser::parse(){
     cleanHTML();
-    findElement(type);
-}
+    findElement();
+}*/
 
 string Parser::getContent(){
     return this->content_to_parse;

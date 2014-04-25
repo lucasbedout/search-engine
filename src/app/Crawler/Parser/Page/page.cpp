@@ -9,14 +9,23 @@
 
 using namespace std;
 
-Page::Page(string url_in) : p(""){ //initialisation du parser
-	this->url = url_in;
-	FileHandler f = FileHandler(url);
+Page::Page(string url_in) : k(),
+							p("", &k){ //initialisation du parser
+	url = url_in;
+	/*FileHandler f = FileHandler(url);
 	f.extractDatas();
 	content = f.getContent();
-	p.setContent(content);
+	p.setContent(content);*/
 };
 
 string Page::getContent(){
-	return this->content;
+	return content;
+}
+
+void Page::displayKeywords(){
+	vector<string> toto = k.getKeywords();
+	for (vector<string>::iterator it = toto.begin(); it != toto.end(); ++it)
+	{
+		cout << *it << " ! " << endl;
+	}
 }

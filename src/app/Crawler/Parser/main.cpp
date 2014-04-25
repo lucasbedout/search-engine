@@ -1,17 +1,16 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include "Misc/misc.h"
 #include "File/file.h"
 #include "Parse/parse.h"
+#include "Page/page.h"
+#include "Keywords/keywords.h"
 
 using namespace std;
 
 int main()
 {
-    vector<string> keywords;
-    FileHandler f = FileHandler("keywords.html");
-    f.extractDatas();
-    Parser p = Parser(f.getContent());
-    p.getMetas();
+    Page p = Page("keywords.html");
 }

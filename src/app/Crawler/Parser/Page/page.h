@@ -12,6 +12,7 @@ class Page{
 private :
 	Parser p;
 	string url;
+	vector<string> links;
 	string content;
 	string title;
 	string description;
@@ -19,6 +20,7 @@ private :
 public :
 	Page(string url);
 	void Parse();
+	void displayKeywords();
 	string getContent();
 };
 

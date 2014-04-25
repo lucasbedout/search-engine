@@ -9,29 +9,34 @@ using namespace std;
 
 Keywords::Keywords(){
 	Datas d;
-	d.words = vector<string>();
-	d.values = vector<int>();
 }
 
 void Keywords::addWords(string string_to_insert, string type){
-	vector<string> tmp = splitString(string_to_insert);
-	for(vector<T>.iterator it = tmp.begin(); it != tmp.end(); ++it) {
+	vector<string> tmp = splitString(string_to_insert, ' ');
+	for(vector<string>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
 		addKeyword(*it, type);
 	}
 }
 
 void Keywords::addKeyword(string keyword, string type){
 	removePunctuation(keyword);
-	if (find(begin(d.words), end(d.words), keyword) != end(d.words))
-    {
-
-    }
-}
-
-void Keywords::removeKeyword(string keyword){
-
+	int pos = 0;
+	cout << "words : " << d.words.size() << endl << "values : " << d.values.size() << endl;
+	/*if (d.words.size() > 0)
+		pos = findPosition(keyword);
+	if (pos < d.words.size() && d.words.size() > 0){
+		d.values[pos] += valueOfType(type);
+	}*/
+	/*else{
+		d.words.push_back(keyword);
+		d.values.push_back(valueOfType(type));
+	}*/
 }
 
 int Keywords::findPosition(string keyword){
+	return find(d.words.begin(), d.words.end(), keyword) - d.words.begin();
+}
 
+vector<string> Keywords::getKeywords(){
+	return this->d.words;
 }
