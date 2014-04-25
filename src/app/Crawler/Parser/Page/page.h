@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
-#include '../Keywords/keywords.h'
-#include '../Parse/parse.h'
+#include "../Keywords/keywords.h"
+#include "../Parse/parse.h"
 
 #ifndef PAGE_H_INCLUDED
 #define PAGE_H_INCLUDED
@@ -17,7 +17,9 @@ private :
 	string description;
 	Keywords k;
 public :
-	Page();
+	Page(string url);
+	void Parse();
+	string getContent();
 };
 
 #endif

@@ -14,8 +14,10 @@ private :
 	};
 public :
 	Keywords();
-	void addKeyword(string keyword, int value);
-	void removeKeyword(string keyword, int value);
+	void addWords(string string_to_insert, string type);
+	void addKeyword(string keyword, string type);
+	void removeKeyword(string keyword);
+	int findPosition(string keyword);
 	vector<int> getValues();
 	vector<string> getKeywords();
 };

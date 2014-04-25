@@ -12,7 +12,6 @@ using namespace std;
 Parser::Parser(string content_to_parse_in){
 	content_to_parse = content_to_parse_in;
 	parsed = false;
-	parsed_content = vector<string>();
 }
  
 void Parser::cleanHTML(){
@@ -126,4 +125,8 @@ string Parser::parse(string type){
 
 string Parser::getContent(){
     return this->content_to_parse;
+}
+
+void Parser::setContent(string content_in){
+  this->content_to_parse = content_in;
 }

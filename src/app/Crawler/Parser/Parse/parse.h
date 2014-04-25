@@ -1,5 +1,6 @@
 #include <string>
 #include <vector>
+#include "../Keywords/keywords.h"
 
 #ifndef PARSER_H_INCLUDED
 #define PARSER_H_INCLUDED
@@ -10,7 +11,7 @@ class Parser{
 private :
 	string content_to_parse;
 	bool parsed;
-	vector<string> parsed_content;
+	Keywords k;
 public :
 	Parser(string content_to_parse_in);
 	string parse(string type);
@@ -18,6 +19,7 @@ public :
 	void getMetas();
 	void findElement(string type);
 	string getContent();
+	void setContent(string content_in);
 };
 
 #endif
