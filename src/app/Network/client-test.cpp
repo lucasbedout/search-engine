@@ -29,9 +29,9 @@ int main(int argc, char* argv[])
 		boost::asio::connect(socket, endpoint_iterator);
 
 		//----------On saisie les infos --------------------
-		//on voit le niveau de recherche que veux, l'utilisateur
+		//on voit le niveau de recherche que veut, l'utilisateur
 		int level = 2;
-		std::cout << "Niveau de la recherche (1=tolerant;2=moderé{default};3=strict) : ";
+		std::cout << "Niveau de la recherche (1=tolerant;2=moderï¿½{default};3=strict) : ";
 		std::cin >> level;
 
 		if (level != 1 && level != 2 && level != 3)
@@ -72,7 +72,7 @@ int main(int argc, char* argv[])
 
 			socket.read_some(boost::asio::buffer(totalPageFound), error);
 
-			//Reçois toute les pages
+			//Reï¿½ois toute les pages
 			const int nbPage = atoi(totalPageFound);
 			for (int i = 0; i < nbPage; i++)
 			{
@@ -99,7 +99,7 @@ int main(int argc, char* argv[])
 
 void receivePage(tcp::socket &socket)
 {
-	// 1. on reçois la taille du blocs texte et 2. on reçois le blocs
+	// 1. on reï¿½ois la taille du blocs texte et 2. on reï¿½ois le blocs
 	std::vector<char> size(7);
 	boost::system::error_code error;
 
