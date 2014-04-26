@@ -10,12 +10,16 @@
 using namespace std;
 
 Page::Page(string url_in) : k(),
-							p("", &k){ //initialisation du parser
+							p("", k){ //initialisation du parser
 	url = url_in;
-	/*FileHandler f = FileHandler(url);
+	Keywords k = Keywords();
+	FileHandler f = FileHandler(url);
 	f.extractDatas();
 	content = f.getContent();
-	p.setContent(content);*/
+	Parser p = Parser(content,k);
+	title = p.getTitle();
+	description = p.getDescription();
+	k.displayKeywords();
 };
 
 string Page::getContent(){

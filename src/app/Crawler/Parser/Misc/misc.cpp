@@ -13,7 +13,7 @@ int valueOfType(string type){
     int value;
     if (type == "meta")
         value = 10;
-    else if (type == "hi" || type == "description")
+    else if (type == "h1" || type == "description")
         value = 7;
     else if (type == "strong")
         value = 6;
@@ -42,6 +42,7 @@ void removePunctuation(string &keyword){
                         back_inserter(result),
                         ptr_fun<int, int>(&ispunct)
                        );
+    transform(result.begin(), result.end(), result.begin(), ::tolower);
     keyword = result;
 }
 

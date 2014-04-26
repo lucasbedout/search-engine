@@ -17,10 +17,12 @@ private :
 public :
 	Keywords();
 	void addWords(string string_to_insert, string type);
+	void addWords(string string_to_insert, string type, char splitter);
 	void addKeyword(string keyword, string type);
 	int findPosition(string keyword);
 	vector<int> getValues();
 	vector<string> getKeywords();
+	void displayKeywords();
 };
 
 #endif

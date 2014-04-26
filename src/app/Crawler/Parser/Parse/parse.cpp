@@ -9,13 +9,16 @@
 
 using namespace std;
 
-Parser::Parser(string content_to_parse_in, Keywords* k_in){ //travail par référence
+Parser::Parser(string content_to_parse_in, Keywords& k){ //travail par référence
 	content_to_parse = content_to_parse_in;
 	parsed = false;
-  k_in->addKeyword("toto","h1");
-  /*if (content_to_parse != ""){
-    parse(k_in);
-  }*/
+  if (content_to_parse != "")
+  {
+    k.addKeyword("toto","h1");
+    if (content_to_parse != ""){
+      parse(k);
+    }
+  }
 }
  
 void Parser::cleanHTML(){
@@ -68,8 +71,7 @@ void Parser::findElement(string type){
       }
 }
 
-void Parser::getMetas(){
-  string type = "title";
+void Parser::getMetas(Keywords& k){
   vector<string> words;
   string current_node = "";
   try
@@ -78,15 +80,16 @@ void Parser::getMetas(){
         while(reader.read())
         {
           string tmp = reader.get_name();
-          if (!tmp.compare(type))
-          {
+          if (!tmp.compare("title")){
             current_node = tmp;
             reader.move_to_element();
           }
-          else if (!tmp.compare("#text") && !current_node.compare(type))
+          else if (!tmp.compare("#text") && !current_node.compare("title"))
           {
-            cout << "title : " << reader.get_value()<< endl;
-            current_node = "";
+            title_of_page = reader.get_value();
+            cout << "title : " << title_of_page << endl;
+            k.addWords(title_of_page, "meta");
+            current_node = reader.get_name();
           }
          if(reader.has_attributes())
           {
@@ -101,12 +104,13 @@ void Parser::getMetas(){
               key = true;
             else if (!reader.get_name().compare("content") && desc == true)
               {
-                cout << "description : " << reader.get_value() << endl;
+                description_of_page = reader.get_value();
+                k.addWords(description_of_page, "meta");
                 desc = false;
               }
             else if (!reader.get_name().compare("content") && key == true)
               {
-                cout << "keywords : " << reader.get_value() << endl;
+                k.addWords(reader.get_value(), "meta", ',');
                 key = false;
               }
             else
@@ -121,15 +125,23 @@ void Parser::getMetas(){
       }
 }
 
-/*void Parser::parse(){
+void Parser::parse(Keywords &k){
     cleanHTML();
-    findElement();
-}*/
+    getMetas(k);
+}
 
 string Parser::getContent(){
-    return this->content_to_parse;
+    return content_to_parse;
 }
 
 void Parser::setContent(string content_in){
-  this->content_to_parse = content_in;
+  content_to_parse = content_in;
+}
+
+string Parser::getDescription(){
+  return description_of_page; 
+}
+
+string Parser::getTitle(){
+  return title_of_page;
 }
