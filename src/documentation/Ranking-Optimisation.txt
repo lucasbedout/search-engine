@@ -1,0 +1,26 @@
+Voici les optimisations qui seront apporté plus tard pour amélioré la vitesse du ranking (ranger dans l'ordre d'importance) :
+
+1. Envoyer 10 pages complettes, puis le reste des pages UNIQUEMENT LES ID. 
+	Explication de l'optimisation : 
+		-Envoyer toute les pages prends trop de temps, de bande passante et ram (stocké en mémoire les pages).
+		-80% des personnes regarde la première page (10 premier resultats) et il est donc inutile de preparré les 100 000 pages.
+		-Le client envoies ensuite ces requettes a la base de donnée en tutilisant les ID déjà trier si l'utilisateur souhaite plus de résultat.
+
+2. Suprimer les pages ayant un score a 0.
+	Explication de l'optimisation :
+		-Inutile d'envoyer les pages qui ne sont pas rechercher par l'utilisateur.
+		-Gain de temps, de bande passante et ram (stocké en mémoire les pages).
+
+3. Calcullé le score sans regardé le contenue de la page, trier, calcullé le score des 10 premier en rajoutant le contenue, trier.
+	Explication de l'optimisation :
+		-Actuellement nous trions en prenant tout en compte pour chaque page.
+		-Gain de temps, gain de performance.
+
+4. Utilisation des thread pour chaque mot clé.
+	Explication de l'optimisation :
+		-Un keyword sera traité  pour toute les pages avec un thread. Si nous avons 8 keyword, 8 thread seront affecté.
+		-Gain de temps, meilleur utilisation des ressources du server.
+
+
+Temps estimer si toute les optimisations sont faite : moins d'une seconde côté client pour une recherche sur 10 000 pages avec un keyword 
+Nécéssite : Une base de donnée et le client pour effectuer les optimisations

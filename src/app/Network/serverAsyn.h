@@ -43,7 +43,7 @@ public:
 		for (int i = 0; i<(MAX_BUFFER_SEARCH_KEYWORDS-1) && recieveSearch[i] != '\0'; i++)
 			keywords.push_back(recieveSearch[i]);
 
-		//std::cout << "Type recherche : " << typeSearch << " et texte : " << keywords << std::endl;
+		std::cout << "Type recherche : " << typeSearch << " et texte : " << keywords << std::endl;
 
 		std::vector<Page> page = rank(keywords, typeSearch); //ranking
 
@@ -91,7 +91,24 @@ private:
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
 
+        /*-----------POUR LES TEST SYNCHRONE---------
+        char size[7] = "";
+		char content[100] = "";
+		std::string tmp = "", tmp2 = "0";
 
+		tmp = "ID : "; tmp += std::to_string(page.get_ID());
+		tmp += "\nTitle : "; tmp += page.get_title();
+		tmp += "\nUrl : "; tmp += page.get_url();
+		tmp2 = std::to_string(tmp.size());
+
+		const int tmpLgt = tmp.size()-1, tmpLgt2 = tmp2.size()-1;
+		for (int i = 0; i < tmpLgt; i++)
+			content[i] = tmp.at(i);
+		for (int i = 0; i < tmpLgt2; i++)
+			size[i] = tmp2.at(i);
+
+		socket_.write_some(boost::asio::buffer(size));
+		socket_.write_some(boost::asio::buffer(content));*/
 	}
 
 	boost::asio::ip::tcp::socket socket_;

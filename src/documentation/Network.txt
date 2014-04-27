@@ -47,3 +47,29 @@ Dépendance :
 	Boost.Regex (optional) if you use any of the read_until() or async_read_until() overloads that take a boost::regex parameter. 
 
 
+	//Notre server//
+
+Notre server va agir en 6 étapes :
+0. Attends une connexion
+1. Il reçois un chiffre (actuellement entre 1 et 3) qui correspond au niveau de recherche(filtre)
+2. La chaine de caractère qui correspond a la recherche
+3. Fait le ranking des pages avec les données reçu (voir Ranking.txt)
+4. Envoit le nombre de page qui ont était trie et prêt a être envoyer
+5. Fait une boucle pour envoyer toute les pages : il envoit la tailel du texte a recevoir puis les information de la page qui sont disposé ainsi :
+	ID : 1
+	Title : Exemple de page reçu
+	Url : www.example.com
+
+
+	///API DE COMMUNICATION///
+
+ -------									 -------
+|	|	------char[2] ( type recherche en chiffre, pas de int) ---->	|	|
+|	|	------char[255] (Chaine de caractère de recherche user) --->	|	|
+|	|	------			RANKING				----	|	|
+|Client	|	<----- char[7] (NOMBRE PAGE A ENVOYER)			----	|SERVER	|
+|	|	WHILE(NB_PAGE>i){						|	|
+|	|		<-----char[?(7)] (Size of the text)		----	|	|
+|	|		<-----char[size] (information page)		----}	|	|
+|	|									|	|
+ -------									 -------
