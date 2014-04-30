@@ -6,7 +6,7 @@
 #include <ctime>
 #include <limits>
 
-#include "Class/Page.h"
+#include "../../Class/Page.h"
 
 std::vector<Page> rank(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
 int nbWord(const std::string& chaine,const std::string& word,const int& level); // Compte le nombre de mot (3 niveaux)

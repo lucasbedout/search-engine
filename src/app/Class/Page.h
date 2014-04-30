@@ -3,7 +3,7 @@
 
 #include <string>
 #include <vector>
-#include "../../../Crawler/Parser/Parse/parse.h"
+#include "Crawler/Parser/Parse/parse.h"
 
 
 //-------------------------------------------CLASS PAGE--------------------------------
@@ -20,8 +20,8 @@ private :
 
 public :
     //constructeur
-	Page(std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl);
-	Page(int id,std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl);
+	Page(std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl,std:string fDescription);
+	Page(int id,std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl,std:string fDescription);
 	Page(string url);
 	//constructeur copie
 	Page& operator=(Page const& pageCopy);
@@ -37,11 +37,12 @@ public :
 	std::vector<std::string> get_links();
 
 	//Setter
-	std::string set_content(std::string content);
-	std::string set_title(std::string title);
-	std::string set_url(std::string url);
-	std::vector<std::string> set_keywords(std::vector<std::string> keywords);
-	std::string set_description(std::string description);
+	std::string set_content(const std::string content);
+	std::string set_title(const std::string title);
+	std::string set_url(const std::string url);
+	std::vector<std::string> set_keywords(const std::vector<std::string> keywords);
+	std::string set_description(const std::string description);
+	std::vector<std::string> set_links(const std::vector<std::string> links);
 
 	//Fonction page
 	//void Parse();
@@ -77,7 +78,7 @@ Page& Page::operator=(Page const& pageCopy)
     //On vérifie que l'objet n'est pas le même que celui reçu en argument
     {
         const int sizeW = pageCopy._keywords.vector::size();
-        _keywords.clear(); //par sécurité
+        _keywords.vector::clear(); //par sécurité
         for(int i = 0; i < sizeW;i++ )
             _keywords.push_back(pageCopy._keywords[i]);
 
@@ -90,7 +91,7 @@ Page& Page::operator=(Page const& pageCopy)
         _description = pageCopy._description;
 
         const int sizeL = pageCopy._links.vector::size();
-        _links.clear(); //par sécurité
+        _links.vector::clear(); //par sécurité
         for(int i = 0; i < sizeL;i++ )
             _links.push_back(pageCopy._links[i]);
 
@@ -133,35 +134,42 @@ std::vector<std::string> Page::get_links();
     return _links;
 }
 
-std::string Page::set_content(std::string content)
+std::string Page::set_content(const std::string content)
 {
     _content = content;
 }
 
-std::string Page::set_title(std::string title)
+std::string Page::set_title(const std::string title)
 {
     _title = title;
 }
 
-std::string Page::set_url(std::string url)
+std::string Page::set_url(const std::string url)
 {
     _url = url;
 }
 
-std::vector<std::string> Page::set_keywords(std::vector<std::string> keywords)
+std::vector<std::string> Page::set_keywords(const std::vector<std::string> keywords)
 {
-    //
+    const int sizeW = keywords.vector::size();
+    _keywords.vector::clear(); //par sécurité
+    for(int i = 0; i < sizeW;i++ )
+        _keywords.push_back(keywords[i]);
 }
 
-std::string Page::set_description(std::string description)
+std::string Page::set_description(const std::string description)
 {
     _description = description;
 }
 
-std::vector<std::string> Page::get_links()
+std::vector<std::string> Page::set_links(const std::vector<std::string> links)
 {
-    return _links;
+    const int sizeL = links.vector::size();
+    _links.vector::clear();
+    for(int i = 0; i < sizeL;i++ )
+        _links.push_back(links[i]);
 }
+
 
 //-------------------------------------------CLASS PAGE--------------------------------
 
