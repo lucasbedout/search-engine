@@ -7,7 +7,7 @@
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
 
-#include "..\Research\Rankings\ranking.h"
+#include "../Research/Rankings/ranking.h"
 
 #define MAX_BUFFER_SEARCH_KEYWORDS 255
 
@@ -91,8 +91,7 @@ private:
 			boost::asio::placeholders::error,
 			boost::asio::placeholders::bytes_transferred));
 
-        /*-----------POUR LES TEST SYNCHRONE---------
-        char size[7] = "";
+		/*char size[7] = "";
 		char content[100] = "";
 		std::string tmp = "", tmp2 = "0";
 
