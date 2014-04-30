@@ -92,14 +92,84 @@ public:
 				std::cout << ", SQLState : " << e.getSQLState() << " ) " << std::endl;
 			}			
 		}
+		delete res;
+		delete stmt;
 
 		return pages;
 	}
 
 	bool savePage(Page page)
 	{
-		// on vérifie les infos de la page et on les sauvegarde 
+		sql::PreparedStatement *stmt;
+		sql::ResultSet *res;
+
+		std::string title = page.get_title();
+		std::string url = page.get_url();
+		std::string description = page.get_description();
+		std::string content = page.get_content();
+		std::string keywords;
+		std::vector<std::string> keywords_vector = page.get_keywords();
+		int keywords_size = keywords_vector.size();
+
+
+		for (int i = 0; i < keywords_size; ++i)
+		{
+			keywords += keywords_vector[i];
+		}
+
+		if (!title.empty() && !content.empty() && !url.empty() && !description.empty() && !keywords.empty())
+		{
+			try {
+				stmt = _conn->prepareStatement("SELECT id FROM pages WHERE url=?");
+				stmt->setString(1, url);
+				res = stmt->executeQuery();
+
+				if (res->next())
+				{
+					stmt = _conn->prepareStatement("UPDATE pages SET title=? , keywords=? , content=?, description=? WHERE url=?;");
+
+					stmt->setString(1, title);
+					stmt->setString(2, keywords);
+					stmt->setString(3, content);
+					stmt->setString(4, description);
+					stmt->setString(5, url);
+
+					stmt->execute();
+
+					delete res;
+					delete stmt;
+					return true;
+				} else {
+					stmt = _conn->prepareStatement("INSERT INTO pages (title, url, keywords, content, description) VALUES (?, ?, ?, ?, ?);");
+
+					stmt->setString(1, title);
+					stmt->setString(2, url);
+					stmt->setString(3, keywords);
+					stmt->setString(4, content);
+					stmt->setString(5, description);
+
+					stmt->execute();
+
+					delete res;
+					delete stmt;
+					return true;
+				}
+			} catch (sql::SQLException &e) {
+				std::cout << "# ERR: SQL Exception in " << __FILE__;
+				std::cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << std::endl;
+				std::cout << "# ERR: " << e.what();
+				std::cout << " (MySQL error code : " << e.getErrorCode();
+				std::cout << ", SQLState : " << e.getSQLState() << " ) " << std::endl;
+				
+				delete res;
+				delete stmt;
+				return false;
+			}			
+		}
 	}
 
-
+	~DatabaseManager() 
+	{
+		delete _conn;
+	}
 };
