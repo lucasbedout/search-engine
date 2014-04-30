@@ -10,10 +10,13 @@
 #include <iostream>
 
 #include "mysql_connection.h"
+#include "../Class/Page.h"
+#include "../Class/misc.h"
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
 #include <cppconn/statement.h>
+ #include <cppconn/prepared_statement.h>
 
 class DatabaseManager 
 {
@@ -53,4 +56,28 @@ public:
 			
 		}
 	}
+
+	std::vector<Page> getPages(std::string keywords)
+	{
+		std::vector<std::string> search = splitString(keywords, ' ');
+		std::vector<Page> pages;
+		std::vector<int> pages_id;
+
+		sql::PreparedStatement *stmt;
+		sql::ResultSet *res;
+
+		for(vector<string>::iterator i = search.begin() ; i != search.end() ; ++i) 
+		{
+			stmt = _conn->prepareStatement("SELECT * FROM pages WHERE STUDENTID LIKE '%?%'");
+			stmt->setString(1, *i);
+			stmt->execute();
+		}
+	}
+
+	bool savePage(Page page)
+	{
+		// on vérifie les infos de la page et on les sauvegarde 
+	}
+
+
 };
