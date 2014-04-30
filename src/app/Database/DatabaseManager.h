@@ -63,15 +63,37 @@ public:
 		std::vector<Page> pages;
 		std::vector<int> pages_id;
 
+		int keywords_size = search.size();
+
 		sql::PreparedStatement *stmt;
 		sql::ResultSet *res;
 
-		for(vector<string>::iterator i = search.begin() ; i != search.end() ; ++i) 
+		for(int i = 0 ; i < keywords_size ; i++) 
 		{
-			stmt = _conn->prepareStatement("SELECT * FROM pages WHERE STUDENTID LIKE '%?%'");
-			stmt->setString(1, *i);
-			stmt->execute();
+			try {
+ 				stmt = _conn->prepareStatement("SELECT * FROM pages WHERE content LIKE ?");
+				stmt->setString(1, "%" + search[i] + "%");
+				res = stmt->executeQuery();
+				while(res->next())
+				{
+					if(std::find(pages_id.begin(), pages_id.end(), res->getInt(1)) == pages_id.end())
+					{	
+						std::vector<std::string> page_keywords = splitString(res->getString("keywords"), ' ');
+						Page page(res->getInt(1), page_keywords, res->getString("content"), res->getString("title"), res->getString("url"), res->getString("description"));
+						pages.push_back(page);
+						pages_id.push_back(res->getInt(1));
+					} 
+				}
+			} catch (sql::SQLException &e) {
+				std::cout << "# ERR: SQL Exception in " << __FILE__;
+				std::cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << std::endl;
+				std::cout << "# ERR: " << e.what();
+				std::cout << " (MySQL error code : " << e.getErrorCode();
+				std::cout << ", SQLState : " << e.getSQLState() << " ) " << std::endl;
+			}			
 		}
+
+		return pages;
 	}
 
 	bool savePage(Page page)
