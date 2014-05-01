@@ -24,9 +24,10 @@ module.exports = {
   search: function(req, res) {
   	var words = req.param('search-words');
   		client = net.connect({
-  			port: 1300,
-  			host: '192.168.1.13'
+  			port: 13,
+  			host: '192.168.1.24'
   		}, function() {
+        client.write('2');
   			client.write(words);
   		});
 
@@ -41,9 +42,10 @@ module.exports = {
   luck: function(req, res) {
   	var words = req.param('search-words');
   		client = net.connect({
-  			port: 1301,
-  			host: '192.168.1.13'
+  			port: 13,
+  			host: '192.168.1.24'
   		}, function() {
+        client.write('2');
   			client.write(words);
   		});
 
