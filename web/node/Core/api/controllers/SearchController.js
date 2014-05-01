@@ -23,20 +23,36 @@ module.exports = {
     
   search: function(req, res) {
   	var words = req.param('search-words');
-  		client = net.connect({
-  			port: 13,
-  			host: '192.168.1.24'
-  		}, function() {
-        client.write('2');
-  			client.write(words);
-  		});
+    var numberOfResults;
+    var n = 0;
+    var pages = new Array();
 
-  		client.on('data', function(data) {
-  			console.log(data.toString());
-  		})
+  	client = net.connect({
+          		port: 13,
+          		host: '192.168.1.24'
+          	}, function() {
+                client.write('2');
+            		client.write(words);
+            	});
 
-  	console.log('Recherche : ' + words);
-  	res.redirect('/');
+    client.setEncoding('utf8');
+		client.on('data', function(data) {
+      if (n == 0) {
+        numberOfResults = parseInt(data);
+        console.log(numberOfResults + ' résultats trouvés');
+        n++;
+      } else {
+        var parts = data.split('||');
+        parts.pop();
+        var length = parts.length;
+        for (var i = 0; i < length; i++) {
+          console.log(parts[i]);
+          pages.push(JSON.parse(parts[i]));
+        };
+        res.view('search/results', {
+          'pages': pages });
+        }
+      })
   },
 
   luck: function(req, res) {
