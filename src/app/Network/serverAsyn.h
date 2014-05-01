@@ -41,7 +41,7 @@ public:
 
 		typeSearch = atoi(reciveTypeSearch); //convertie un char en int
 		//Convertie le tableau static char en string
-		for (int i = 0; i<(MAX_BUFFER_SEARCH_KEYWORDS-1) && recieveSearch[i] != '\0'; i++)
+		for (int i = 0; i<(MAX_BUFFER_SEARCH_KEYWORDS - 1) && recieveSearch[i] != '\0'; i++)
 			keywords.push_back(recieveSearch[i]);
 
 		std::cout << "Type recherche : " << typeSearch << " et texte : " << keywords << std::endl;
@@ -49,7 +49,8 @@ public:
 		std::vector<Page> page = ranked(keywords, typeSearch); //ranking
 
 		//-----ENVOIT PAGE-----
-		itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
+		sprintf(totalPageSend,"%d",page.size());//itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
+
 		boost::asio::async_write(socket_, boost::asio::buffer(totalPageSend),
 			boost::bind(&tcp_connection::handle_write, shared_from_this(),
 			boost::asio::placeholders::error,
@@ -73,12 +74,13 @@ private:
 
 	void sendPage(Page page)
 	{
+		char bufferInter[10] = "";
 		std::string size = "0", content;
 
-		content = "ID : "; content += string::to_string( page.get_ID() );
+		content = "ID :"; sprintf(bufferInter, "%d", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
 		content += "\nTitle : "; content += page.get_title();
 		content += "\nUrl : "; content += page.get_url();
-		size = std::to_string( content.size() );
+		sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
 
 		std::cout << "size : " << size << std::endl << "Content : " << content << std::endl;
 
@@ -103,9 +105,9 @@ private:
 
 		const int tmpLgt = tmp.size()-1, tmpLgt2 = tmp2.size()-1;
 		for (int i = 0; i < tmpLgt; i++)
-			content[i] = tmp.at(i);
+		content[i] = tmp.at(i);
 		for (int i = 0; i < tmpLgt2; i++)
-			size[i] = tmp2.at(i);
+		size[i] = tmp2.at(i);
 
 		socket_.write_some(boost::asio::buffer(size));
 		socket_.write_some(boost::asio::buffer(content));*/
