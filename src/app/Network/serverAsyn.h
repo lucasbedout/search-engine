@@ -49,7 +49,7 @@ public:
 		std::vector<Page> page = ranked(keywords, typeSearch); //ranking
 
 		//-----ENVOIT PAGE-----
-		sprintf(totalPageSend,"%d",page.size());//itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
+		sprintf(totalPageSend,"%d;",page.size());//itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
 
 		boost::asio::async_write(socket_, boost::asio::buffer(totalPageSend),
 			boost::bind(&tcp_connection::handle_write, shared_from_this(),
@@ -79,7 +79,7 @@ private:
 
 		content = "id:"; sprintf(bufferInter, "%d;", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
 		content += "title:"; content += page.get_title();
-		content += ";url:"; content += page.get_url(); content += ';';
+		content += ";url:"; content += page.get_url(); content += '|';
 		//sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
 
 		/*std::cout << "size : " << size << std::endl*/std::cout << "Content : " << content << std::endl;
