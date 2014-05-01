@@ -18,7 +18,7 @@ public :
 	void parse(Keywords &k);
 	void cleanHTML();
 	void getMetas(Keywords& k);
-	void findElement(string type);
+	void findElement(Keywords& k);
 	string getContent();
 	string getDescription();
 	string getTitle();

@@ -12,11 +12,11 @@ using namespace std;
 Page::Page(string url_in) : k(),
 							p("", k){ //initialisation du parser
 	url = url_in;
-	Keywords k = Keywords();
+	k = Keywords();
 	FileHandler f = FileHandler(url);
 	f.extractDatas();
 	content = f.getContent();
-	Parser p = Parser(content,k);
+	p = Parser(content,k);
 	title = p.getTitle();
 	description = p.getDescription();
 	k.displayKeywords();

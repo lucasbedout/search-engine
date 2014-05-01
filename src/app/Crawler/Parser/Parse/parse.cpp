@@ -44,7 +44,7 @@ void Parser::cleanHTML(){
     content_to_parse = tidyResult;
 }
 
-void Parser::findElement(string type){
+void Parser::findElement(Keywords& k){
       string current_node = "";
       try
       {
@@ -52,14 +52,46 @@ void Parser::findElement(string type){
         do
         {
           string tmp = reader.get_name();
-          if (!tmp.compare(type))
-          {
+          if(tmp.compare("#text")){
             current_node = tmp;
+            cout << current_node << endl;
             reader.move_to_element();
           }
-          else if (!tmp.compare("#text") && !current_node.compare(type))
+          else if (!tmp.compare("#text") && !current_node.compare("title"))
+          {
+            title_of_page = reader.get_value();
+            cout << "title : " << title_of_page << endl;
+            k.addWords(title_of_page, "meta");
+            current_node = reader.get_name();
+          }
+         if(reader.has_attributes() && !current_node.compare("meta"))
+          {
+            reader.move_to_first_attribute();
+            bool desc = false;
+            bool key = false;
+            do
             {
-              cout << "value: '" << reader.get_value() << "'" << endl;
+              if (!reader.get_value().compare("description"))
+                desc = true;
+              else if (!reader.get_value().compare("keywords"))
+                key = true;
+              else if (!reader.get_name().compare("content") && desc == true)
+                {
+                  description_of_page = reader.get_value();
+                  k.addWords(description_of_page, "meta");
+                  desc = false;
+                }
+              else if (!reader.get_name().compare("content") && key == true)
+                {
+                  k.addWords(reader.get_value(), "meta", ',');
+                  key = false;
+                }
+              else
+                desc = false;
+            } while(reader.move_to_next_attribute());
+          }
+          if (!tmp.compare("#text") && current_node.compare("") && current_node.compare("script") && current_node.compare("style")){
+              k.addWords(reader.get_value(), current_node);
               current_node = "";
             }
         }
@@ -127,7 +159,7 @@ void Parser::getMetas(Keywords& k){
 
 void Parser::parse(Keywords &k){
     cleanHTML();
-    getMetas(k);
+    findElement(k);
 }
 
 string Parser::getContent(){
