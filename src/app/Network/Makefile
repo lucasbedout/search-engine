@@ -1,10 +1,10 @@
 CXXFLAGS= -Wall `pkg-config --cflags --libs libxml++-2.6`
 LDFLAGS= -L /usr/local/lib -ltidy
-LBFLAGS= -I /usr/include/boost -lboost
+LBFLAGS= -I /usr/include/boost -lboost_system
 
 # création de l'exécutable 
-all: file.o keywords.o misc.o page.o parse.o network.o main.o
-		g++ -o test file.o keywords.o misc.o page.o parse.o main.o $(LBFLAGS) $(LDFLAGS) $(CXXFLAGS) 
+all: file.o keywords.o misc.o page.o parse.o network.o 
+		g++ -o test file.o keywords.o misc.o page.o parse.o network.o $(LBFLAGS) $(LDFLAGS) $(CXXFLAGS) 
  
 file.o: ../Crawler/Parser/File/file.cpp ../Crawler/Parser/File/file.h
 		g++ -c ../Crawler/Parser/File/file.cpp -o file.o
@@ -23,9 +23,6 @@ parse.o: ../Crawler/Parser/Parse/parse.cpp ../Crawler/Parser/Parse/parse.h
 
 network.o: serverAsyn.cpp serverAsyn.h 
 		g++ -c serverAsyn.cpp -o network.o $(LBFLAGS);
-
-main.o: client-test.cpp
-		g++ -c client-test.cpp -o main.o $(LBFLAGS)
 
 # suppression des fichiers temporaires
 clean:
