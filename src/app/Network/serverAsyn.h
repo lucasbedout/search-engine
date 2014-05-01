@@ -2,6 +2,7 @@
 #define SERVERASYN_H_INCLUDED
 
 #include <iostream>
+#include <cstdlib>
 #include <boost/bind.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -45,7 +46,7 @@ public:
 
 		std::cout << "Type recherche : " << typeSearch << " et texte : " << keywords << std::endl;
 
-		std::vector<Page> page = rank(keywords, typeSearch); //ranking
+		std::vector<Page> page = ranked(keywords, typeSearch); //ranking
 
 		//-----ENVOIT PAGE-----
 		itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
@@ -74,7 +75,7 @@ private:
 	{
 		std::string size = "0", content;
 
-		content = "ID : "; content += std::to_string( page.get_ID() );
+		content = "ID : "; content += string::to_string( page.get_ID() );
 		content += "\nTitle : "; content += page.get_title();
 		content += "\nUrl : "; content += page.get_url();
 		size = std::to_string( content.size() );
