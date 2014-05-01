@@ -14,13 +14,12 @@ Les librairies sont installées dans /usr/include, pour compiler il suffit d'ajo
 
 Pour l'utiliser, vous devez avoir l'architecture de dossiers suivante : 
 
-<code>
 - Class/
 	- misc.h
 	- misc.cpp
 - DatabaseManager.h
 - main.cpp (votre code)
-</code>
+
 
 Pour compiler voici la commande : 
 
