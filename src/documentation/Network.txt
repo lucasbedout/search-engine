@@ -55,7 +55,7 @@ Notre server va agir en 6 étapes :
 2. La chaine de caractère qui correspond a la recherche
 3. Fait le ranking des pages avec les données reçu (voir Ranking.txt)
 4. Envoit le nombre de page qui ont était trie et prêt a être envoyer
-5. Fait une boucle pour envoyer toute les pages : il envoit la tailel du texte a recevoir puis les information de la page qui sont disposé ainsi :
+5. Fait une boucle pour envoyer toute les pages : il envoit la taille du texte a recevoir puis les information de la page qui sont disposé ainsi :
 	ID : 1
 	Title : Exemple de page reçu
 	Url : www.example.com
@@ -69,7 +69,7 @@ Notre server va agir en 6 étapes :
 |	|	------			RANKING				----	|	|
 |Client	|	<----- char[7] (NOMBRE PAGE A ENVOYER)			----	|SERVER	|
 |	|	WHILE(NB_PAGE>i){						|	|
-|	|		<-----char[?(7)] (Size of the text)		----	|	|
+|	|									|	|
 |	|		<-----char[size] (information page)		----}	|	|
 |	|									|	|
  -------									 -------

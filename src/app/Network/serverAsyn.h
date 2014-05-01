@@ -49,7 +49,7 @@ public:
 		std::vector<Page> page = ranked(keywords, typeSearch); //ranking
 
 		//-----ENVOIT PAGE-----
-		sprintf(totalPageSend,"%d",page.size());//itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
+		sprintf(totalPageSend,"%d;",page.size());//itoa(page.size(), totalPageSend, 10); //nombre total page convertie en char
 
 		boost::asio::async_write(socket_, boost::asio::buffer(totalPageSend),
 			boost::bind(&tcp_connection::handle_write, shared_from_this(),
@@ -75,19 +75,19 @@ private:
 	void sendPage(Page page)
 	{
 		char bufferInter[10] = "";
-		std::string size = "0", content;
+		std::string /*size = "0",*/ content;
 
-		content = "ID :"; sprintf(bufferInter, "%d", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
-		content += "\nTitle : "; content += page.get_title();
-		content += "\nUrl : "; content += page.get_url();
-		sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
+		content = "id:"; sprintf(bufferInter, "%d;", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
+		content += "title:"; content += page.get_title();
+		content += ";url:"; content += page.get_url(); content += '|';
+		//sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
 
-		std::cout << "size : " << size << std::endl << "Content : " << content << std::endl;
+		/*std::cout << "size : " << size << std::endl*/std::cout << "Content : " << content << std::endl;
 
-		boost::asio::async_write(socket_, boost::asio::buffer(size),
+		/*boost::asio::async_write(socket_, boost::asio::buffer(size),
 			boost::bind(&tcp_connection::handle_write, shared_from_this(),
 			boost::asio::placeholders::error,
-			boost::asio::placeholders::bytes_transferred));
+			boost::asio::placeholders::bytes_transferred));*/
 
 		boost::asio::async_write(socket_, boost::asio::buffer(content),
 			boost::bind(&tcp_connection::handle_write, shared_from_this(),
