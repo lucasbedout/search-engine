@@ -13,12 +13,12 @@ private :
 	bool parsed;
 	string description_of_page;
 	string title_of_page;
+	Keywords k;
 public :
-	Parser(string content_to_parse_in, Keywords& k_in);
-	void parse(Keywords &k);
+	Parser(string content_to_parse_in);
+	vector<string> parse();
 	void cleanHTML();
-	void getMetas(Keywords& k);
-	void findElement(Keywords& k);
+	void parseAll();
 	string getContent();
 	string getDescription();
 	string getTitle();

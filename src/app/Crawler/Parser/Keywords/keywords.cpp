@@ -24,10 +24,29 @@ void Keywords::addWords(string string_to_insert, string type, char splitter){
 	}
 }
 
+void Keywords::sortKeywords(){
+	bool test = false;
+	int length = d.values.size();
+	int i = 0;
+	while (!test){
+		test = true;
+		for (i = 0; i < length-1; i++){
+			if (d.values[i] < d.values[i+1]){
+				string tmp_str = d.words[i];
+				int tmp_int = d.values[i];
+				d.words[i] = d.words[i+1];
+				d.values[i] = d.values[i+1];
+				d.words[i+1] = tmp_str;
+				d.values[i+1] = tmp_int;
+				test = false;
+			}
+		}
+	}
+}
+
 void Keywords::addKeyword(string keyword, string type){
 	removePunctuation(keyword);
 	int pos = 0;
-	cout << "words : " << d.words.size() << endl << "values : " << d.values.size() << endl;
 	if (d.words.size() > 0)
 		pos = findPosition(keyword);
 	if (pos < d.words.size() && d.words.size() > 0){
