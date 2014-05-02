@@ -42,7 +42,7 @@ void Parser::parseAll(){
       string current_node = "";
       try
       {
-        xmlpp::TextReader reader("keywords.html");
+        xmlpp::TextReader reader((const unsigned char*)content_to_parse.c_str(), content_to_parse.size(), "");
         do
         {
           string tmp = reader.get_name();
