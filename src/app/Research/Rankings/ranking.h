@@ -7,6 +7,7 @@
 #include <limits>
 
 #include "../../Class/Page.h"
+//#include "../../Database/DatabaseManager.h"
 
 std::vector<Page> ranked(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
 int nbWord(const std::string& chaine,const std::string& word,const int& level); // Compte le nombre de mot (3 niveaux)
@@ -44,6 +45,13 @@ std::vector<Page> ranked(std::string recherche, int level)
 	/*---------CREATION PAGE-----------*/
 	std::vector<Page> allPage;
 	std::vector<Page> result;
+
+	/*BASE DE DONNEE
+    //connexion et reccuperation des pages
+    DatabaseManager manager("tcp://192.168.1.27:3306", "username", "pass", "database");
+    allPage = manager.getPages(recherche);
+    */
+
 	//page 1 : Sur le traitement des bateaux
 	std::vector<std::string> listWord;
 	std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !", descripPage = "Test1";
@@ -262,8 +270,6 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
             //cout << "Keywords : " << score[i] << ' ';
             score[i] += coefUrl * nbWord( pageFound[i].get_url(), rechercheUser[j], lvlSrch);
             //cout << "Url : " << score[i] << ' ';
-            score[i] += coefText * nbWord( pageFound[i].get_content(), rechercheUser[j], lvlSrch);
-            //cout << "Words : " << score[i] << endl;
         }
 
         //cout << "Score : " << score[i] << " de :" << pageFound[i].Title << endl;
@@ -274,7 +280,35 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
 
     quickSort( score, pageFound, 0, pageFound.size()-1 );
 
+    //---------------Etape pour les 10 meilleur pages--------------
+    for(int i = 0; i < sizePage && i < 10; i++ )
+    {
+        score[i] += coefText * nbWord( pageFound[i].get_content(), rechercheUser[j], lvlSrch);
+        //cout << "Words : " << score[i] << endl;
+    }
+
+    quickSort( score, pageFound, 0, (sizePage <= 10) ? pageFound.size()-1 : 10 );
+
+    delete score;
+
 }
 
+/*void erasePage(std::vector<Page>& pageFound,int *score)
+{
+    //surprime les pages avec un score de 0
+    searchDichotomique(pageFound.size(),0);
+}
+
+void searchDichotomique(const int& sizeTab,const int *score,const int& value)
+{
+    //recherche dichotomique en fonction de la valeur
+
+    //On recherche
+    int pos = 0;
+    for( pos = (int)(sizeTab/2); pos >= 0 && pos < sizeTab && score[pos] != value; (score[pos] > value) ? pos += (sizeTab-pos)/2 : pos -= (sizeTab-pos)/2);
+
+    //Si il y a des doublons de valeur, on recherche la place de la première valeur aparraissante
+
+}*/
 
 #endif // RANKING_H_INCLUDED

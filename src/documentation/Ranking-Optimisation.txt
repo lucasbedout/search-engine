@@ -6,12 +6,12 @@ Voici les optimisations qui seront apporté plus tard pour amélioré la vitesse du
 		-80% des personnes regarde la première page (10 premier resultats) et il est donc inutile de preparré les 100 000 pages.
 		-Le client envoies ensuite ces requettes a la base de donnée en tutilisant les ID déjà trier si l'utilisateur souhaite plus de résultat.
 
-2. Suprimer les pages ayant un score a 0.
+2(OK). Suprimer les pages ayant un score a 0.
 	Explication de l'optimisation :
 		-Inutile d'envoyer les pages qui ne sont pas rechercher par l'utilisateur.
 		-Gain de temps, de bande passante et ram (stocké en mémoire les pages).
 
-3. Calcullé le score sans regardé le contenue de la page, trier, calcullé le score des 10 premier en rajoutant le contenue, trier.
+3(OK). Calcullé le score sans regardé le contenue de la page, trier, calcullé le score des 10 premier en rajoutant le contenue, trier.
 	Explication de l'optimisation :
 		-Actuellement nous trions en prenant tout en compte pour chaque page.
 		-Gain de temps, gain de performance.
