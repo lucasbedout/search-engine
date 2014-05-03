@@ -62,7 +62,7 @@ Page::Page(string url_in){ //initialisation du parser
 	FileHandler f = FileHandler(_url);
 	f.extractDatas();
 	_content = f.getContent();
-	Parser p = Parser(_content);
+	Parser p = Parser(_content, _url);
 	_keywords = p.parse();
 	_title = p.getTitle();
 	_description = p.getDescription();

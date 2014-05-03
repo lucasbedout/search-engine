@@ -11,11 +11,13 @@ class Parser{
 private :
 	string content_to_parse;
 	bool parsed;
+	string url;
 	string description_of_page;
 	string title_of_page;
+	vector<string> links;
 	Keywords k;
 public :
-	Parser(string content_to_parse_in);
+	Parser(string content_to_parse_in, string url_in);
 	vector<string> parse();
 	void cleanHTML();
 	void parseAll();
@@ -23,6 +25,7 @@ public :
 	string getDescription();
 	string getTitle();
 	void setContent(string content_in);
+	vector<string> getLinks();
 };
 
 #endif

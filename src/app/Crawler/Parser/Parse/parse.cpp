@@ -9,9 +9,11 @@
 
 using namespace std;
 
-Parser::Parser(string content_to_parse_in){ //travail par référence
+Parser::Parser(string content_to_parse_in, string url_in){ //travail par référence
 	content_to_parse = content_to_parse_in;
 	parsed = false;
+  url = url_in;
+  links = vector<string>();
   k = Keywords();
 }
  
@@ -51,25 +53,35 @@ void Parser::parseAll(){
             cout << current_node << endl;
             reader.move_to_element();
           }
-          else if (!tmp.compare("#text") && !current_node.compare("title"))
+          else if (!tmp.compare("#text"))
           {
-            if (!title_of_page.compare(""))
-            title_of_page = reader.get_value();
-            cout << "title : " << title_of_page << endl;
-            k.addWords(title_of_page, "meta");
-            current_node = reader.get_name();
+            if (!title_of_page.compare("") && !current_node.compare("title")){
+              title_of_page = reader.get_value();
+              cout << "title : " << title_of_page << endl;
+              k.addWords(title_of_page, "meta");
+              current_node = reader.get_name();
+            }
+            else if(current_node.compare("") && current_node.compare("script") && current_node.compare("style")){
+              k.addWords(reader.get_value(), current_node);
+              current_node = "";
+            }
+            string tmp_str = reader.get_value();
+            cout << tmp_str.find("http://") << endl;
           }
-         if(reader.has_attributes() && !current_node.compare("meta"))
+         if(reader.has_attributes() && (!current_node.compare("meta") || !current_node.compare("a")))
           {
             reader.move_to_first_attribute();
             bool desc = false;
             bool key = false;
+            bool link = false;
             do
             {
               if (!reader.get_value().compare("description"))
                 desc = true;
               else if (!reader.get_value().compare("keywords"))
                 key = true;
+              else if (!reader.get_value().compare("href"))
+                link = true;
               else if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
@@ -81,14 +93,15 @@ void Parser::parseAll(){
                   k.addWords(reader.get_value(), "meta", ',');
                   key = false;
                 }
+              else if (!reader.get_name().compare("content") && link == true)
+                {
+                  links.push_back(reader.get_value());
+                  link = false;
+                }
               else
                 desc = false;
             } while(reader.move_to_next_attribute());
           }
-          if (!tmp.compare("#text") && current_node.compare("") && current_node.compare("script") && current_node.compare("style")){
-              k.addWords(reader.get_value(), current_node);
-              current_node = "";
-            }
         }
         while (reader.read());
       }
@@ -96,6 +109,10 @@ void Parser::parseAll(){
       {
         cerr << "Exception caught: " << e.what() << endl;
       }
+}
+
+vector<string> Parser::getLinks(){
+  return links;
 }
 
 std::vector<string> Parser::parse(){
