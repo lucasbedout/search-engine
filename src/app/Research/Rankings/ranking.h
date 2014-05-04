@@ -278,16 +278,16 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
 
     //------------------ETAPE 2----------------------
 
-    quickSort( score, pageFound, 0, pageFound.size()-1 );
+    quickSort(score, pageFound, 0, pageFound.size() - 1);
 
     //---------------Etape pour les 10 meilleur pages--------------
-    for(int i = 0; i < sizePage && i < 10; i++ )
+    for (int i = 0; i < sizePage && i < 10; i++)
     {
-        score[i] += coefText * nbWord( pageFound[i].get_content(), rechercheUser[j], lvlSrch);
+        score[i] += coefText * nbWord(pageFound[i].get_content(), rechercheUser[j], lvlSrch);
         //cout << "Words : " << score[i] << endl;
     }
 
-    quickSort( score, pageFound, 0, (sizePage <= 10) ? pageFound.size()-1 : 10 );
+    quickSort(score, pageFound, 0, (sizePage <= 10) ? pageFound.size() - 1 : 10);
 
     delete score;
 
