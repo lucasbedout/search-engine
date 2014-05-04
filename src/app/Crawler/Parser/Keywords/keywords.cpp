@@ -55,7 +55,6 @@ void Keywords::addKeyword(string keyword, string type){
 	else{
 		d.words.push_back(keyword);
 		d.values.push_back(valueOfType(type));
-		cout << "added : " << keyword << " & value : " << valueOfType(type) << endl;
 	}
 }
 

@@ -50,7 +50,6 @@ void Parser::parseAll(){
           string tmp = reader.get_name();
           if(tmp.compare("#text")){
             current_node = tmp;
-            cout << current_node << endl;
             reader.move_to_element();
           }
           else if (!tmp.compare("#text"))
@@ -66,7 +65,6 @@ void Parser::parseAll(){
               current_node = "";
             }
             string tmp_str = reader.get_value();
-            cout << tmp_str.find("http://") << endl;
           }
          if(reader.has_attributes() && (!current_node.compare("meta") || !current_node.compare("a")))
           {

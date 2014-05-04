@@ -21,7 +21,7 @@ public :
     //constructeur
 	Page(std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl,std::string fDescription);
 	Page(int id,std::vector<std::string> fKeywords,std::string fText,std::string fTitle,std::string fUrl,std::string fDescription);
-	Page(string url);
+	Page(string url, string content);
 	//constructeur copie
 	Page& operator=(Page const& pageCopy);
 	//void displayKeywords();
@@ -57,11 +57,9 @@ Page::Page(int id, std::vector<std::string> fKeywords, std::string fText, std::s
 	//rien
 }
 
-Page::Page(string url_in){ //initialisation du parser
+Page::Page(string url_in, string content){ //initialisation du parser
 	_url = url_in;
-	FileHandler f = FileHandler(_url);
-	f.extractDatas();
-	_content = f.getContent();
+	_content = content;
 	Parser p = Parser(_content, _url);
 	_keywords = p.parse();
 	_title = p.getTitle();
