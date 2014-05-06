@@ -2,6 +2,7 @@
 #include <tidy/buffio.h>
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <libxml++/libxml++.h>
 #include <libxml++/parsers/textreader.h>
@@ -78,8 +79,8 @@ void Parser::parseAll(){
                 desc = true;
               else if (!reader.get_value().compare("keywords"))
                 key = true;
-              else if (!reader.get_value().compare("href"))
-                link = true;
+              else if (!reader.get_name().compare("href"))
+                  link = true;
               else if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
@@ -91,9 +92,18 @@ void Parser::parseAll(){
                   k.addWords(reader.get_value(), "meta", ',');
                   key = false;
                 }
-              else if (!reader.get_name().compare("content") && link == true)
+              if (link == true)
                 {
-                  links.push_back(reader.get_value());
+                  int pos = 0;
+                  if (links.size() > 0)
+                    pos = find(links.begin(), links.end(), reader.get_value()) - links.begin();
+                  if (pos == 0 || pos >= links.size() && reader.get_value() != "#")
+                    {
+                      if (reader.get_value().find(url) != std::string::npos)
+                        links.push_back(reader.get_value());
+                      else if (reader.get_value().find("http://") == std::string::npos)
+                        links.push_back(url+reader.get_value());
+                    }
                   link = false;
                 }
               else

@@ -2,10 +2,10 @@
 #include <iostream>
 #include <string>
 #include <curl/curl.h>
-#include "crawler.h"
+#include "Crawl/crawler.h"
 
 using namespace std;
 
 int main(){
-	Crawler c = Crawler("http://www.google.com");
+	Crawler c = Crawler("http://www.toto.fr/");
 }

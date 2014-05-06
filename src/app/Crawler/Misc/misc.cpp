@@ -15,7 +15,7 @@ int valueOfType(string type){
         value = 10;
     else if (type == "h1" || type == "description")
         value = 7;
-    else if (type == "strong")
+    else if (type == "strong" || type == "em")
         value = 6;
     else if (type == "h2" || type == "italic" || type == "bold")
         value = 5;

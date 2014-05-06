@@ -5,23 +5,23 @@ LDFLAGS= -L/usr/local/lib -ltidy -lcurl
 all: file.o keywords.o misc.o page.o parse.o crawler.o main.o
 		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o main.o $(LDFLAGS) $(CXXFLAGS) 
  
-file.o: Parser/File/file.cpp Parser/File/file.h
-		g++ -c Parser/File/file.cpp -o file.o
+file.o: File/file.cpp File/file.h
+		g++ -c File/file.cpp -o file.o
+
+crawler.o: Crawl/crawler.cpp Crawl/crawler.h
+		g++ -c Crawl/crawler.cpp -o crawler.o
  
-keywords.o: Parser/Keywords/keywords.cpp Parser/Keywords/keywords.h
-		g++ -c Parser/Keywords/keywords.cpp -o keywords.o
+keywords.o: Keywords/keywords.cpp Keywords/keywords.h
+		g++ -c Keywords/keywords.cpp -o keywords.o
  
-misc.o: Parser/Misc/misc.cpp Parser/Misc/misc.h
-		g++ -c Parser/Misc/misc.cpp -o misc.o
+misc.o: Misc/misc.cpp Misc/misc.h
+		g++ -c Misc/misc.cpp -o misc.o
 
-page.o: Parser/Page/page.cpp Parser/Page/page.h
-		g++ -c Parser/Page/page.cpp -o page.o $(LDFLAGS) $(CXXFLAGS)
+page.o: Page/page.cpp Page/page.h
+		g++ -c Page/page.cpp -o page.o $(LDFLAGS) $(CXXFLAGS)
 
-parse.o: Parser/Parse/parse.cpp Parser/Parse/parse.h
-		g++ -c Parser/Parse/parse.cpp -o parse.o $(LDFLAGS) $(CXXFLAGS)
-
-crawler.o: crawler.cpp crawler.h
-		g++ -c crawler.cpp -o crawler.o $(LDFLAGS) $(CXXFLAGS)
+parse.o: Parser/parse.cpp Parser/parse.h
+		g++ -c Parser/parse.cpp -o parse.o $(LDFLAGS) $(CXXFLAGS)
 
 main.o: main.cpp
 		g++ -c main.cpp -o main.o $(LDFLAGS) $(CXXFLAGS)
