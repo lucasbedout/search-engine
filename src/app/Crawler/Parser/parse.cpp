@@ -7,13 +7,14 @@
 #include <libxml++/libxml++.h>
 #include <libxml++/parsers/textreader.h>
 #include "parse.h"
+#include "../Misc/misc.h"
 
 using namespace std;
 
 Parser::Parser(string content_to_parse_in, string url_in){ //travail par référence
 	content_to_parse = content_to_parse_in;
 	parsed = false;
-  url = url_in;
+  url = extractHost(url_in);
   links = vector<string>();
   k = Keywords();
 }
@@ -25,6 +26,7 @@ void Parser::cleanHTML(){
     bool configSuccess = tidyOptSetBool(tidyDoc, TidyXmlOut, yes)
         && tidyOptSetBool(tidyDoc, TidyQuiet, yes)
         && tidyOptSetBool(tidyDoc, TidyNumEntities, yes)
+        && tidyOptSetBool(tidyDoc, TidyForceOutput, yes)
         && tidyOptSetBool(tidyDoc, TidyShowWarnings, no);
     int tidyResponseCode = -1;
     if (configSuccess)
@@ -39,6 +41,7 @@ void Parser::cleanHTML(){
     tidyBufFree(&tidyOutputBuffer);
     tidyRelease(tidyDoc);
     content_to_parse = tidyResult;
+    cout << "tidy cleaned HTML" << endl;
 }
 
 void Parser::parseAll(){
@@ -99,10 +102,20 @@ void Parser::parseAll(){
                     pos = find(links.begin(), links.end(), reader.get_value()) - links.begin();
                   if (pos == 0 || pos >= links.size() && reader.get_value() != "#")
                     {
-                      if (reader.get_value().find(url) != std::string::npos)
+                      if (reader.get_value().find(url) == 0 
+                        && reader.get_value().find("mailto") == std::string::npos 
+                        && reader.get_value().find("http") == std::string::npos)
                         links.push_back(reader.get_value());
-                      else if (reader.get_value().find("http://") == std::string::npos)
-                        links.push_back(url+reader.get_value());
+                      else if (reader.get_value().find("http://") == std::string::npos 
+                        && reader.get_value().find("@") == std::string::npos 
+                        && reader.get_value().find("?") == std::string::npos)
+                      {
+                        string tmp_reader = reader.get_value();
+                        if (tmp_reader.find("/") == 0)
+                          links.push_back(url+tmp_reader.substr(1,tmp_reader.size()));
+                        else
+                          links.push_back(url+reader.get_value());
+                      }
                     }
                   link = false;
                 }
@@ -110,8 +123,8 @@ void Parser::parseAll(){
                 desc = false;
             } while(reader.move_to_next_attribute());
           }
-        }
-        while (reader.read());
+        
+}        while (reader.read());
       }
       catch(const exception& e)
       {

@@ -18,6 +18,7 @@ private :
 	vector<string> _keywords;
 	string _description;
 	string _content;
+	string _host;
 	vector<string> _links;
 
 public :

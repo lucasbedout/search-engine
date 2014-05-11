@@ -4,20 +4,16 @@
 #include <string>
 #include <curl/curl.h>
 #include "crawler.h"
+#include "../Misc/misc.h"
 
 using namespace std;
-
-bool has_suffix(const std::string &str, const std::string &suffix)
-{
-    return str.size() >= suffix.size() &&
-           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
-}
 
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) //fonction pour récupérer le texte de la page. On est obligé de passer par un buffer.
 {
     ((std::string*)userp)->append((char*)contents, size * nmemb);
     return size * nmemb;
 }
+
 
 Crawler::Crawler(string url){
 	_url.push_back(url);
@@ -27,27 +23,28 @@ Crawler::Crawler(string url){
 void Crawler::crawl(){
 	bool crawling = true;
 	while (crawling == true){	
-		for (int j = 0; j < _url.size(); j++)
+		for (int i = 0; i < _url.size(); i++)
 		{
-			Page p = Page(_url[0],downloadFile(_url[0]));
-			cout << "crawling : " << _url[0] << endl;
+			cout << "starting download ..." << endl;
+			Page p = Page(_url[i],downloadFile(_url[i]));
+			cout << "crawling : " << _url[i] << endl;
 			p.displayKeywords();
-			p.displayLinks();
 			vector<string> tmp = p.get_links();
 			_pages.push_back(p);
 			int sizeTmp = tmp.size();
-			for(int i = 0; i < sizeTmp; i++)
+			for(int k = 0; k < sizeTmp; k++)
 			{
-				if (find(_url.begin(), _url.end(), tmp[i]) - _url.begin() == _url.size())
+				if (find(_url.begin(), _url.end(), tmp[k]) - _url.begin() == _url.size())
 	        		{
-	        			if (has_suffix(tmp[i],".php") || has_suffix(tmp[i],".html") || has_suffix(tmp[i],".aspx"))
-	        				_url.push_back(tmp[i]);
+	        			if (!has_suffix(tmp[k],".css") && !has_suffix(tmp[k],".js")){
+	        					_url.push_back(tmp[k]);
+	        				}
 	        		}
 	        }
-	        _url.erase(_url.begin());
-	        if (_url.size() == 0)
-	        	crawling = false;
+	        for (int j = 0; j < _url.size(); j++)
+	        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
 	    }
+	    crawling = false;
 	}
 }
 
@@ -73,5 +70,10 @@ string Crawler::downloadFile(string url){
 	/* always cleanup */ 
 	curl_easy_cleanup(curl);
 	}
+	cout << "download ok :" << endl;
 	return readBuffer;
+}
+
+vector<Page> Crawler::getPages(){
+	return _pages;
 }

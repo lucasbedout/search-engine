@@ -30,6 +30,27 @@ int valueOfType(string type){
     return value;
 }
 
+bool has_suffix(const std::string &str, const std::string &suffix)
+{
+    return str.size() >= suffix.size() &&
+           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+}
+
+string extractHost(string url_in){
+    string final_host;
+    unsigned pos = url_in.find_last_of("/");
+    if (has_suffix("//",url_in) && url_in.find("http://") == 0){
+        final_host = url_in;
+    }
+    else if (url_in.find("http://") == 0){
+        final_host = url_in.substr(0,pos+1);
+    }
+    else{
+        final_host = "";
+    }
+    return final_host;
+}
+
 //Création de la fonction qui va retirer la ponctuation des mots clé.
 void removePunctuation(string &keyword){
     string result_space;

@@ -8,7 +8,7 @@
 
 
 #include <iostream>
-
+ 
 #include "mysql_connection.h"
 #include "../Class/Page.h"
 #include "../Class/misc.h"

@@ -12,4 +12,5 @@ public :
 	Crawler(string url);
 	void crawl();
 	string downloadFile(string url);
+	vector<Page> getPages();
 };

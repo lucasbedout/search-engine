@@ -1,5 +1,5 @@
 CXXFLAGS= -Wall `pkg-config --cflags --libs libxml++-2.6`
-LDFLAGS= -L/usr/local/lib -ltidy -lcurl
+LDFLAGS= -L/usr/local/lib -ltidy -lcurl -lmysqlcppconn
 
 # création de l'exécutable 
 all: file.o keywords.o misc.o page.o parse.o crawler.o main.o
