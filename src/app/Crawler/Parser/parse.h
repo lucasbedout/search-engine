@@ -15,6 +15,7 @@ private :
 	string description_of_page;
 	string title_of_page;
 	vector<string> links;
+	string domain;
 	Keywords k;
 public :
 	Parser(string content_to_parse_in, string url_in);

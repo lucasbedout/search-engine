@@ -17,6 +17,7 @@ Page::Page(int id, vector<string> fKeywords, string fText, string fTitle, string
 Page::Page(string url_in, string content){ //initialisation du parser
 	_url = url_in;
     _host = extractHost(_url);
+    cout << _host << endl;
 	_content = content;
 	Parser p = Parser(_content, _url);
 	_keywords = p.parse();

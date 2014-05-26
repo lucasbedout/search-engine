@@ -9,6 +9,21 @@ using namespace std;
 
 //Création de la fonction value of type qui permettra d'assigner une valeur à un keyword
 
+int findNth(string str, char c, int n){
+    int pos = 0;
+    for(std::string::iterator it = str.begin(); it != str.end(); ++it) {
+        if(n > 0){
+            pos++;
+            if (*it == c)
+                n--;
+        }
+    }
+    if (n == 0)
+        return pos;
+    else
+        return -1;
+}
+
 int valueOfType(string type){
     int value;
     if (type == "meta")
@@ -36,14 +51,24 @@ bool has_suffix(const std::string &str, const std::string &suffix)
            str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
+string removeWhiteSpaces(string text){
+    int spaces = 0;
+    for(std::string::iterator it = text.begin(); it != text.end(); ++it) {
+        if (isspace(*it)){
+                spaces++;
+            }
+    }
+    text.erase(0,spaces);
+    cout << text << endl;
+    return text;
+}
+
 string extractHost(string url_in){
     string final_host;
-    unsigned pos = url_in.find_last_of("/");
-    if (has_suffix("//",url_in) && url_in.find("http://") == 0){
-        final_host = url_in;
-    }
-    else if (url_in.find("http://") == 0){
-        final_host = url_in.substr(0,pos+1);
+    int pos;
+    url_in = url_in + "/";
+    if (url_in.find("http://") == 0){
+        final_host = url_in.substr(0,findNth(url_in, '/',3));
     }
     else{
         final_host = "";

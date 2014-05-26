@@ -26,23 +26,27 @@ void Crawler::crawl(){
 		for (int i = 0; i < _url.size(); i++)
 		{
 			cout << "starting download ..." << endl;
-			Page p = Page(_url[i],downloadFile(_url[i]));
-			cout << "crawling : " << _url[i] << endl;
-			p.displayKeywords();
-			vector<string> tmp = p.get_links();
-			_pages.push_back(p);
-			int sizeTmp = tmp.size();
-			for(int k = 0; k < sizeTmp; k++)
-			{
-				if (find(_url.begin(), _url.end(), tmp[k]) - _url.begin() == _url.size())
-	        		{
-	        			if (!has_suffix(tmp[k],".css") && !has_suffix(tmp[k],".js")){
-	        					_url.push_back(tmp[k]);
-	        				}
-	        		}
-	        }
-	        for (int j = 0; j < _url.size(); j++)
-	        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
+			string tmp = downloadFile(_url[i]);
+			if (tmp != ""){
+				cout << "starting new page : " << _url[i] << endl;
+				Page p = Page(_url[i],tmp);
+				cout << "crawling : " << _url[i] << endl;
+				p.displayKeywords();
+				vector<string> tmp = p.get_links();
+				_pages.push_back(p);
+				int sizeTmp = tmp.size();
+				for(int k = 0; k < sizeTmp; k++)
+				{
+					if (find(_url.begin(), _url.end(), tmp[k]) - _url.begin() == _url.size())
+		        		{
+		        			if (!has_suffix(tmp[k],".css") && !has_suffix(tmp[k],".js")){
+		        					_url.push_back(tmp[k]);
+		        				}
+		        		}
+		        }
+		        for (int j = 0; j < _url.size(); j++)
+		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
+		    }
 	    }
 	    crawling = false;
 	}
@@ -52,6 +56,7 @@ string Crawler::downloadFile(string url){
 	CURL *curl;
 	CURLcode res;
 	string readBuffer;
+    long http_code = 0;
 	const string url_tmp = url;
 	 
 	curl = curl_easy_init();
@@ -62,6 +67,7 @@ string Crawler::downloadFile(string url){
 
 	/* Perform the request, res will get the return code */ 
 	res = curl_easy_perform(curl);
+	curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
 	/* Check for errors */ 
 	if(res != CURLE_OK)
 	  fprintf(stderr, "curl_easy_perform() failed: %s\n",
@@ -70,8 +76,11 @@ string Crawler::downloadFile(string url){
 	/* always cleanup */ 
 	curl_easy_cleanup(curl);
 	}
-	cout << "download ok :" << endl;
-	return readBuffer;
+	cout << "download ok :" << http_code << endl;
+	if (http_code == 200)
+		return readBuffer;
+	else
+		return "";
 }
 
 vector<Page> Crawler::getPages(){

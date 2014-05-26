@@ -11,3 +11,5 @@ bool simpleWord(string keyword);
 vector<string> splitString(string content, char special_char);
 bool has_suffix(const std::string &str, const std::string &suffix);
 string extractHost(string url_in);
+int findNth(string str, char c, int n);
+string removeWhiteSpaces(string text);

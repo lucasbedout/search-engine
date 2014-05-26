@@ -12,8 +12,8 @@
 using namespace std;
 
 Parser::Parser(string content_to_parse_in, string url_in){ //travail par référence
-	content_to_parse = content_to_parse_in;
-	parsed = false;
+  content_to_parse = removeWhiteSpaces(content_to_parse_in);
+  parsed = false;
   url = extractHost(url_in);
   links = vector<string>();
   k = Keywords();
@@ -45,12 +45,14 @@ void Parser::cleanHTML(){
 }
 
 void Parser::parseAll(){
+  cout << "parsing !" << endl;
       string current_node = "";
       try
       {
         xmlpp::TextReader reader((const unsigned char*)content_to_parse.c_str(), content_to_parse.size(), "");
         do
         {
+          cout << "crawling : " << reader.get_name() << endl;
           string tmp = reader.get_name();
           if(tmp.compare("#text")){
             current_node = tmp;
@@ -105,12 +107,17 @@ void Parser::parseAll(){
                       if (reader.get_value().find(url) == 0 
                         && reader.get_value().find("mailto") == std::string::npos 
                         && reader.get_value().find("http") == std::string::npos)
-                        links.push_back(reader.get_value());
+                        {
+                          links.push_back(reader.get_value());
+                          cout << reader.get_value() << endl;
+                        }
                       else if (reader.get_value().find("http://") == std::string::npos 
                         && reader.get_value().find("@") == std::string::npos 
-                        && reader.get_value().find("?") == std::string::npos)
+                        && reader.get_value().find("?") == std::string::npos
+                        && reader.get_value().find("//") == std::string::npos)
                       {
                         string tmp_reader = reader.get_value();
+                        cout << reader.get_value();
                         if (tmp_reader.find("/") == 0)
                           links.push_back(url+tmp_reader.substr(1,tmp_reader.size()));
                         else
@@ -138,6 +145,7 @@ vector<string> Parser::getLinks(){
 
 std::vector<string> Parser::parse(){
     cleanHTML();
+    cout << content_to_parse << endl;
     parseAll();
     k.sortKeywords();
     vector<string> k_tmp = k.getKeywords();
