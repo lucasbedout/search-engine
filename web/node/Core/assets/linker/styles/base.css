@@ -21,25 +21,25 @@ h2 {
 	margin-bottom: 10%;
 }
 
-#home-top #login {
+#login {
 	text-align: right;
 }
 
-#home-top #login input {
+#login input {
 	height: 18px;
 }
 
-#home-top #login .btn-blue {
+#login .btn-blue {
 	height: 25px;
 	vertical-align: top;
 }
 
-#home-top #login .username {
+#login .username {
 	font-weight: 300;
 	display: inline-block;
 }
 
-#home-top #login .btn-red {
+#login .btn-red {
 	margin-left: 20px;
 	margin-right: 20px;
 }

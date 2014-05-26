@@ -1,0 +1,66 @@
+/* Design of search results page */
+
+#topbar {
+	background-color: rgba(0,0,0,0.3);
+	position: fixed;
+	width: 100%;
+	left: 0;
+	top: 0;
+	padding: 10px;
+	height: 32px
+}
+
+#topbar div {
+	display: inline-block;
+	vertical-align: top;
+}
+
+#topbar #logo {
+	width: 108px;
+	height: 38px;
+	background-size: 100%;
+}
+
+#topbar #search-form {
+	width: 500px;
+	margin-left: 50px;
+}
+
+#topbar #login {
+	float: right;
+	margin-right: 20px;
+}
+
+#content {
+	margin-top: 80px;
+}
+
+.page-box {
+	display: inline-block;
+	margin: 0 10px;
+	width: 18%;
+	background-color: white;
+	height: 150px;
+	font-size: 10px;
+	color: black;
+	padding: 5px;
+	-webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+	-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+	box-sizing: border-box;         /* Opera/IE 8+ */
+}
+
+.page-box .title {
+	color: rgb(218, 69, 49);
+	font-size: 11px;
+	font-weight: bold;
+	display: block;
+	margin-bottom: 5px;
+}
+
+.page-box .url {
+	color: rgb(103, 176, 209);
+	font-size: 11px;
+	font-style: italic;
+	display: block;
+	margin-bottom: 10px;
+}

@@ -50,7 +50,8 @@ module.exports = {
           pages.push(JSON.parse(parts[i]));
         };
         res.view('search/results', {
-          'pages': pages });
+          'pages': pages,
+          'user': req.user });
         }
       })
   },

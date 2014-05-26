@@ -1,4 +1,27 @@
-<% _.each(pages, function(page)  { %>
-    <li><%= page.title %></li>
-    <li><%= page.url %></li>
-<% }); %>
+<header>
+	<div id="topbar">
+		<div id="logo"></div>
+		<div id="search-form">
+			<%- partial('partials/form.ejs') %>
+		</div>
+		<div id="login">
+			<% if (!user) { %>		
+				<%- partial('../auth/partials/form.ejs') %>
+			<% } else { %>
+				<span class="username">Hello, <%= user.username%></span><button onclick="window.location.href='/logout';" class="btn btn-red">Logout</button>
+			<% } %>
+		</div>
+	</div>
+</header>
+<div id="content">
+<h1>Résultats de votre recherche</h1>
+	<% _.each(pages, function(page)  { %>
+	<a href="<%= page.url %>">
+		<div class="page-box">
+			<span class="title"><%= page.title %></span>
+			<span class="url"><%= page.url %></span>
+			<div class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quos, provident consequuntur incidunt sed quae numquam magni quasi libero neque corporis. Numquam, ab, error nihil nemo animi nostrum quaerat. Error, soluta.</div>
+		</div>
+	</a>
+	<% }); %>
+</div>
