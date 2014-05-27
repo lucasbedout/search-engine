@@ -5,6 +5,7 @@
 #include <curl/curl.h>
 #include "crawler.h"
 #include "../Misc/misc.h"
+#include "../../Database/DatabaseManager.h"
 
 using namespace std;
 
@@ -21,11 +22,10 @@ Crawler::Crawler(string url){
 }
 
 void Crawler::crawl(){
-	DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
 	bool crawling = true;
 	while (crawling == true){	
 		for (int i = 0; i < _url.size(); i++)
-		{
+		{ 
 			cout << "starting download ..." << endl;
 			string tmp = downloadFile(_url[i]);
 			if (tmp != ""){
@@ -47,6 +47,7 @@ void Crawler::crawl(){
 		        }
 		        for (int j = 0; j < _url.size(); j++)
 		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
+				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
 				manager.savePage(p);
 		    }
 	    }
