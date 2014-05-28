@@ -53,13 +53,20 @@ bool has_suffix(const std::string &str, const std::string &suffix)
 
 string removeWhiteSpaces(string text){
     int spaces = 0;
-    for(std::string::iterator it = text.begin(); it != text.end(); ++it) {
-        if (isspace(*it)){
-                spaces++;
-            }
+    cout << "1 :" << text.substr(0,100) << endl;
+    for(int i = 0; i < text.length(); i++) {
+        if(text.at(i) == '\\s+'){
+            cout << "found space !" << endl;
+            spaces++;
+        }
+        else if (text.at(i) == '<'){
+            cout << "found <" << endl;
+            i = text.length();
+        }
     }
+    cout << "spaces : " << spaces << endl;
     text.erase(0,spaces);
-    cout << text << endl;
+    cout << "2" << text.substr(0,100) << endl;
     return text;
 }
 

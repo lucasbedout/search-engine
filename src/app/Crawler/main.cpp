@@ -9,5 +9,5 @@
 using namespace std;
 
 int main(){
-	Crawler c = Crawler("http://fr.openclassrooms.com/"); 
-} 
+	Crawler c = Crawler("http://stackoverflow.com/"); 
+}

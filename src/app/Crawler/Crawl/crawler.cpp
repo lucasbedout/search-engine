@@ -47,6 +47,14 @@ void Crawler::crawl(){
 		        }
 		        for (int j = 0; j < _url.size(); j++)
 		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
+		        if (p.get_title() == ""){
+	        		p.set_title(p.get_url());
+		        }
+		        if (p.get_description() == ""){
+		        	p.set_description(p.get_plain_text().substr(0,200));
+		        }
+		        cout << "title : " << p.get_title() << endl;
+		        cout << "description : " << p.get_description() << endl;
 				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
 				manager.savePage(p);
 		    }

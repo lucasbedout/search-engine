@@ -13,6 +13,7 @@ using namespace std;
 
 Parser::Parser(string content_to_parse_in, string url_in){ //travail par référence
   content_to_parse = removeWhiteSpaces(content_to_parse_in);
+  plain_text = "";
   parsed = false;
   url = extractHost(url_in);
   links = vector<string>();
@@ -60,6 +61,10 @@ void Parser::parseAll(){
           }
           else if (!tmp.compare("#text"))
           {
+            if (current_node.compare("title") && current_node.compare("script"))
+              {
+                plain_text += reader.get_value();
+              }
             if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();
               cout << "title : " << title_of_page << endl;
@@ -80,13 +85,13 @@ void Parser::parseAll(){
             bool link = false;
             do
             {
-              if (!reader.get_value().compare("description"))
+              if (reader.get_value().find("description") != std::string::npos)
                 desc = true;
               else if (!reader.get_value().compare("keywords"))
                 key = true;
               else if (!reader.get_name().compare("href"))
-                  link = true;
-              else if (!reader.get_name().compare("content") && desc == true)
+                link = true;
+              if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
                   k.addWords(description_of_page, "meta");
@@ -126,8 +131,6 @@ void Parser::parseAll(){
                     }
                   link = false;
                 }
-              else
-                desc = false;
             } while(reader.move_to_next_attribute());
           }
         
@@ -144,8 +147,9 @@ vector<string> Parser::getLinks(){
 }
 
 std::vector<string> Parser::parse(){
+    string tmp = content_to_parse.substr(0,100);
+    cout << tmp << endl << "tata" << endl;
     cleanHTML();
-    cout << content_to_parse << endl;
     parseAll();
     k.sortKeywords();
     vector<string> k_tmp = k.getKeywords();
@@ -170,4 +174,8 @@ string Parser::getDescription(){
 
 string Parser::getTitle(){
   return title_of_page;
+}
+
+string Parser::getPlainText(){
+  return plain_text;
 }

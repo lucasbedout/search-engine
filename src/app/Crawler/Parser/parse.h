@@ -12,6 +12,7 @@ private :
 	string content_to_parse;
 	bool parsed;
 	string url;
+	string plain_text;
 	string description_of_page;
 	string title_of_page;
 	vector<string> links;
@@ -22,6 +23,7 @@ public :
 	vector<string> parse();
 	void cleanHTML();
 	void parseAll();
+	string getPlainText();
 	string getContent();
 	string getDescription();
 	string getTitle();

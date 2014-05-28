@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "page.h"
+#include "../../Database/DatabaseManager.h"
 #include "../Misc/misc.h"
 
 Page::Page(vector<string> fKeywords,string fText,string fTitle,string fUrl,string fDescription) : _keywords(fKeywords), _content(fText), _title(fTitle), _url(fUrl), _description(fDescription)
@@ -22,7 +23,10 @@ Page::Page(string url_in, string content){ //initialisation du parser
 	Parser p = Parser(_content, _url);
 	_keywords = p.parse();
 	_title = p.getTitle();
+    cout << _title << endl;
 	_description = p.getDescription();
+    cout << _description << endl;
+    _plain_text = p.getPlainText();
     _links = p.getLinks();
 };
 
@@ -72,6 +76,10 @@ vector<string> Page::get_keywords()
     return _keywords;
 }
 
+string Page::get_plain_text(){
+    return _plain_text;
+}
+
 string Page::get_description()
 {
     return _description;
@@ -103,6 +111,10 @@ void Page::set_keywords(const vector<string> keywords)
     _keywords.vector::clear(); //par sécurité
     for(int i = 0; i < sizeW;i++ )
         _keywords.push_back(keywords[i]);
+}
+
+void Page::set_plain_text(const string text){
+    _plain_text = text;
 }
 
 void Page::set_description(const string description)

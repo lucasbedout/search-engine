@@ -17,6 +17,7 @@ private :
     string _url;
 	vector<string> _keywords;
 	string _description;
+	string _plain_text;
 	string _content;
 	string _host;
 	vector<string> _links;
@@ -35,6 +36,7 @@ public :
 	string get_content();
 	string get_title();
 	string get_url();
+	string get_plain_text();
 	vector<string> get_keywords();
 	string get_description();
 	vector<string> get_links();
@@ -43,6 +45,7 @@ public :
 	void set_content(const string content);
 	void set_title(const string title);
 	void set_url(const string url);
+	void set_plain_text(const string text);
 	void set_keywords(const vector<string> keywords);
 	void set_description(const string description);
 	void set_links(const vector<string> links);
