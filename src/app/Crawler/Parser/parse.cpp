@@ -60,13 +60,10 @@ void Parser::parseAll(){
           {
             if (current_node.compare("title") && current_node.compare("script"))
               {
-                string tmp_txt = reader.get_value();
-                tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
-                plain_text += tmp_txt;
+                plain_text += reader.get_value();
               }
-            if (!title_of_page.compare("") && (!current_node.compare("title") || !current_node.compare("og:title"))){
+            if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();
-              title_of_page.erase(std::remove(title_of_page.begin(), title_of_page.end(), '\n'), title_of_page.end());
               cout << "Title : " << title_of_page << endl;
               k.addWords(title_of_page, "meta");
               current_node = reader.get_name();
@@ -94,7 +91,7 @@ void Parser::parseAll(){
               if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
-                  cout << "Description : " << description_of_page << endl;
+                  cout << "Description : " << description_of_page <<  endl;
                   k.addWords(description_of_page, "meta");
                   desc = false;
                 }
