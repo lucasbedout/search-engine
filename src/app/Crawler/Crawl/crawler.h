@@ -4,6 +4,14 @@
 
 using namespace std;
 
+/*
+
+	********************
+	** Header Crawler **
+	********************
+
+*/
+
 class Crawler{
 private :
 	vector<string> _url;

@@ -81,14 +81,20 @@ void Crawler::crawl(){
 
 			string tmp = downloadFile(_url[i]); //Downloading the file
 
-			if (tmp != ""){
-				cout << "starting new page : " << _url[i] << endl;
-				Page p = Page(_url[i],tmp);
-				cout << "crawling : " << _url[i] << endl;
-				p.displayKeywords();
-				vector<string> tmp = p.get_links();
-				_pages.push_back(p);
-				int sizeTmp = tmp.size();
+			if (tmp != ""){//Checking if page contains something
+
+				//cout << "starting new page : " << _url[i] << endl;
+
+				Page p = Page(_url[i],tmp);  //Creating a new Page with URL & Content downloaded of the page.
+
+				//cout << "crawling : " << _url[i] << endl;
+				//p.displayKeywords(); 
+
+				vector<string> tmp = p.get_links(); //Retrieview links from the parser
+
+				_pages.push_back(p); //Stocking the page in a vector 
+				int sizeTmp = tmp.size(); //Checking if links are ok to stock in the _url stack
+
 				for(int k = 0; k < sizeTmp; k++)
 				{
 					if (find(_url.begin(), _url.end(), tmp[k]) - _url.begin() == _url.size())
@@ -98,17 +104,22 @@ void Crawler::crawl(){
 		        				}
 		        		}
 		        }
-		        for (int j = 0; j < _url.size(); j++)
-		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
+
+		        /*for (int j = 0; j < _url.size(); j++)
+		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;*/
+
 		        if (p.get_title() == ""){
-	        		p.set_title(p.get_url());
+	        		p.set_title(p.get_url()); //Check the title
 		        }
-		        if (p.get_description() == ""){
+
+		        if (p.get_description() == ""){ //Check the description
 		        	p.set_description(p.get_plain_text().substr(0,200));
 		        }
-		        cout << "title : " << p.get_title() << endl;
-		        cout << "description : " << p.get_description() << endl;
-				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
+
+		        /*cout << "title : " << p.get_title() << endl;
+		        cout << "description : " << p.get_description() << endl;*/
+
+				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
 				manager.savePage(p);
 		    }
 	    }
@@ -117,6 +128,7 @@ void Crawler::crawl(){
 }
 
 string Crawler::downloadFile(string url){
+
 	CURL *curl;
 	CURLcode res;
 	string readBuffer;
@@ -125,6 +137,7 @@ string Crawler::downloadFile(string url){
 	 
 	curl = curl_easy_init();
 	if(curl) {
+		//Setting the Curl easy
 	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);

@@ -53,7 +53,6 @@ void Parser::parseAll(){
         xmlpp::TextReader reader((const unsigned char*)content_to_parse.c_str(), content_to_parse.size(), "");
         do
         {
-          cout << "crawling : " << reader.get_name() << endl;
           string tmp = reader.get_name();
           if(tmp.compare("#text")){
             current_node = tmp;
@@ -65,7 +64,7 @@ void Parser::parseAll(){
               {
                 string tmp_txt = reader.get_value();
                 tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
-                plain_text += tmt_txt;
+                plain_text += tmp_txt;
               }
             if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();
