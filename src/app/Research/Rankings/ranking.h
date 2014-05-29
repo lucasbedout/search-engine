@@ -84,14 +84,14 @@ std::vector<Page> ranked(std::string recherche, int level)
     */
 	/*--------FIN---------------------*/
 
-	/*ranking(allPage, keywordSearch, level);
+	ranking(allPage, keywordSearch, level);
 
 	const int sizePage = allPage.size();
 	for (int i = 0; i < sizePage; i++)
 	{
 		//std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
 	}
-    */
+
 	std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
 
 	return allPage;
@@ -249,7 +249,7 @@ int nbWord(const std::string& chaine,const std::string& word,const int& level)
 void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch)
 {
 	//Alocation dynamique du score en fonction du nombre de page
-	int *score = new int( rechercheUser.size() );
+	int *score = new int[rechercheUser.size() + 1];
     const int coefTitle = 16, coefDomaineName = 8, coefKeyword = 4, coefUrl = 2, coefText = 1, sizePage = pageFound.size();
     const int sizeSearch = rechercheUser.size();
 
@@ -295,7 +295,7 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
     quickSort(score, pageFound, 0, (sizePage <= 10) ? pageFound.size() - 1 : 10);
     */
 
-    delete score;
+    //delete[] score;
 
 }
 

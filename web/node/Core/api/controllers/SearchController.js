@@ -42,7 +42,7 @@ module.exports = {
         console.log(numberOfResults + ' résultats trouvés');
         n++;
       } else {
-        var parts = data.split('||');
+        var parts = data.split('||||');
         parts.pop();
         var length = parts.length;
         for (var i = 0; i < length; i++) {
