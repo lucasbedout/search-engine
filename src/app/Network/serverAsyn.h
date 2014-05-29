@@ -80,6 +80,7 @@ private:
 		content = "{\"id\":"; sprintf(bufferInter, "\"%d\",", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
 		content += "\"title\":\""; content += page.get_title();
 		content += "\",\"url\":\""; content += page.get_url(); content += "\"}||";
+
 		//sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
 
 		/*boost::asio::async_write(socket_, boost::asio::buffer(size),
