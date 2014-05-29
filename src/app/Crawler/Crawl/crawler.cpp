@@ -122,8 +122,8 @@ void Crawler::crawl(){
 
 	        	cout << endl << "+++++++++++++++++++++++" << endl << endl;
 
-				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
-				manager.savePage(p);
+				//DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
+				//manager.savePage(p);
 		    }
 	    }
 	    crawling = false;
