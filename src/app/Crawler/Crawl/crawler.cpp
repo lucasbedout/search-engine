@@ -32,7 +32,6 @@ void Crawler::crawl(){
 				cout << "starting new page : " << _url[i] << endl;
 				Page p = Page(_url[i],tmp);
 				cout << "crawling : " << _url[i] << endl;
-				p.displayKeywords();
 				vector<string> tmp = p.get_links();
 				_pages.push_back(p);
 				int sizeTmp = tmp.size();
@@ -45,8 +44,6 @@ void Crawler::crawl(){
 		        				}
 		        		}
 		        }
-		        for (int j = 0; j < _url.size(); j++)
-		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;
 		        if (p.get_title() == ""){
 	        		p.set_title(p.get_url());
 		        }
