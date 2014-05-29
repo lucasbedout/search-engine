@@ -10,8 +10,8 @@
 #include <iostream>
  
 #include "mysql_connection.h"
-#include "../Class/Page.h"
-#include "../Class/misc.h"
+#include "../Crawler/Page/page.h"
+#include "../Crawler/Misc/misc.h"
 #include <cppconn/driver.h>
 #include <cppconn/exception.h>
 #include <cppconn/resultset.h>
@@ -71,7 +71,7 @@ public:
 		for(int i = 0 ; i < keywords_size ; i++) 
 		{
 			try {
- 				stmt = _conn->prepareStatement("SELECT * FROM pages WHERE content LIKE ?");
+ 				stmt = _conn->prepareStatement("SELECT id, title, description, url, keywords FROM pages WHERE content LIKE ? LIMIT 25");
 				stmt->setString(1, "%" + search[i] + "%");
 				res = stmt->executeQuery();
 				while(res->next())
@@ -79,7 +79,7 @@ public:
 					if(std::find(pages_id.begin(), pages_id.end(), res->getInt(1)) == pages_id.end())
 					{	
 						std::vector<std::string> page_keywords = splitString(res->getString("keywords"), ' ');
-						Page page(res->getInt(1), page_keywords, res->getString("content"), res->getString("title"), res->getString("url"), res->getString("description"));
+						Page page(res->getInt(1), page_keywords, "", res->getString("title"), res->getString("url"), res->getString("description"));
 						pages.push_back(page);
 						pages_id.push_back(res->getInt(1));
 					} 
@@ -106,7 +106,7 @@ public:
 		std::string title = page.get_title();
 		std::string url = page.get_url();
 		std::string description = page.get_description();
-		std::string content = page.get_content();
+		std::string content = page.get_plain_text();
 		std::string keywords;
 		std::vector<std::string> keywords_vector = page.get_keywords();
 		int keywords_size = keywords_vector.size();
@@ -114,7 +114,7 @@ public:
 
 		for (int i = 0; i < keywords_size; ++i)
 		{
-			keywords += keywords_vector[i];
+			keywords += keywords_vector[i] + " ";
 		}
 
 		if (!title.empty() && !content.empty() && !url.empty() && !description.empty() && !keywords.empty())

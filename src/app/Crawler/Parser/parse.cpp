@@ -65,7 +65,7 @@ void Parser::parseAll(){
               {
                 string tmp_txt = reader.get_value();
                 tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
-                plain_text += tmt_txt;
+                plain_text += tmp_txt;
               }
             if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();

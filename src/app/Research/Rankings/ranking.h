@@ -6,8 +6,8 @@
 #include <ctime>
 #include <limits>
 
-#include "../../Class/Page.h"
-//#include "../../Database/DatabaseManager.h"
+#include "../../Crawler/Page/page.h"
+#include "../../Database/DatabaseManager.h"
 
 std::vector<Page> ranked(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
 int nbWord(const std::string& chaine,const std::string& word,const int& level); // Compte le nombre de mot (3 niveaux)
@@ -46,12 +46,12 @@ std::vector<Page> ranked(std::string recherche, int level)
 	std::vector<Page> allPage;
 	std::vector<Page> result;
 
-	/*BASE DE DONNEE
+	//BASE DE DONNEE
     //connexion et reccuperation des pages
-    DatabaseManager manager("tcp://192.168.1.27:3306", "username", "pass", "database");
+    DatabaseManager manager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
     allPage = manager.getPages(recherche);
-    */
-
+    
+    /*
 	//page 1 : Sur le traitement des bateaux
 	std::vector<std::string> listWord;
 	std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !", descripPage = "Test1";
@@ -81,17 +81,17 @@ std::vector<Page> ranked(std::string recherche, int level)
 	listWord.clear();
 	listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
 	allPage.push_back(Page(5, listWord, textPage, titrePage, urlPage, descripPage));
-
+    */
 	/*--------FIN---------------------*/
 
-	ranking(allPage, keywordSearch, level);
+	/*ranking(allPage, keywordSearch, level);
 
 	const int sizePage = allPage.size();
 	for (int i = 0; i < sizePage; i++)
 	{
-		std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
+		//std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
 	}
-
+    */
 	std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
 
 	return allPage;
@@ -99,17 +99,18 @@ std::vector<Page> ranked(std::string recherche, int level)
 
 void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b)
 {
-    //page temporaire
-    Page tmp = page[a];
+        //page temporaire
+        Page tmp = page.at(a);
 
-    //Trie score
-    tableau[a] ^= tableau[b];
-    tableau[b] ^= tableau[a];
-    tableau[a] ^= tableau[b];
+        //Trie score
+        tableau[a] ^= tableau[b];
+        tableau[b] ^= tableau[a];
+        tableau[a] ^= tableau[b];
 
-    //Trie page
-    page[a] = page[b];
-    page[b] = tmp;
+        //Trie page
+        page.at(a) = page.at(b);
+        page.at(b) = tmp;
+    
 
 }
 
@@ -272,7 +273,7 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
             //cout << "Url : " << score[i] << ' ';
         }
 
-        //cout << "Score : " << score[i] << " de :" << pageFound[i].Title << endl;
+        //cout << "Score : " << score[i] << " de :" << pageFound[i].get_title() << endl;
     }
 
 
@@ -280,14 +281,19 @@ void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUse
 
     quickSort(score, pageFound, 0, pageFound.size() - 1);
 
+    /*
     //---------------Etape pour les 10 meilleur pages--------------
     for (int i = 0; i < sizePage && i < 10; i++)
     {
-        score[i] += coefText * nbWord(pageFound[i].get_content(), rechercheUser[j], lvlSrch);
-        //cout << "Words : " << score[i] << endl;
+        for(int j = 0; j < sizeSearch; j++)
+        {
+            score[i] += coefText * nbWord(pageFound[i].get_content(), rechercheUser[j], lvlSrch);
+            //cout << "Words : " << score[i] << endl;
+        }
     }
 
     quickSort(score, pageFound, 0, (sizePage <= 10) ? pageFound.size() - 1 : 10);
+    */
 
     delete score;
 
