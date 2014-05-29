@@ -106,9 +106,6 @@ void Crawler::crawl(){
 		        		}
 		        }
 
-		        /*for (int j = 0; j < _url.size(); j++)
-		        	cout << "url[" << j+1 << "] : " << _url[j] << endl;*/
-
 		        if (p.get_title() == ""){
 	        		p.set_title(p.get_url()); //Check the title
 		        }
