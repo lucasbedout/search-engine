@@ -81,6 +81,7 @@ private:
 		content += "\"title\":\""; content += page.get_title();
 		content += "\",\"url\":\""; content += page.get_url(); content += "\"}||";
 
+		std::cout << "Content : " << content << std::endl;
 		//sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
 
 		/*boost::asio::async_write(socket_, boost::asio::buffer(size),
