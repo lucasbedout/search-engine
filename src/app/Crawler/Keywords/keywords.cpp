@@ -12,14 +12,12 @@ Keywords::Keywords(){
 }
 
 void Keywords::addWords(string string_to_insert, string type){
-	cout << "stocking words" << endl;
 	vector<string> tmp = splitString(string_to_insert, ' ');
 	for(vector<string>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
 		addKeyword(*it, type);
 	}
 }
 void Keywords::addWords(string string_to_insert, string type, char splitter){
-	cout << "stocking words" << endl;
 	vector<string> tmp = splitString(string_to_insert, splitter);
 	for(vector<string>::iterator it = tmp.begin(); it != tmp.end(); ++it) {
 		addKeyword(*it, type);

@@ -66,7 +66,7 @@ void Parser::parseAll(){
                 tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
                 plain_text += tmp_txt;
               }
-            if (!title_of_page.compare("") && !current_node.compare("title")){
+            if (!title_of_page.compare("") && (!current_node.compare("title") || !current_node.compare("og:title")){
               title_of_page = reader.get_value();
               title_of_page.erase(std::remove(title_of_page.begin(), title_of_page.end(), '\n'), title_of_page.end());
               cout << "title : " << title_of_page << endl;
@@ -116,7 +116,6 @@ void Parser::parseAll(){
                         && reader.get_value().find("http") == std::string::npos)
                         {
                           links.push_back(reader.get_value());
-                          cout << reader.get_value() << endl;
                         }
                       else if (reader.get_value().find("http://") == std::string::npos 
                         && reader.get_value().find("@") == std::string::npos 
@@ -124,7 +123,6 @@ void Parser::parseAll(){
                         && reader.get_value().find("//") == std::string::npos)
                       {
                         string tmp_reader = reader.get_value();
-                        cout << reader.get_value();
                         if (tmp_reader.find("/") == 0)
                           links.push_back(url+tmp_reader.substr(1,tmp_reader.size()));
                         else
