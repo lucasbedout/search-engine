@@ -53,7 +53,6 @@ void Parser::parseAll(){
         xmlpp::TextReader reader((const unsigned char*)content_to_parse.c_str(), content_to_parse.size(), "");
         do
         {
-          cout << "crawling : " << reader.get_name() << endl;
           string tmp = reader.get_name();
           if(tmp.compare("#text")){
             current_node = tmp;
