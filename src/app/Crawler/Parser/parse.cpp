@@ -63,10 +63,13 @@ void Parser::parseAll(){
           {
             if (current_node.compare("title") && current_node.compare("script"))
               {
-                plain_text += reader.get_value();
+                string tmp_txt = reader.get_value();
+                tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
+                plain_text += tmt_txt;
               }
             if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();
+              title_of_page.erase(std::remove(title_of_page.begin(), title_of_page.end(), '\n'), title_of_page.end());
               cout << "title : " << title_of_page << endl;
               k.addWords(title_of_page, "meta");
               current_node = reader.get_name();

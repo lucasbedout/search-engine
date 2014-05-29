@@ -1,8 +1,34 @@
+/*
+		*******************
+		** Crawler Class **
+		*******************
+
+#Constructor :
+	- Takes an URL in parameter
+	- Insert the URL into the vector of links that will be used during the crawl
+
+#WriteCallback :
+	- Function to retieve the buffer of the page downloaded by CURL
+
+#Crawl :
+	- Main function of the Crawler
+
+#DownloadFile :
+	- Does it deserve an explanation !?
+
+*/
+
+
+//Includes libs
+
 #include <vector>
 #include <iostream>
 #include <algorithm>
 #include <string>
 #include <curl/curl.h>
+
+//Include files
+
 #include "crawler.h"
 #include "../Misc/misc.h"
 #include "../../Database/DatabaseManager.h"
@@ -17,17 +43,44 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 
 
 Crawler::Crawler(string url){
+
+	//Insert an url in the stack of URL
+
 	_url.push_back(url);
+
+	//Launch the main function of the crawler
+
 	crawl();
 }
 
+/*
+
+Description of Crawl Algo :
+
+For each link : 
+	- Download page
+	- Parse it (extract links & keywords)
+	- Add links to URL stack
+	- Saving page in the DB
+	- At each start of the loop check the size of our stack (even if links have been added during the first loop they will be considered in the further ones)
+
+*/
+
 void Crawler::crawl(){
+
+	//Bool will check if stack of url is fully crawled
+
 	bool crawling = true;
-	while (crawling == true){	
+	while (crawling == true){
+
+		//Each time it'll check the size of _url stack (even if url have been added during the loop)
+
 		for (int i = 0; i < _url.size(); i++)
-		{ 
-			cout << "starting download ..." << endl;
-			string tmp = downloadFile(_url[i]);
+		{
+			//cout << "starting download ..." << endl;
+
+			string tmp = downloadFile(_url[i]); //Downloading the file
+
 			if (tmp != ""){
 				cout << "starting new page : " << _url[i] << endl;
 				Page p = Page(_url[i],tmp);
@@ -76,15 +129,15 @@ string Crawler::downloadFile(string url){
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
 
-	/* Perform the request, res will get the return code */ 
+	// Perform the request, res will get the return code 
 	res = curl_easy_perform(curl);
 	curl_easy_getinfo (curl, CURLINFO_RESPONSE_CODE, &http_code);
-	/* Check for errors */ 
-	if(res != CURLE_OK)
-	  fprintf(stderr, "curl_easy_perform() failed: %s\n",
-	          curl_easy_strerror(res));
 
-	/* always cleanup */ 
+	// Check for errors
+	if(res != CURLE_OK)
+	  fprintf(stderr, "curl_easy_perform() failed: %s\n",curl_easy_strerror(res));
+
+	// always cleanup
 	curl_easy_cleanup(curl);
 	}
 	cout << "download ok :" << http_code << endl;
@@ -93,6 +146,8 @@ string Crawler::downloadFile(string url){
 	else
 		return "";
 }
+
+//Getter & Setters
 
 vector<Page> Crawler::getPages(){
 	return _pages;
