@@ -18,14 +18,11 @@ Page::Page(int id, vector<string> fKeywords, string fText, string fTitle, string
 Page::Page(string url_in, string content){ //initialisation du parser
 	_url = url_in;
     _host = extractHost(_url);
-    cout << _host << endl;
 	_content = content;
 	Parser p = Parser(_content, _url);
 	_keywords = p.parse();
 	_title = p.getTitle();
-    cout << _title << endl;
 	_description = p.getDescription();
-    cout << _description << endl;
     _plain_text = p.getPlainText();
     _links = p.getLinks();
 };
@@ -131,8 +128,9 @@ void Page::set_links(const vector<string> links)
 }
 
 void Page::displayKeywords(){
-	for (vector<string>::iterator it = _keywords.begin(); it != _keywords.end(); ++it){
-		cout << *it << endl;
+    cout << endl << "Keywords : " << endl << "----------------------" << endl;
+	for (vector<string>::iterator it = _keywords.begin(); it != _keywords.end(); ++it){ 
+        cout << *it << endl;
 	}
 }
 

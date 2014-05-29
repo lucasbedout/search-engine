@@ -68,7 +68,6 @@ vector<string> Keywords::getKeywords(){
 
 void Keywords::displayKeywords(){
 	int i = 0;
-	cout << "size : " << d.words.size() << endl;
 	for (i = 0; i < d.words.size(); i++){
 		cout << i+1 << ". word : " << d.words[i] << " value : " << d.values[i] << endl;
 	}

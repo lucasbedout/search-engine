@@ -85,10 +85,11 @@ void Crawler::crawl(){
 
 				//cout << "starting new page : " << _url[i] << endl;
 
+				cout << endl << "crawling : " << _url[i] << endl << "-----------------------------" << endl << endl;
+
 				Page p = Page(_url[i],tmp);  //Creating a new Page with URL & Content downloaded of the page.
 
-				//cout << "crawling : " << _url[i] << endl;
-				//p.displayKeywords(); 
+				p.displayKeywords();
 
 				vector<string> tmp = p.get_links(); //Retrieview links from the parser
 
@@ -118,6 +119,8 @@ void Crawler::crawl(){
 
 		        /*cout << "title : " << p.get_title() << endl;
 		        cout << "description : " << p.get_description() << endl;*/
+
+	        	cout << endl << "+++++++++++++++++++++++" << endl << endl;
 
 				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
 				manager.savePage(p);
@@ -153,7 +156,7 @@ string Crawler::downloadFile(string url){
 	// always cleanup
 	curl_easy_cleanup(curl);
 	}
-	cout << "download ok :" << http_code << endl;
+	cout << "download ok (with code : " << http_code << ")" << endl;
 	if (http_code == 200)
 		return readBuffer;
 	else

@@ -42,11 +42,9 @@ void Parser::cleanHTML(){
     tidyBufFree(&tidyOutputBuffer);
     tidyRelease(tidyDoc);
     content_to_parse = tidyResult;
-    cout << "tidy cleaned HTML" << endl;
 }
 
 void Parser::parseAll(){
-  cout << "parsing !" << endl;
       string current_node = "";
       try
       {
@@ -66,10 +64,10 @@ void Parser::parseAll(){
                 tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
                 plain_text += tmp_txt;
               }
-            if (!title_of_page.compare("") && (!current_node.compare("title") || !current_node.compare("og:title")){
+            if (!title_of_page.compare("") && (!current_node.compare("title") || !current_node.compare("og:title"))){
               title_of_page = reader.get_value();
               title_of_page.erase(std::remove(title_of_page.begin(), title_of_page.end(), '\n'), title_of_page.end());
-              cout << "title : " << title_of_page << endl;
+              cout << "Title : " << title_of_page << endl;
               k.addWords(title_of_page, "meta");
               current_node = reader.get_name();
             }
@@ -96,6 +94,7 @@ void Parser::parseAll(){
               if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
+                  cout << "Description : " << description_of_page << endl;
                   k.addWords(description_of_page, "meta");
                   desc = false;
                 }
@@ -147,8 +146,6 @@ vector<string> Parser::getLinks(){
 }
 
 std::vector<string> Parser::parse(){
-    string tmp = content_to_parse.substr(0,100);
-    cout << tmp << endl << "tata" << endl;
     cleanHTML();
     parseAll();
     k.sortKeywords();
