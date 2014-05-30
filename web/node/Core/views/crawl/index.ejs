@@ -1,0 +1,13 @@
+<header>
+    <div id="home-top">
+        <div id="login">
+            <% if (!user) { %>
+            <%- partial('../auth/partials/form.ejs') %>
+            <% } else { %>
+            <button onclick="window.location.href='/';" class="btn btn-green">Rechercher</button><button onclick="window.location.href='/logout';" class="btn btn-red">Logout</button>
+            <% } %>
+        </div>
+    </div>
+</header>
+<div id="logo"></div>
+<%- partial('../crawl/partials/form.ejs') %>

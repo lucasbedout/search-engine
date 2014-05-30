@@ -37,11 +37,11 @@ h2 {
 #login .username {
 	font-weight: 300;
 	display: inline-block;
+    vertical-align: middle;
 }
 
-#login .btn-red {
+#login .btn-red, #login .btn-green {
 	margin-left: 20px;
-	margin-right: 20px;
 }
 
 /* Logo */
@@ -56,13 +56,13 @@ h2 {
 
 /* Search bar design */
 
-#search-form {
+#search-form, #crawl-form {
 	width: 70%;
 	margin: auto;
 	text-align: center;
 }
 
-#search-form input {
+#search-form input, #crawl-form input {
 	vertical-align: top;
 }
 
@@ -77,6 +77,18 @@ h2 {
 	width: 70%;
 	margin-right: 15px;
 	vertical-align: middle;
+}
+
+#crawl-form input[type="text"] {
+    height: 19px;
+    width: 70%;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+#crawl-form input[type="submit"] {
+    height: 26px;
+    width: 100px;
 }
 
 
