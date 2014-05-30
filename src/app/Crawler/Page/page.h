@@ -31,6 +31,7 @@ public :
 	Page& operator=(Page const& pageCopy);
 	//void displayKeywords();
 
+	string to_JSON();
 	//getter
 	int get_ID();
 	string get_content();

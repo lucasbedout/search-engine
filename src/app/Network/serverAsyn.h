@@ -74,14 +74,17 @@ private:
 
 	void sendPage(Page page)
 	{
-		char bufferInter[10] = "";
-		std::string /*size = "0",*/ content;
-
+		std::string content;
+		content = page.to_JSON();
+		content += "|$";
+		std::cout << "coucou" << std::endl;
+		/*
 		content = "{\"id\":"; sprintf(bufferInter, "\"%d\",", page.get_ID()); content += bufferInter; //content += std::to_string(page.get_ID());
 		content += "\"title\":\""; content += page.get_title();
 		content += "\",\"url\":\""; content += page.get_url(); 
 		content += "\",\"description\":\""; content += page.get_description(); 
 		content += "\"}||";
+		*/
 
 		std::cout << "Content : " << content << std::endl;
 		//sprintf(bufferInter, "%d", content.size()); size = bufferInter; //size = std::to_string(content.size());
