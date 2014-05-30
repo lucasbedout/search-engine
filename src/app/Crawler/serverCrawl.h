@@ -33,13 +33,11 @@ public:
 
 	void start()
 	{
-		//reçois une string
 		char url[MAX_BUFFER_URL]="";
-		
-		socket_.read_some(boost::asio::buffer(url), error); //reçois la chaine l'url
+		boost::system::error_code error;
 
-		//Lance le crawler dans un thread
-		std::thread crawlThread(crawling(url));
+		socket_.read_some(boost::asio::buffer(url), error); 
+		crawling(url);
 	}
 
 private:

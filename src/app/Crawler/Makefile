@@ -1,9 +1,10 @@
 CXXFLAGS= -Wall `pkg-config --cflags --libs libxml++-2.6`
 LDFLAGS= -L/usr/local/lib -ltidy -lcurl -lmysqlcppconn
+LBFLAGS= -I /usr/include/boost -lboost_system -lmysqlcppconn
 
 # création de l'exécutable 
-all: file.o keywords.o misc.o page.o parse.o crawler.o main.o
-		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o main.o $(LDFLAGS) $(CXXFLAGS) 
+all: file.o keywords.o misc.o page.o parse.o crawler.o network.o
+		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o network.o $(LDFLAGS) $(CXXFLAGS) -g
  
 file.o: File/file.cpp File/file.h
 		g++ -c File/file.cpp -o file.o
@@ -23,8 +24,8 @@ page.o: Page/page.cpp Page/page.h
 parse.o: Parser/parse.cpp Parser/parse.h
 		g++ -c Parser/parse.cpp -o parse.o $(LDFLAGS) $(CXXFLAGS)
 
-main.o: main.cpp
-		g++ -c main.cpp -o main.o $(LDFLAGS) $(CXXFLAGS)
+network.o: serverCrawl.cpp serverCrawl.h 
+		g++ -c serverCrawl.cpp -o network.o $(LBFLAGS);
 
 # suppression des fichiers temporaires
 clean:
