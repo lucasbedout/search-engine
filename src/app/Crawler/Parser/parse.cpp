@@ -42,11 +42,9 @@ void Parser::cleanHTML(){
     tidyBufFree(&tidyOutputBuffer);
     tidyRelease(tidyDoc);
     content_to_parse = tidyResult;
-    cout << "tidy cleaned HTML" << endl;
 }
 
 void Parser::parseAll(){
-  cout << "parsing !" << endl;
       string current_node = "";
       try
       {
@@ -62,14 +60,11 @@ void Parser::parseAll(){
           {
             if (current_node.compare("title") && current_node.compare("script"))
               {
-                string tmp_txt = reader.get_value();
-                tmp_txt.erase(std::remove(tmp_txt.begin(), tmp_txt.end(), '\n'), tmp_txt.end());
-                plain_text += tmp_txt;
+                plain_text += reader.get_value();
               }
             if (!title_of_page.compare("") && !current_node.compare("title")){
               title_of_page = reader.get_value();
-              title_of_page.erase(std::remove(title_of_page.begin(), title_of_page.end(), '\n'), title_of_page.end());
-              cout << "title : " << title_of_page << endl;
+              cout << "Title : " << title_of_page << endl;
               k.addWords(title_of_page, "meta");
               current_node = reader.get_name();
             }
@@ -96,6 +91,7 @@ void Parser::parseAll(){
               if (!reader.get_name().compare("content") && desc == true)
                 {
                   description_of_page = reader.get_value();
+                  cout << "Description : " << description_of_page <<  endl;
                   k.addWords(description_of_page, "meta");
                   desc = false;
                 }
@@ -116,7 +112,6 @@ void Parser::parseAll(){
                         && reader.get_value().find("http") == std::string::npos)
                         {
                           links.push_back(reader.get_value());
-                          cout << reader.get_value() << endl;
                         }
                       else if (reader.get_value().find("http://") == std::string::npos 
                         && reader.get_value().find("@") == std::string::npos 
@@ -124,7 +119,6 @@ void Parser::parseAll(){
                         && reader.get_value().find("//") == std::string::npos)
                       {
                         string tmp_reader = reader.get_value();
-                        cout << reader.get_value();
                         if (tmp_reader.find("/") == 0)
                           links.push_back(url+tmp_reader.substr(1,tmp_reader.size()));
                         else
@@ -149,8 +143,6 @@ vector<string> Parser::getLinks(){
 }
 
 std::vector<string> Parser::parse(){
-    string tmp = content_to_parse.substr(0,100);
-    cout << tmp << endl << "tata" << endl;
     cleanHTML();
     parseAll();
     k.sortKeywords();

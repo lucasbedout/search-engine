@@ -37,6 +37,7 @@ module.exports = {
             	});
 
     client.setEncoding('utf8');
+
 	client.on('data', function(data) {
         if (n == 0) {
             numberOfResults = parseInt(data);
@@ -46,7 +47,7 @@ module.exports = {
         else {
             completeData += data;
         }
-      })
+      });
 
     client.on('end', function() {
 
