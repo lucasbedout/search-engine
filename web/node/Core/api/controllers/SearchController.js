@@ -24,6 +24,7 @@ module.exports = {
   search: function(req, res) {
   	var words = req.param('search-words');
     var numberOfResults;
+    var completeData = '';
     var n = 0;
     var pages = new Array();
 
@@ -36,24 +37,30 @@ module.exports = {
             	});
 
     client.setEncoding('utf8');
-		client.on('data', function(data) {
-      if (n == 0) {
-        numberOfResults = parseInt(data);
-        console.log(numberOfResults + ' résultats trouvés');
-        n++;
-      } else {
-        var parts = data.split('||');
-        parts.pop();
-        var length = parts.length;
-        for (var i = 0; i < length; i++) {
-          console.log(parts[i]);
-          pages.push(JSON.parse(parts[i]));
-        };
-        res.view('search/results', {
-          'pages': pages,
-          'user': req.user });
+	client.on('data', function(data) {
+        if (n == 0) {
+            numberOfResults = parseInt(data);
+            console.log(numberOfResults + ' résultats trouvés');
+            n++;
+        }
+        else {
+            completeData += data;
         }
       })
+
+    client.on('end', function() {
+
+            var parts = completeData.split('|$');
+            parts.pop();
+            var length = parts.length;
+            for (var i = 0; i < length; i++) {
+                console.log(parts[i]);
+                pages.push(JSON.parse(parts[i]));
+            };
+            res.view('search/results', {
+                'pages': pages,
+                'user': req.user });
+    })
   },
 
   luck: function(req, res) {
