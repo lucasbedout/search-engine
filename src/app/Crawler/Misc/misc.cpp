@@ -122,7 +122,7 @@ vector<string> splitString(string content, char special_char){
     string word;
     vector<string> keywords;
     while (getline(ss, word, special_char)) {
-            removePunctuation(word);
+            //removePunctuation(word);
         if (!simpleWord(word))
             keywords.push_back(word);
     }

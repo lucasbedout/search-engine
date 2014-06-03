@@ -33,14 +33,16 @@ int main(int argc, char *argv[])
         {
             const int sizePage = allPage.vector::size();
 
-            for(int i = 0; i<sizePage; i++)
+            for(int i = 25; i<sizePage; i++)
                 sec.push_back(allPage[i].get_ID());
         }
 
         if(allPage.vector::size() >= 1)
             cout << to_JSON(true, allPage.vector::size(), 0, allPage, sec);
-
+        else 
+            cout << to_JSON(false, 0, 0, allPage, sec);
     }
+
     else
         cout << "You must enter parameters. Use : ./program <level> <keywords>";
 
