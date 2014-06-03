@@ -1,0 +1,31 @@
+#Documentation parser
+
+##Qu'est-ce qu'il fait ?
+-----------------------
+
+Il prend une page téléchargée et il la passe à tidy, puis ensuite à libxml++ pour naviguer à l'intérieur et en extraire les mots clés & textes nécessaires.
+
+##Qu'est-ce que fait Tidy ?
+-----------------------
+
+Tidy prend une string en paramètre (issue d'une page HTML), et la stylise en XML. Pour qu'elle puisse être utilisée par libxml++ ensuite.
+
+##Qu'est-ce que fait libxml++ ?
+-----------------------
+
+libxml++ permet de naviguer dans une string contenant un balisage XML.
+En effet pour cela on initialise un nouveau reader et on navigue via les propriétés :
+  - `reader.move_to_next_attribute()`
+  - `reader.get_value()`
+  - `reader.get_name()`
+Et si nous voulons un attribut : 
+  - `reader.has_attributes()`
+  - `reader.move_to_first_attribute()`
+  - `reader.get_value()`
+  - `reader.get_name()`
+
+Nous récupérons donc grace à ceci le titre, les descriptions, les H1, le plain_text, etc.
+Ensuite nous avons une fonction dans le misc.cpp qui nous permet d'associer une valeur à chaque partie du texte "H1" valeur 10, p valeur 2 etc.
+Pour stocker les mots clés, nous utilisons l'objet keywords dédié à cet usage
+
+Ceci nous permet de stocker les keywords avec des valeurs et donc d'optimiser les recherches.
