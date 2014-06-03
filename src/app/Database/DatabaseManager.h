@@ -58,7 +58,7 @@ public:
 
 	std::vector<Page> getPages(std::string keywords)
 	{
-		std::vector<std::string> search = splitString(keywords, ' ');
+		std::vector<std::string> search = splitKeywords(keywords, ' ');
 		std::vector<Page> pages;
 		std::vector<int> pages_id;
 
