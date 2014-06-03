@@ -136,6 +136,7 @@ void Parser::parseAll(){
         
 }        while (reader.read());
       }
+
       catch(const exception& e)
       {
         cerr << "Exception caught: " << e.what() << endl;
@@ -152,8 +153,10 @@ std::vector<string> Parser::parse(){
     k.sortKeywords();
     vector<string> k_tmp = k.getKeywords();
     vector<string> returned;
-    for(vector<string>::iterator it = k_tmp.begin(); it != k_tmp.begin()+20; ++it) {
+    for(vector<string>::iterator it = k_tmp.begin(); it != k_tmp.end(); ++it) {
         returned.push_back(*it);
+        if (it == k_tmp.begin() + 20)
+          break;
     }
     return returned;
 }
