@@ -106,7 +106,7 @@ std::vector<Page> ranked(std::string recherche, int level)
     return allPage;
 }
 
-string to_JSON(bool success, int size, int time, std::vector<Page> pages, std::vector<int> secundaries)
+string to_JSON(const bool success,const int size,const  int time, const std::vector<Page> &pages,const  std::vector<int> secundaries)
 {
     std::string output = "";
 
@@ -116,18 +116,18 @@ string to_JSON(bool success, int size, int time, std::vector<Page> pages, std::v
     // Ajout du succès
     if (success)
         output += "\"success\":true,";
-    else 
+    else
         output += "\"success\":false,";
 
     // Ajout de la taille et du temps
     // On convertit d'abord les données en string
     std::string size_string;
-    std::string time_string;      
+    std::string time_string;
     ostringstream convert_size;
-    ostringstream convert_time;  
+    ostringstream convert_time;
 
-    convert_size << size;      
-    size_string = convert_size.str(); 
+    convert_size << size;
+    size_string = convert_size.str();
     convert_time << time;
     time_string = convert_time.str();
 
@@ -166,7 +166,7 @@ string to_JSON(bool success, int size, int time, std::vector<Page> pages, std::v
 
     // On ferme le tableau, l'objet et la chaine JSON
     output += "] } }";
-    
+
     return output;
 }
 
