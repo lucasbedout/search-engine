@@ -101,12 +101,10 @@ std::vector<Page> ranked(std::string recherche, int level)
         std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
     }*/
 
-    std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
-
     return allPage;
 }
 
-string to_JSON(const bool success,const int size,const  int time, const std::vector<Page> &pages,const  std::vector<int> secundaries)
+string to_JSON(bool success, int size, int time, std::vector<Page>& pages, std::vector<int> secundaries)
 {
     std::string output = "";
 
@@ -158,7 +156,7 @@ string to_JSON(const bool success,const int size,const  int time, const std::vec
         convert_id << secundaries[j];
         id = convert_id.str();
 
-        output += "\"id\": " + id;
+        output += id;
 
         if (j < (size_secundaries - 1))
             output += ",";

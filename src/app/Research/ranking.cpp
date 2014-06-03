@@ -36,10 +36,8 @@ int main(int argc, char *argv[])
             for(int i = 0; i<sizePage; i++)
                 sec.push_back(allPage[i].get_ID());
         }
-        else
-            sec = null;
 
-        if(allPage != null && allPage.vector::size() >= 1)
+        if(allPage.vector::size() >= 1)
             cout << to_JSON(true, allPage.vector::size(), 0, allPage, sec);
 
     }
