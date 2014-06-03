@@ -15,7 +15,6 @@
  * @docs        :: http://sailsjs.org/#!documentation/controllers
  */
 
-// On va utiliser la lib net 
 
 var net = require('net');
 
@@ -25,42 +24,32 @@ module.exports = {
   	var words = req.param('search-words');
     var numberOfResults;
     var completeData = '';
-    var n = 0;
     var pages = new Array();
 
   	client = net.connect({
-          		port: 13,
+          		port: 3001,
           		host: '192.168.1.24'
           	}, function() {
-                client.write('2');
             		client.write(words);
             	});
 
     client.setEncoding('utf8');
 
 	client.on('data', function(data) {
-        if (n == 0) {
-            numberOfResults = parseInt(data);
-            console.log(numberOfResults + ' résultats trouvés');
-            n++;
-        }
-        else {
-            completeData += data;
-        }
-      });
+        completeData += data.toString().replace(/(\r\n|\n|\r)/gm," ");
+    });
 
     client.on('end', function() {
+        var search = JSON.parse(completeData);
+        var pages = new Array();
+        for (var i in search.search.results) {
+            pages.push(search.search.results[i]);
+            console.log(pages[i]);
+        }
 
-            var parts = completeData.split('|$');
-            parts.pop();
-            var length = parts.length;
-            for (var i = 0; i < length; i++) {
-                console.log(parts[i]);
-                pages.push(JSON.parse(parts[i]));
-            };
-            res.view('search/results', {
-                'pages': pages,
-                'user': req.user });
+        res.view('search/results', {
+            'pages': pages,
+            'user': req.user });
     })
   },
 

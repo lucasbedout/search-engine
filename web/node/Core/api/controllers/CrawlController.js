@@ -34,11 +34,16 @@ module.exports = {
         var url = req.param('url');
 
         var client = net.connect({
-            port: 13,
-            host: '192.168.1.12'
+            port: 12,
+            host: '192.168.1.24'
         }, function () {
             client.write(url);
+            console.log('Crawling url : ' + url);
         });
+
+        res.view('home/index', {
+            'user': req.user });
+
     }
 
 };
