@@ -45,7 +45,6 @@ public:
 				driver = get_driver_instance();
 				_conn = driver->connect(_host, _user, _pass);
 				_conn->setSchema(_database);
-				std::cout << "Connection ok on " << _host << std::endl;
 			} catch (sql::SQLException &e) {
 				std::cout << "# ERR: SQL Exception in " << __FILE__;
 				std::cout << "(" << __FUNCTION__ << ") on line " << __LINE__ << std::endl;

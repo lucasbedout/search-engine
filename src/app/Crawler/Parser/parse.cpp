@@ -63,7 +63,9 @@ void Parser::parseAll(){
                 plain_text += reader.get_value();
               }
             if (!title_of_page.compare("") && !current_node.compare("title")){
-              title_of_page = reader.get_value();
+              string tmp_str_title = reader.get_value();
+              replaceQuotes(tmp_str_title);
+              title_of_page = tmp_str_title;
               cout << "Title : " << title_of_page << endl;
               k.addWords(title_of_page, "meta");
               current_node = reader.get_name();
@@ -90,7 +92,9 @@ void Parser::parseAll(){
                 link = true;
               if (!reader.get_name().compare("content") && desc == true)
                 {
-                  description_of_page = reader.get_value();
+                  string tmp_str_desc = reader.get_value();
+                  replaceQuotes(tmp_str_desc);
+                  description_of_page = tmp_str_desc;
                   cout << "Description : " << description_of_page <<  endl;
                   k.addWords(description_of_page, "meta");
                   desc = false;
