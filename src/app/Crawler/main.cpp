@@ -8,6 +8,10 @@
 
 using namespace std;
 
-int main(){
-	Crawler c = Crawler("http://stackoverflow.com/"); 
+int main(int argc, char* argv[]){
+	string value_passed = "";
+	for(int i = 1; i < argc; i++) 
+		value_passed += argv[i];
+	Crawler c = new Crawler(value_passed);
+	return 0;
 }
