@@ -7,7 +7,7 @@
 
 using namespace std;
 
-//Création de la fonction value of type qui permettra d'assigner une valeur à un keyword
+//Crï¿½ation de la fonction value of type qui permettra d'assigner une valeur ï¿½ un keyword
 
 int findNth(string str, char c, int n){
     int pos = 0;
@@ -92,7 +92,7 @@ string extractHost(string url_in){
     return final_host;
 }
 
-//Création de la fonction qui va retirer la ponctuation des mots clé.
+//Crï¿½ation de la fonction qui va retirer la ponctuation des mots clï¿½.
 void removePunctuation(string &keyword){
     string result_space;
     string result;
@@ -113,7 +113,7 @@ bool simpleWord(string keyword){
     bool test = true;
     if(keyword.size()>3)
         test = false;
-    return test; // La fonction reste à élaborder. C'est pour le moment trop basique
+    return test; // La fonction reste ï¿½ ï¿½laborder. C'est pour le moment trop basique
 }
 
 
@@ -123,8 +123,6 @@ vector<string> splitString(string content, char special_char){
     vector<string> keywords;
     while (getline(ss, word, special_char)) {
             removePunctuation(word);
-        if (!simpleWord(word))
-            keywords.push_back(word);
     }
     return keywords;
 }
