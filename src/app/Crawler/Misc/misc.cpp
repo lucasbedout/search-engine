@@ -45,6 +45,17 @@ int valueOfType(string type){
     return value;
 }
 
+void replaceQuotes(string& string_to_change){
+    string from = "\"";
+    string to = "\\\"";
+    size_t start_pos = 0;
+    while((start_pos = string_to_change.find(from, start_pos)) != std::string::npos) {
+        size_t end_pos = start_pos + from.length();
+        string_to_change.replace(start_pos, end_pos, to);
+        start_pos += to.length();
+    }
+}
+
 bool has_suffix(const std::string &str, const std::string &suffix)
 {
     return str.size() >= suffix.size() &&
