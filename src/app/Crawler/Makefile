@@ -4,7 +4,7 @@ LBFLAGS= -I /usr/include/boost -lboost_system -lmysqlcppconn
 
 # création de l'exécutable 
 all: file.o keywords.o misc.o page.o parse.o crawler.o network.o
-		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o network.o $(LDFLAGS) $(CXXFLAGS) -g
+		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o network.o $(LDFLAGS) $(CXXFLAGS) $(LBFLAGS) -g
  
 file.o: File/file.cpp File/file.h
 		g++ -c File/file.cpp -o file.o

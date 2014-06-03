@@ -8,6 +8,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 #include <boost/asio.hpp>
+#include <boost/thread.hpp>
 
 #include "Crawl/crawler.h"
 #include "../Database/DatabaseManager.h"
@@ -33,10 +34,13 @@ public:
 
 	void start()
 	{
+		//reçois une string
 		char url[MAX_BUFFER_URL]="";
 		boost::system::error_code error;
 
-		socket_.read_some(boost::asio::buffer(url), error); 
+		socket_.read_some(boost::asio::buffer(url), error); // reçois le type de recherche
+
+		//Lance le crawler dans un thread
 		crawling(url);
 	}
 
