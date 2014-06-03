@@ -5,100 +5,174 @@
 #include <cstdlib>
 #include <ctime>
 #include <limits>
+#include <sstream>
 
 #include "../Crawler/Page/page.h"
 #include "../Database/DatabaseManager.h"
 
-std::vector<Page> ranked(std::string recherche, int level); // Va chercher dans la base de donnée les pages, sort les mots clé dans la chaine de recherche
+std::vector<Page> ranked(std::string recherche, int level); // Va chercher dans la base de donnÈe les pages, sort les mots clÈ dans la chaine de recherche
 int nbWord(const std::string& chaine,const std::string& word,const int& level); // Compte le nombre de mot (3 niveaux)
 void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch); //Attribue un score puis trie
-void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b); //échange les pages a et b ainsi que le score a et b
+void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b); //Èchange les pages a et b ainsi que le score a et b
 void quickSort(int tableau[],std::vector<Page>& page,const int& debut,const int& fin); //Trie les pages en fonction du score
-std::string lowerString(const std::string& str); //Met une chaine de charactère en minuscule
+std::string lowerString(const std::string& str); //Met une chaine de charactËre en minuscule
 
 std::vector<Page> ranked(std::string recherche, int level)
 {
-	//on obtient la recherche user
-	std::string word = "";
-	std::vector<std::string> keywordSearch;
+    //on obtient la recherche user
+    std::string word = "";
+    std::vector<std::string> keywordSearch;
 
-	for (int i = 0; recherche[i] != '\0'; i++)
-	{
-		if (recherche[i] == ' ')
-		{
-			word.push_back('\0');
-			keywordSearch.push_back(word);
-			word.clear();
-		}
-		else
-			word.push_back(recherche[i]);
-	}
-	word.push_back('\0');
-	keywordSearch.push_back(word);
-	word.clear();
+    for (int i = 0; recherche[i] != '\0'; i++)
+    {
+        if (recherche[i] == ' ')
+        {
+            word.push_back('\0');
+            keywordSearch.push_back(word);
+            word.clear();
+        }
+        else
+            word.push_back(recherche[i]);
+    }
+    word.push_back('\0');
+    keywordSearch.push_back(word);
+    word.clear();
 
-	//initialisation du temps
-	srand(time(0));
-	clock_t t;
-	t = clock();
+    //initialisation du temps
+    srand(time(0));
+    clock_t t;
+    t = clock();
 
-	/*---------CREATION PAGE-----------*/
-	std::vector<Page> allPage;
-	std::vector<Page> result;
+    /*---------CREATION PAGE-----------*/
+    std::vector<Page> allPage;
+    std::vector<Page> result;
 
-	//BASE DE DONNEE
+    //BASE DE DONNEE
     //connexion et reccuperation des pages
     DatabaseManager manager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
     allPage = manager.getPages(recherche);
 
-    /*
-	//page 1 : Sur le traitement des bateaux
-	std::vector<std::string> listWord;
-	std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !", descripPage = "Test1";
-	listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation"); listWord.push_back("Hexa");
-	allPage.push_back(Page(1, listWord, textPage, titrePage, urlPage, descripPage));
 
-	//page 2 : informatique
-	titrePage = "Informatique pour geek", urlPage = "http://www.geek.com", textPage = "Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.", descripPage = "Test2";
-	listWord.clear();
-	listWord.push_back("informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool"); listWord.push_back("Gone");
-	allPage.push_back(Page(2, listWord, textPage, titrePage, urlPage, descripPage));
+    //page 1 : Sur le traitement des bateaux
+    /*std::vector<std::string> listWord;
+    std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !", descripPage = "Test1";
+    listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation"); listWord.push_back("Hexa");
+    allPage.push_back(Page(1,listWord, textPage, titrePage, urlPage, descripPage));
 
-	//page 3 : Jardin
-	titrePage = "Main verte du jardin enchante", urlPage = "http://www.jardin.com", textPage = "Un Jardin c'est la vie au plein air, c est vraiment le futur de toute maison.", descripPage = "Test3";
-	listWord.clear();
-	listWord.push_back("Jardin"); listWord.push_back("Vert"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("fun");
-	allPage.push_back(Page(3, listWord, textPage, titrePage, urlPage, descripPage));
+    //page 2 : informatique
+    titrePage = "Informatique pour geek", urlPage = "http://www.geek.com", textPage = "Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.", descripPage = "Test2";
+    listWord.clear();
+    listWord.push_back("informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool"); listWord.push_back("Gone");
+    allPage.push_back(Page(2,listWord, textPage, titrePage, urlPage, descripPage));
 
-	//page 4 : Futur
-	titrePage = "Le futur du monde dans nos main", urlPage = "http://www.futur.com", textPage = "Le futur est notre avenir, nous devons y croire et aider.", descripPage = "Test4";
-	listWord.clear();
-	listWord.push_back("Futur"); listWord.push_back("Avenir"); listWord.push_back("Espoir"); listWord.push_back("Univer");
-	allPage.push_back(Page(4, listWord, textPage, titrePage, urlPage, descripPage));
+    //page 3 : Jardin
+    titrePage = "Main verte du jardin enchante", urlPage = "http://www.jardin.com", textPage = "Un Jardin c'est la vie au plein air, c est vraiment le futur de toute maison.", descripPage = "Test3";
+    listWord.clear();
+    listWord.push_back("Jardin"); listWord.push_back("Vert"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("fun");
+    allPage.push_back(Page(3,listWord, textPage, titrePage, urlPage, descripPage));
 
-	//page 2 : feu
-	titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.", descripPage = "Test5";
-	listWord.clear();
-	listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
-	allPage.push_back(Page(5, listWord, textPage, titrePage, urlPage, descripPage));
-    */
-	/*--------FIN---------------------*/
+    //page 4 : Futur
+    titrePage = "Le futur du monde dans nos main", urlPage = "http://www.futur.com", textPage = "Le futur est notre avenir, nous devons y croire et aider.", descripPage = "Test4";
+    listWord.clear();
+    listWord.push_back("Futur"); listWord.push_back("Avenir"); listWord.push_back("Espoir"); listWord.push_back("Univer");
+    allPage.push_back(Page(4,listWord, textPage, titrePage, urlPage, descripPage));
 
-	ranking(allPage, keywordSearch, level);
+    //page 2 : feu
+    titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.", descripPage = "Test5";
+    listWord.clear();
+    listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
+    allPage.push_back(Page(5,listWord, textPage, titrePage, urlPage, descripPage));
 
-	const int sizePage = allPage.size();
-	for (int i = 0; i < sizePage; i++)
-	{
-		//std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
-	}
+    for(int z=0;z<300;z++)
+    {
+        titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.", descripPage = "Test5";
+        listWord.clear();
+        listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
+        allPage.push_back(Page(z+5,listWord, textPage, titrePage, urlPage, descripPage));
+    }*/
 
-	std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
+    /*--------FIN---------------------*/
 
-	return allPage;
+    ranking(allPage, keywordSearch, level);
+
+    const int sizePage = allPage.size();
+    /*for (int i = 0; i < sizePage; i++)
+    {
+        std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
+    }*/
+
+    std::cout << "Temps prit : " << (clock() - t) << "ms" << std::endl;
+
+    return allPage;
+}
+
+string to_JSON(bool success, int size, int time, std::vector<Page> pages, std::vector<int> secundaries)
+{
+    std::string output = "";
+
+    // On crée l'objet JSON
+    output += "{ \"search\": {";
+
+    // Ajout du succès
+    if (success)
+        output += "\"success\":true,";
+    else 
+        output += "\"success\":false,";
+
+    // Ajout de la taille et du temps
+    // On convertit d'abord les données en string
+    std::string size_string;
+    std::string time_string;      
+    ostringstream convert_size;
+    ostringstream convert_time;  
+
+    convert_size << size;      
+    size_string = convert_size.str(); 
+    convert_time << time;
+    time_string = convert_time.str();
+
+    output += "\"size\":" + size_string + ",";
+    output += "\"time\":" + time_string + ",";
+
+    // On crée le premier tableau de pages
+    output += "\"results\": [";
+
+    // On y ajoute chaque page du vecteur de page
+    for (int i = 0 ; i < 25 ; i++)
+    {
+        output += pages[i].to_JSON();
+        if (i < 24)
+            output += ",";
+    }
+
+    output += "],";
+
+    // On crée ensuite le tableau des ID restantes
+    output += "\"secundaries\": [";
+    int size_secundaries = secundaries.size();
+
+    for (int j = 0 ; j < size_secundaries ; j++)
+    {
+        std::string id;
+        ostringstream convert_id;
+        convert_id << secundaries[j];
+        id = convert_id.str();
+
+        output += "\"id\": " + id;
+
+        if (j < (size_secundaries - 1))
+            output += ",";
+    }
+
+    // On ferme le tableau, l'objet et la chaine JSON
+    output += "] } }";
+    
+    return output;
 }
 
 void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b)
 {
+    try{
         //page temporaire
         Page tmp = page.at(a);
 
@@ -110,7 +184,10 @@ void swapPage(int tableau[], std::vector<Page>& page,const int& a,const int& b)
         //Trie page
         page.at(a) = page.at(b);
         page.at(b) = tmp;
-
+    }catch(std::exception &e)
+    {
+        std::cout << e.what();
+    }
 
 }
 
@@ -178,7 +255,7 @@ int nbWord(const std::string& chaine,const std::string& word,const int& level)
             }
         }
     }
-    //si il est modéré
+    //si il est modÈrÈ
     else if(level == 2)
     {
         std::string chaineLow(lowerString(chaine)), wordLow(lowerString(word));
@@ -213,7 +290,7 @@ int nbWord(const std::string& chaine,const std::string& word,const int& level)
         {
             for(int iw = 0; iw < minSize+1; iw++) //on parcour le word
             {
-                if(chaineLow[i] == wordLow[iw]) //Si la première lettre est identique
+                if(chaineLow[i] == wordLow[iw]) //Si la premiËre lettre est identique
                 {
                     chaineBin[i] = true;
                     for(j = 1; wordLow[j+iw] != '\0' && chaineLow[i+j] != '\0' && chaineBin[i+j-1] == true; j++) //on compare
@@ -233,14 +310,12 @@ int nbWord(const std::string& chaine,const std::string& word,const int& level)
                 for(int z = 0; z < maxi; z++)
                     chaineBin[i+z] = false;
             }
-            else //si la chaine identique la plus longue est supérieur ou égal a la moitier du word
+            else //si la chaine identique la plus longue est supÈrieur ou Ègal a la moitier du word
             {
                 i += maxi - 1;
                 nb++;
             }
         }
-
-
     }
 
     return nb;
@@ -248,8 +323,8 @@ int nbWord(const std::string& chaine,const std::string& word,const int& level)
 
 void ranking(std::vector<Page>& pageFound,std::vector<std::string>& rechercheUser,const int& lvlSrch)
 {
-	//Alocation dynamique du score en fonction du nombre de page
-	int *score = new int[rechercheUser.size() + 1];
+    //Alocation dynamique du score en fonction du nombre de page
+    int *score = new int[pageFound.size() + 1];
     const int coefTitle = 16, coefDomaineName = 8, coefKeyword = 4, coefUrl = 2, coefText = 1, sizePage = pageFound.size();
     const int sizeSearch = rechercheUser.size();
 
@@ -313,7 +388,7 @@ void searchDichotomique(const int& sizeTab,const int *score,const int& value)
     int pos = 0;
     for( pos = (int)(sizeTab/2); pos >= 0 && pos < sizeTab && score[pos] != value; (score[pos] > value) ? pos += (sizeTab-pos)/2 : pos -= (sizeTab-pos)/2);
 
-    //Si il y a des doublons de valeur, on recherche la place de la première valeur aparraissante
+    //Si il y a des doublons de valeur, on recherche la place de la premiËre valeur aparraissante
 
 }*/
 
