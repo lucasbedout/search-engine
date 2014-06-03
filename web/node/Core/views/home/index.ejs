@@ -4,7 +4,7 @@
 			<% if (!user) { %>		
 				<%- partial('../auth/partials/form.ejs') %>
 			<% } else { %>
-				<span class="username">Hello, <%= user.username%></span><button onclick="window.location.href='/logout';" class="btn btn-red">Logout</button>
+				<button onclick="window.location.href='/crawl';" class="btn btn-green">Crawler</button><button onclick="window.location.href='/logout';" class="btn btn-red">Logout</button>
 			<% } %>
 		</div>
 	</div>

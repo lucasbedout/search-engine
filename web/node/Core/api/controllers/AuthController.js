@@ -42,7 +42,8 @@ module.exports = {
     // Déconnexion de l'utilisateur
     logout: function (req, res) {
     	req.logout();
-        res.redirect('/');
+        res.view('home/index', {
+            'user': req.user });
     }  
 };
 

@@ -44,7 +44,11 @@ module.exports.routes = {
 
   // Search routes
   'get /search': 'SearchController.search',
-  'get /lucky' : 'SearchController.luck'
+  'get /lucky' : 'SearchController.luck',
+
+    // Crawl route
+    'get /crawl': 'CrawlController.index',
+    'post /crawl': 'CrawlController.crawl'
   /*
   // But what if you want your home page to display
   // a signup form located at `views/user/signup.ejs`?
