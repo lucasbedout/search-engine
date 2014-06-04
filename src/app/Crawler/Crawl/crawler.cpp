@@ -79,12 +79,12 @@ void Crawler::crawl(){
 		{
 			//cout << "starting download ..." << endl;
 
+
 			string tmp = downloadFile(_url[i]); //Downloading the file
 			if (tmp != ""){//Checking if page contains something
 
-				//cout << "starting new page : " << _url[i] << endl;
-
 				cout << endl << "crawling : " << _url[i] << endl << "-----------------------------" << endl << endl;
+				//cout << "starting new page : " << _url[i] << endl;
 
 				Page p = Page(_url[i],tmp);  //Creating a new Page with URL & Content downloaded of the page.
 
@@ -105,10 +105,6 @@ void Crawler::crawl(){
 		        		}
 		        }
 
-		        for (int i = 0; i < _url.size(); i++){
-		        	cout << "url : " << _url[i] << endl;
-		        }
-
 		        if (p.get_title() == ""){
 	        		p.set_title(p.get_url()); //Check the title
 		        }
@@ -122,8 +118,8 @@ void Crawler::crawl(){
 
 	        	cout << endl << "+++++++++++++++++++++++" << endl << endl;
 
-				/*DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
-				manager.savePage(p);*/
+				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
+				manager.savePage(p);
 		    }
 	    }
 	    crawling = false;
@@ -147,6 +143,7 @@ string Crawler::downloadFile(string url){
 	curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 	curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &readBuffer);
+    curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,true);
 
 	// Perform the request, res will get the return code 
 	res = curl_easy_perform(curl);

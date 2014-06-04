@@ -119,7 +119,6 @@ void Parser::parseAll(){
                         && reader.get_value().find(url) != std::string::npos
                         && reader.get_value().find(url) != 0)
                         {
-                          cout << "pos = " << reader.get_value().find(url) << endl << reader.get_value() << endl;
                           links.push_back(reader.get_value());
                         }
                       else if (reader.get_value().find("http://") == std::string::npos 
