@@ -26,6 +26,7 @@ module.exports = {
             user: req.user
         });
         else res.view('home/index', {
+            'error': '',
             'user': req.user });
 
     },
@@ -38,10 +39,13 @@ module.exports = {
             host: '192.168.1.24'
         }, function () {
             client.write(url);
-            console.log('Crawling url : ' + url);
+
+            // On delete le cache pour remettre à jour les recherches
+            Search.destroy({ id: { '>': 0 }}).exec(function(err){});
         });
 
         res.view('home/index', {
+            'error': '',
             'user': req.user });
 
     }

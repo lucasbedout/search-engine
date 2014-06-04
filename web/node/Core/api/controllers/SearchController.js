@@ -22,65 +22,92 @@ module.exports = {
     
   search: function(req, res) {
   	var words = req.param('search-words');
-    var numberOfResults;
     var completeData = '';
     var pages = new Array();
     var start = Date.now();
 
-  	client = net.connect({
-          		port: 3001,
-          		host: '192.168.1.24'
-          	}, function() {
-            		client.write(words);
-            	});
+    // Avant tout on teste si une recherche n'a pas été faite avec ces mots clés
+    Search.find()
+        .where({ keywords: words})
+        .sort('id desc')
+        .exec(function(err, search) {
+            if (search.length)
+            {
+                completeData = search[0].result;
+                var search_result = JSON.parse(completeData);
+                console.log(search);
+                var pages = new Array();
 
-    client.setEncoding('utf8');
-
-	client.on('data', function(data) {
-        completeData += data.toString().replace(/(\r\n|\n|\r)/gm," ");
-    });
-
-    client.on('end', function() {
-        var search = JSON.parse(completeData);
-        var pages = new Array();
-        if (!search.search.success)
-        {
-            res.view('home/index', {
-                error: 'No result found',
-                user: req.user
-            });
-        } else {
-
-            for (var i in search.search.results) {
-                pages.push(search.search.results[i]);
-            }
-
-            var end = Date.now();
-            var elapsed = (end - start) / 1000;
-
-            Search.create({
-                keywords: words,
-                result: completeData,
-                time: elapsed
-            }).done(function(err, search) {
-                if (err) {
-                    res.view('home/index', {
-                        error: 'Impossible to connect the database',
-                        user: req.user
-                    });
-                } else {
-                    res.view('search/results', {
-                        'length': 25,
-                        'search_id': search.id,
-                        'keywords': words,
-                        'pages': pages,
-                        'elapsed': elapsed,
-                        'user': req.user
-                    });
+                for (var i in search_result.search.results) {
+                    pages.push(search_result.search.results[i]);
                 }
-            })
-        }
-    })
+                var end = Date.now();
+                var elapsed = (end - start) / 1000;
+                res.view('search/results', {
+                    'length': 25,
+                    'search_id': search[0].id,
+                    'keywords': words,
+                    'pages': pages,
+                    'elapsed': elapsed,
+                    'user': req.user
+                });
+            } else {
+                client = net.connect({
+                    port: 3001,
+                    host: '192.168.1.24'
+                }, function() {
+                    client.write(words);
+                });
+
+                client.setEncoding('utf8');
+
+                client.on('data', function(data) {
+                    completeData += data.toString().replace(/(\r\n|\n|\r)/gm," ");
+                });
+
+                client.on('end', function() {
+                    var search = JSON.parse(completeData);
+                    var pages = new Array();
+                    if (!search.search.success)
+                    {
+                        res.view('home/index', {
+                            error: 'No result found',
+                            user: req.user
+                        });
+                    } else {
+
+                        for (var i in search.search.results) {
+                            pages.push(search.search.results[i]);
+                        }
+
+                        var end = Date.now();
+                        var elapsed = (end - start) / 1000;
+
+                        Search.create({
+                            keywords: words,
+                            result: completeData,
+                            time: elapsed
+                        }).done(function(err, search) {
+                            if (err) {
+                                res.view('home/index', {
+                                    error: 'Impossible to connect the database',
+                                    user: req.user
+                                });
+                            } else {
+                                res.view('search/results', {
+                                    'length': 25,
+                                    'search_id': search.id,
+                                    'keywords': words,
+                                    'pages': pages,
+                                    'elapsed': elapsed,
+                                    'user': req.user
+                                });
+                            }
+                        })
+                    }
+                })
+            }
+        });
   },
 
   luck: function(req, res) {
