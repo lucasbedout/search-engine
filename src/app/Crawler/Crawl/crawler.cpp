@@ -110,16 +110,27 @@ void Crawler::crawl(){
 		        }
 
 		        if (p.get_description() == ""){ //Check the description
+		        	string tmp_desc = p.get_plain_text();
+		        	string from = "\n";
+				    string to = " ";
+				    size_t start_pos = 0;
+				    size_t end_pos = 0;
+				    while((start_pos = tmp_desc.find(from, start_pos)) != std::string::npos) {
+				        size_t end_pos = start_pos + from.length();
+				        tmp_desc.replace(start_pos, end_pos, to);
+				        start_pos = 0;
+				    }
+				    p.set_plain_text(tmp_desc);
 		        	p.set_description(p.get_plain_text().substr(0,200));
 		        }
 
-		        /*cout << "title : " << p.get_title() << endl;
-		        cout << "description : " << p.get_description() << endl;*/
+		        cout << "title : " << p.get_title() << endl;
+		        cout << "description : " << p.get_description() << endl;
 
 	        	cout << endl << "+++++++++++++++++++++++" << endl << endl;
 
-				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
-				manager.savePage(p);
+				/*DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
+				manager.savePage(p);*/
 		    }
 	    }
 	    crawling = false;
