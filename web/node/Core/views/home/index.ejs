@@ -10,4 +10,11 @@
 	</div>
 </header>
 <div id="logo"></div>
-<%- partial('../search/partials/form.ejs') %>
+<%- partial('../search/partials/form.ejs',{words: ''}) %>
+<div id="notifications">
+    <% if (error) { %>
+    <div class="error-box">
+        <%= error %>
+    </div>
+    <% } %>
+</div>

@@ -2,7 +2,7 @@
 	<div id="topbar">
 		<div id="logo"></div>
 		<div id="search-form">
-			<%- partial('partials/form.ejs') %>
+			<%- partial('partials/form.ejs', {words: keywords}) %>
 		</div>
 		<div id="login">
 			<% if (!user) { %>		
@@ -14,7 +14,7 @@
 	</div>
 </header>
 <div id="content">
-<h1>Résultats de votre recherche</h1>
+<h1>Résultats de votre recherche (Durée : <%= elapsed %> )</h1>
 	<% _.each(pages, function(page)  { %>
 	<a href="<%= page.url %>">
 		<div class="page-box">
@@ -24,4 +24,10 @@
 		</div>
 	</a>
 	<% }); %>
+</div>
+<div id="more-results">
+    <% if (length >= 50) { %>
+    <a href="/more?id=<%= search_id %>&from=<%= (length - 50) %>" class="btn btn-blue">Previous page</a>
+    <% } %>
+    <a href="/more?id=<%= search_id %>&from=<%= length %>" class="btn btn-green">Next page</a>
 </div>

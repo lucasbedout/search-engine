@@ -1,5 +1,5 @@
 /**
- * HomeController
+ * PageController
  *
  * @module      :: Controller
  * @description	:: A set of functions called `actions`.
@@ -16,12 +16,10 @@
  */
 
 module.exports = {
-    index: function(req, res) {
-    	if (req.user)
-    		console.log(req.user.username);
-    	res.view({
-    		user: req.user,
-            error: ''
-    	});
-    }
+
+  /**
+   * Overrides for the settings in `config/controllers.js`
+   * (specific to PageController)
+   */
+  _config: {}
 };
