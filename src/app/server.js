@@ -22,7 +22,7 @@ function onRequest_crawl (socket) {
     socket.on('data', function(data) {
         url = data.toString();
         console.log(url);
-        crawl = exec('./Crawler/test ' + url);
+        crawl = exec('./Crawler/crawler ' + url);
     });
 
     socket.end();
