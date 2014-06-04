@@ -3,7 +3,7 @@ LDFLAGS= -L/usr/local/lib -ltidy -lcurl -lmysqlcppconn
 
 # création de l'exécutable 
 all: file.o keywords.o misc.o page.o parse.o crawler.o main.o
-		g++ -o test file.o keywords.o misc.o page.o parse.o crawler.o main.o $(LDFLAGS) $(CXXFLAGS) 
+		g++ -o crawler file.o keywords.o misc.o page.o parse.o crawler.o main.o $(LDFLAGS) $(CXXFLAGS) 
  
 file.o: File/file.cpp File/file.h
 		g++ -c File/file.cpp -o file.o
