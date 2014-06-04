@@ -52,54 +52,11 @@ std::vector<Page> ranked(std::string recherche, int level)
     DatabaseManager manager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine");
     allPage = manager.getPages(recherche);
 
-
-    //page 1 : Sur le traitement des bateaux
-    /*std::vector<std::string> listWord;
-    std::string titrePage = "Les bateaux sont cool.", urlPage = "http://www.bateau-cool.com", textPage = "Venez voir mes bateaux carrement classe. Venez les tester, la vie est cool !", descripPage = "Test1";
-    listWord.push_back("Bateau"); listWord.push_back("Ocean"); listWord.push_back("Navigation"); listWord.push_back("Hexa");
-    allPage.push_back(Page(1,listWord, textPage, titrePage, urlPage, descripPage));
-
-    //page 2 : informatique
-    titrePage = "Informatique pour geek", urlPage = "http://www.geek.com", textPage = "Un geek aime l informatique car l informatique c est le futur. Le futur est notre maitre.", descripPage = "Test2";
-    listWord.clear();
-    listWord.push_back("informatique"); listWord.push_back("Geek"); listWord.push_back("futur"); listWord.push_back("cheat"); listWord.push_back("cool"); listWord.push_back("Gone");
-    allPage.push_back(Page(2,listWord, textPage, titrePage, urlPage, descripPage));
-
-    //page 3 : Jardin
-    titrePage = "Main verte du jardin enchante", urlPage = "http://www.jardin.com", textPage = "Un Jardin c'est la vie au plein air, c est vraiment le futur de toute maison.", descripPage = "Test3";
-    listWord.clear();
-    listWord.push_back("Jardin"); listWord.push_back("Vert"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("fun");
-    allPage.push_back(Page(3,listWord, textPage, titrePage, urlPage, descripPage));
-
-    //page 4 : Futur
-    titrePage = "Le futur du monde dans nos main", urlPage = "http://www.futur.com", textPage = "Le futur est notre avenir, nous devons y croire et aider.", descripPage = "Test4";
-    listWord.clear();
-    listWord.push_back("Futur"); listWord.push_back("Avenir"); listWord.push_back("Espoir"); listWord.push_back("Univer");
-    allPage.push_back(Page(4,listWord, textPage, titrePage, urlPage, descripPage));
-
-    //page 2 : feu
-    titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.", descripPage = "Test5";
-    listWord.clear();
-    listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
-    allPage.push_back(Page(5,listWord, textPage, titrePage, urlPage, descripPage));
-
-    for(int z=0;z<300;z++)
-    {
-        titrePage = "Feu brulant si etincelant", urlPage = "http://www.feu-for-ever.com", textPage = "Le feu est un ellement sacre de notre chere planette Terre.", descripPage = "Test5";
-        listWord.clear();
-        listWord.push_back("Feu"); listWord.push_back("Brulant"); listWord.push_back("Beau"); listWord.push_back("Nature"); listWord.push_back("Etincelant");
-        allPage.push_back(Page(z+5,listWord, textPage, titrePage, urlPage, descripPage));
-    }*/
-
     /*--------FIN---------------------*/
 
     ranking(allPage, keywordSearch, level);
 
     const int sizePage = allPage.size();
-    /*for (int i = 0; i < sizePage; i++)
-    {
-        std::cout << "Number " << i + 1 << " : " << allPage[i].get_title() << std::endl;
-    }*/
 
     return allPage;
 }
@@ -115,7 +72,11 @@ string to_JSON(bool success, int size, int time, std::vector<Page>& pages, std::
     if (success)
         output += "\"success\":true,";
     else
-        output += "\"success\":false,";
+    {
+        output += "\"success\":false";
+        output += "}}";
+        return output;
+    }
 
     // Ajout de la taille et du temps
     // On convertit d'abord les données en string
@@ -135,12 +96,17 @@ string to_JSON(bool success, int size, int time, std::vector<Page>& pages, std::
     // On crée le premier tableau de pages
     output += "\"results\": [";
 
+    int pages_size = pages.size() > 25 ? 25 : pages.size();
+
     // On y ajoute chaque page du vecteur de page
-    for (int i = 0 ; i < 25 ; i++)
+    for (int i = 0 ; i < pages_size ; i++)
     {
         output += pages[i].to_JSON();
-        if (i < 24)
+
+        if (i < (pages_size - 1))
             output += ",";
+        else 
+            break;
     }
 
     output += "],";

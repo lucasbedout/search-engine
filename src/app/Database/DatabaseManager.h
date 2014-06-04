@@ -70,7 +70,7 @@ public:
 		for(int i = 0 ; i < keywords_size ; i++) 
 		{
 			try {
- 				stmt = _conn->prepareStatement("SELECT id, title, description, url, keywords FROM pages WHERE content LIKE ? LIMIT 25");
+ 				stmt = _conn->prepareStatement("SELECT id, title, description, url, keywords FROM pages WHERE content LIKE ?");
 				stmt->setString(1, "%" + search[i] + "%");
 				res = stmt->executeQuery();
 				while(res->next())
