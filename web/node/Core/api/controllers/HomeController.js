@@ -20,7 +20,8 @@ module.exports = {
     	if (req.user)
     		console.log(req.user.username);
     	res.view({
-    		user: req.user
+    		user: req.user,
+            error: ''
     	});
     }
 };

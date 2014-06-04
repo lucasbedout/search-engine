@@ -34,7 +34,7 @@ module.exports = {
         var url = req.param('url');
 
         var client = net.connect({
-            port: 12,
+            port: 3002,
             host: '192.168.1.24'
         }, function () {
             client.write(url);

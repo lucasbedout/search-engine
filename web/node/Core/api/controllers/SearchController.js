@@ -25,6 +25,7 @@ module.exports = {
     var numberOfResults;
     var completeData = '';
     var pages = new Array();
+    var start = Date.now();
 
   	client = net.connect({
           		port: 3001,
@@ -42,32 +43,66 @@ module.exports = {
     client.on('end', function() {
         var search = JSON.parse(completeData);
         var pages = new Array();
-        for (var i in search.search.results) {
-            pages.push(search.search.results[i]);
-            console.log(pages[i]);
-        }
+        if (!search.search.success)
+        {
+            res.view('home/index', {
+                error: 'No result found',
+                user: req.user
+            });
+        } else {
 
-        res.view('search/results', {
-            'pages': pages,
-            'user': req.user });
+            for (var i in search.search.results) {
+                pages.push(search.search.results[i]);
+                console.log(pages[i]);
+            }
+
+            var end = Date.now();
+            var elapsed = (end - start) / 1000;
+
+            res.view('search/results', {
+                'keywords': words,
+                'pages': pages,
+                'elapsed': elapsed,
+                'user': req.user
+            });
+        }
     })
   },
 
   luck: function(req, res) {
-  	var words = req.param('search-words');
-  		client = net.connect({
-  			port: 13,
-  			host: '192.168.1.24'
-  		}, function() {
-        client.write('2');
-  			client.write(words);
-  		});
+      var words = req.param('search-words');
+      var completeData = '';
+      var pages = new Array();
 
-  		client.on('data', function(data) {
-  			console.log(data.toString());
-  		})
-  	console.log('Alors, on veut de la chance ?');
-  	res.redirect('/');
+      client = net.connect({
+          port: 3001,
+          host: '192.168.1.24'
+      }, function() {
+          client.write(words);
+      });
+
+      client.setEncoding('utf8');
+
+      client.on('data', function(data) {
+          completeData += data.toString().replace(/(\r\n|\n|\r)/gm," ");
+      });
+
+      client.on('end', function() {
+          var search = JSON.parse(completeData);
+          var pages = new Array();
+          if (!search.search.success)
+          {
+              res.redirect('/');
+          }
+
+          for (var i in search.search.results) {
+              pages.push(search.search.results[i]);
+              console.log(pages[i]);
+          }
+
+          var page = pages[0];
+          console.log(page.url);
+          res.redirect(page.url);
+      })
   }
-
 };
