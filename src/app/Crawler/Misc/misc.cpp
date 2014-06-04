@@ -7,7 +7,7 @@
 
 using namespace std;
 
-//Crï¿½ation de la fonction value of type qui permettra d'assigner une valeur ï¿½ un keyword
+//Création de la fonction value of type qui permettra d'assigner une valeur à un keyword
 
 int findNth(string str, char c, int n){
     int pos = 0;
@@ -63,6 +63,36 @@ void replaceQuotes(string& string_to_change){
     }
 }
 
+void removeComments(string& string_to_change){
+    string from = "<!-";
+    string to = "->";
+    size_t start_pos = 1;
+    size_t end_pos = 0;
+    while((start_pos = string_to_change.find(from, start_pos)) != std::string::npos) {
+        end_pos = string_to_change.find(to, end_pos);
+        string_to_change.replace(start_pos, end_pos-start_pos+2, "");
+        end_pos = 0;
+    }
+    from = "<script";
+    to = "</script>";
+    start_pos = 1;
+    end_pos = 0;
+    while((start_pos = string_to_change.find(from, start_pos)) != std::string::npos) {
+        end_pos = string_to_change.find(to, end_pos);
+        string_to_change.replace(start_pos, end_pos-start_pos+9, "");
+        end_pos = 0;
+    }
+    from = "<!D";
+    to = ">";
+    start_pos = 0;
+    end_pos = 0;
+
+    if(start_pos = string_to_change.find(from, start_pos) != std::string::npos){
+    end_pos = string_to_change.find(to, end_pos);
+    string_to_change.replace(start_pos, end_pos-start_pos+1, "<!DOCTYPE html>");
+    end_pos = 0;}
+}
+
 bool has_suffix(const std::string &str, const std::string &suffix)
 {
     return str.size() >= suffix.size() &&
@@ -86,20 +116,32 @@ string removeWhiteSpaces(string text){
     return text;
 }
 
+string getHttp(string url_in){
+    string final_host;
+    int pos;
+    if (url_in.find("http://") == 0){
+        final_host = "http://";
+    }
+    else{
+        final_host = "https://";
+    }
+    return final_host;
+}
+
 string extractHost(string url_in){
     string final_host;
     int pos;
     url_in = url_in + "/";
     if (url_in.find("http://") == 0){
-        final_host = url_in.substr(0,findNth(url_in, '/',3));
+        final_host = url_in.substr(7,findNth(url_in, '/',3)-7);
     }
-    else{
-        final_host = "";
+    else if (url_in.find("https://") == 0){
+        final_host = url_in.substr(8,findNth(url_in, '/',3)-8);
     }
     return final_host;
 }
 
-//Crï¿½ation de la fonction qui va retirer la ponctuation des mots clï¿½.
+//Création de la fonction qui va retirer la ponctuation des mots clé.
 void removePunctuation(string &keyword){
     string result_space;
     string result;
@@ -120,7 +162,7 @@ bool simpleWord(string keyword){
     bool test = true;
     if(keyword.size()>3)
         test = false;
-    return test; // La fonction reste ï¿½ ï¿½laborder. C'est pour le moment trop basique
+    return test; // La fonction reste à élaborder. C'est pour le moment trop basique
 }
 
 
@@ -131,17 +173,6 @@ vector<string> splitString(string content, char special_char){
     while (getline(ss, word, special_char)) {
             //removePunctuation(word);
         if (!simpleWord(word))
-            keywords.push_back(word);
-    }
-    return keywords;
-}
-
-vector<string> splitKeywords(string content, char special_char){
-    stringstream ss(content);
-    string word;
-    vector<string> keywords;
-    while (getline(ss, word, special_char)) {
-            removePunctuation(word);
             keywords.push_back(word);
     }
     return keywords;

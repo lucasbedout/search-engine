@@ -15,3 +15,5 @@ int findNth(string str, char c, int n);
 string removeWhiteSpaces(string text);
 void replaceQuotes(string& string_to_change);
 vector<string> splitKeywords(string content, char special_char);
+void removeComments(string& string_to_change);
+string getHttp(string url_in);

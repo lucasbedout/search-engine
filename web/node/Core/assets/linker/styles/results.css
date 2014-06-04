@@ -1,7 +1,7 @@
 /* Design of search results page */
 
 #topbar {
-	background-color: rgba(0,0,0,0.3);
+	background-color: rgba(0,0,0,1);
 	position: fixed;
 	width: 100%;
 	left: 0;
@@ -35,10 +35,15 @@
 	margin-top: 80px;
 }
 
+#content > a {
+    display: inline-block;
+}
+
 .page-box {
 	display: inline-block;
-	margin: 0 10px;
-	width: 18%;
+    vertical-align: top;
+	margin: 10px 10px;
+	width: 250px;
 	background-color: white;
 	height: 150px;
 	font-size: 10px;
@@ -63,4 +68,18 @@
 	font-style: italic;
 	display: block;
 	margin-bottom: 10px;
+    width: 220px;
+    word-wrap: break-word;
+}
+
+#more-results {
+    width: 400px;
+    text-align: center;
+    margin: auto;
+}
+
+#more-results a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 5px;
 }
