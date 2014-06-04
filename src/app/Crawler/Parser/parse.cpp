@@ -14,8 +14,11 @@ using namespace std;
 Parser::Parser(string content_to_parse_in, string url_in){ //travail par référence
   content_to_parse = removeWhiteSpaces(content_to_parse_in);
   plain_text = "";
+  domain = "http://";
+  domain = getHttp(url_in);
   parsed = false;
   url = extractHost(url_in);
+  cout << url << endl;
   links = vector<string>();
   k = Keywords();
 }
@@ -76,7 +79,7 @@ void Parser::parseAll(){
             }
             string tmp_str = reader.get_value();
           }
-         if(reader.has_attributes() && (!current_node.compare("meta") || !current_node.compare("a")))
+         if(reader.has_attributes() && (!current_node.compare("meta") || !current_node.compare("a") || !current_node.compare("frame")))
           {
             reader.move_to_first_attribute();
             bool desc = false;
@@ -88,14 +91,13 @@ void Parser::parseAll(){
                 desc = true;
               else if (!reader.get_value().compare("keywords"))
                 key = true;
-              else if (!reader.get_name().compare("href"))
+              else if (!reader.get_name().compare("href") || !reader.get_name().compare("src"))
                 link = true;
               if (!reader.get_name().compare("content") && desc == true)
                 {
                   string tmp_str_desc = reader.get_value();
                   replaceQuotes(tmp_str_desc);
                   description_of_page = tmp_str_desc;
-                  cout << "Description : " << description_of_page <<  endl;
                   k.addWords(description_of_page, "meta");
                   desc = false;
                 }
@@ -109,12 +111,15 @@ void Parser::parseAll(){
                   int pos = 0;
                   if (links.size() > 0)
                     pos = find(links.begin(), links.end(), reader.get_value()) - links.begin();
-                  if (pos == 0 || pos >= links.size() && reader.get_value() != "#")
+                  if (pos == 0 || pos >= links.size() && reader.get_value().find("/#") == std::string::npos)
                     {
-                      if (reader.get_value().find(url) == 0 
-                        && reader.get_value().find("mailto") == std::string::npos 
-                        && reader.get_value().find("http") == std::string::npos)
+                      if ((reader.get_value().find("http://"+url) == 0 || reader.get_value().find("https://"+url) == 0 || reader.get_value().find("http://www."+url) == 0 || reader.get_value().find("https://www."+url) == 0)
+                        && reader.get_value().find("mailto") == std::string::npos
+                        && reader.get_value().find("#") == std::string::npos
+                        && reader.get_value().find(url) != std::string::npos
+                        && reader.get_value().find(url) != 0)
                         {
+                          cout << "pos = " << reader.get_value().find(url) << endl << reader.get_value() << endl;
                           links.push_back(reader.get_value());
                         }
                       else if (reader.get_value().find("http://") == std::string::npos 
@@ -124,10 +129,13 @@ void Parser::parseAll(){
                       {
                         string tmp_reader = reader.get_value();
                         if (tmp_reader.find("/") == 0)
-                          links.push_back(url+tmp_reader.substr(1,tmp_reader.size()));
+                          links.push_back(domain+url+tmp_reader.substr(1,tmp_reader.size()));
                         else
-                          links.push_back(url+reader.get_value());
+                          links.push_back(domain+url+reader.get_value());
                       }
+                      else if (reader.get_value().find("https://") == 0
+                        && reader.get_value().find(url) == 8)
+                        links.push_back(reader.get_value());
                     }
                   link = false;
                 }
@@ -148,6 +156,7 @@ vector<string> Parser::getLinks(){
 }
 
 std::vector<string> Parser::parse(){
+    removeComments(content_to_parse);
     cleanHTML();
     parseAll();
     k.sortKeywords();

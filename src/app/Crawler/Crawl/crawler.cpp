@@ -80,7 +80,6 @@ void Crawler::crawl(){
 			//cout << "starting download ..." << endl;
 
 			string tmp = downloadFile(_url[i]); //Downloading the file
-
 			if (tmp != ""){//Checking if page contains something
 
 				//cout << "starting new page : " << _url[i] << endl;
@@ -106,6 +105,10 @@ void Crawler::crawl(){
 		        		}
 		        }
 
+		        for (int i = 0; i < _url.size(); i++){
+		        	cout << "url : " << _url[i] << endl;
+		        }
+
 		        if (p.get_title() == ""){
 	        		p.set_title(p.get_url()); //Check the title
 		        }
@@ -119,8 +122,8 @@ void Crawler::crawl(){
 
 	        	cout << endl << "+++++++++++++++++++++++" << endl << endl;
 
-				DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
-				manager.savePage(p);
+				/*DatabaseManager manager = DatabaseManager("tcp://192.168.1.27:3306", "root", "bitnami", "searchengine"); //Stocking in the DB
+				manager.savePage(p);*/
 		    }
 	    }
 	    crawling = false;
@@ -133,7 +136,10 @@ string Crawler::downloadFile(string url){
 	CURLcode res;
 	string readBuffer;
     long http_code = 0;
+    if (has_suffix(url, "/"))
 	const string url_tmp = url;
+	else
+	const string url_tmp = url+"/";
 	 
 	curl = curl_easy_init();
 	if(curl) {
@@ -154,7 +160,7 @@ string Crawler::downloadFile(string url){
 	curl_easy_cleanup(curl);
 	}
 	cout << "download ok (with code : " << http_code << ")" << endl;
-	if (http_code == 200)
+	if (http_code == 200 || http_code == 301 || http_code == 302)
 		return readBuffer;
 	else
 		return "";
