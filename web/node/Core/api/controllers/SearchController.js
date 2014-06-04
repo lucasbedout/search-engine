@@ -53,18 +53,32 @@ module.exports = {
 
             for (var i in search.search.results) {
                 pages.push(search.search.results[i]);
-                console.log(pages[i]);
             }
 
             var end = Date.now();
             var elapsed = (end - start) / 1000;
 
-            res.view('search/results', {
-                'keywords': words,
-                'pages': pages,
-                'elapsed': elapsed,
-                'user': req.user
-            });
+            Search.create({
+                keywords: words,
+                result: completeData,
+                time: elapsed
+            }).done(function(err, search) {
+                if (err) {
+                    res.view('home/index', {
+                        error: 'Impossible to connect the database',
+                        user: req.user
+                    });
+                } else {
+                    res.view('search/results', {
+                        'length': 25,
+                        'search_id': search.id,
+                        'keywords': words,
+                        'pages': pages,
+                        'elapsed': elapsed,
+                        'user': req.user
+                    });
+                }
+            })
         }
     })
   },
@@ -104,5 +118,57 @@ module.exports = {
           console.log(page.url);
           res.redirect(page.url);
       })
+  },
+
+  more: function(req, res) {
+      var search = Search.findOne(req.param('id'), function(err, search) {
+          var from = parseInt(req.param('from'));
+          var results = JSON.parse(search.result);
+          var next = new Array();
+          var length = from + 25;
+
+          if (from == 0) {
+              for (var i in results.search.results) {
+                  next.push(results.search.results[i]);
+              }
+
+              res.view('search/results', {
+                  'length': 25,
+                  'search_id': search.id,
+                  'keywords': search.keywords,
+                  'pages': next,
+                  'elapsed': search.time,
+                  'user': req.user
+              });
+
+          } else {
+              var index = from - 25;
+              var future_length = from + 25;
+              console.log(future_length);
+              var count = 0;
+
+              for (var i = index ; i < (from + 1) ; i++) {
+                  if (typeof results.search.secundaries[i] != 'undefined')
+                  {
+                      var page = Page.findOne(results.search.secundaries[i]).done(function(err, page) {
+                          next.push(page);
+                          count++;
+                          if (count == 25)
+                          {
+                              console.log('On envoie la view');
+                              res.view('search/results', {
+                                  'length': future_length,
+                                  'search_id': search.id,
+                                  'keywords': search.keywords,
+                                  'pages': next,
+                                  'elapsed': search.time,
+                                  'user': req.user
+                              });
+                          }
+                      });
+                  }
+              }
+          }
+      });
   }
 };

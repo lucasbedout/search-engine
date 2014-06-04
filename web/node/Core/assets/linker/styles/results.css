@@ -71,3 +71,15 @@
     width: 220px;
     word-wrap: break-word;
 }
+
+#more-results {
+    width: 400px;
+    text-align: center;
+    margin: auto;
+}
+
+#more-results a {
+    display: inline-block;
+    text-decoration: none;
+    padding: 5px;
+}

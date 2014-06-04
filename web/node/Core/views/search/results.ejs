@@ -25,3 +25,9 @@
 	</a>
 	<% }); %>
 </div>
+<div id="more-results">
+    <% if (length >= 50) { %>
+    <a href="/more?id=<%= search_id %>&from=<%= (length - 50) %>" class="btn btn-blue">Previous page</a>
+    <% } %>
+    <a href="/more?id=<%= search_id %>&from=<%= length %>" class="btn btn-green">Next page</a>
+</div>
