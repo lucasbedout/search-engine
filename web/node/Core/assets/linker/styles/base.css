@@ -48,11 +48,12 @@ h2 {
 /* Logo */
 
 #logo {
-	background-image: url('img/logo.png');
-	width: 538px;
+	background-image: url('img/logo.svg');
 	height: 190px;
 	margin: auto;
 	margin-bottom: 20px;
+	background-position: center;
+	background-repeat: no-repeat;
 }
 
 /* Search bar design */
