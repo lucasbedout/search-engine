@@ -43,7 +43,9 @@ module.exports = {
     logout: function (req, res) {
     	req.logout();
         res.view('home/index', {
-            'user': req.user });
+            'user': req.user,
+            'error': ''
+        });
     }  
 };
 
