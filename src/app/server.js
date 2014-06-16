@@ -8,8 +8,13 @@ function onRequest_search (socket) {
     var keywords, search, searchOutput;
 
     socket.on('data', function(data) {
-        keywords = data.toString();
-        search = exec('./Research/test 2 ' + keywords, function(err, stdout, stderr) {
+
+        str = data.toString();
+        res = str.split(';');
+        keywords = res[1];
+        level = res[0];
+        console.log('./Research/test ' + level + ' ' + keywords);
+        search = exec('./Research/test ' + level + ' ' + keywords, function(err, stdout, stderr) {
             console.log(stdout);
             socket.end(stdout);
         });
@@ -22,7 +27,7 @@ function onRequest_crawl (socket) {
     socket.on('data', function(data) {
         url = data.toString();
         console.log(url);
-        crawl = exec('./Crawler/test ' + url);
+        crawl = exec('./Crawler/crawler ' + url);
     });
 
     socket.end();
