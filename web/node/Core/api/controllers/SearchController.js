@@ -27,6 +27,8 @@ module.exports = {
     {
         level = 2;
     }
+
+    console.log(level + ' : ' + words);
     var completeData = '';
     var pages = new Array();
     var start = Date.now();

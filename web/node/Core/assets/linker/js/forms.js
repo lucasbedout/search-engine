@@ -24,7 +24,9 @@ var button_swap = function() {
 var search_swap = function() {
 	if ($(this).hasClass('search')) {
 		$('#search-inputs').attr('action', '/search');
+        $('.level').toggle();
 	} else {
 		$('#search-inputs').attr('action', '/lucky');
+        $('.level').toggle();
 	}
 }
