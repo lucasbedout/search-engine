@@ -1,0 +1,13 @@
+<div id="search-form">
+    <form action="/search" method="get" id="search-inputs">
+        <% if (words == '') { %>
+        <input type="text" name="search-words" placeholder="What do you want to find ?">
+        <% } else { %>
+        <input type="text" name="search-words" value="<%= words %>">
+        <% } %>
+        <p class="double-btn">
+            <input type="submit" class="btn btn-blue active" value="Search" /><a href="#" class="btn btn-blue swapper active search btn-arrow-bottom"></a>
+            <input type="submit" class="btn btn-yellow inactive" value="Get lucky" /><a href="#" class="btn btn-yellow swapper lucky inactive btn-arrow-up"></a>
+        </p>
+    </form>
+</div>
