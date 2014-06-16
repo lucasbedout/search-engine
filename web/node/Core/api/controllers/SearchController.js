@@ -22,6 +22,11 @@ module.exports = {
     
   search: function(req, res) {
   	var words = req.param('search-words');
+    var level = req.param('level');
+    if (typeof level === 'undefined')
+    {
+        level = 2;
+    }
     var completeData = '';
     var pages = new Array();
     var start = Date.now();
@@ -56,7 +61,8 @@ module.exports = {
                     port: 3001,
                     host: '192.168.1.24'
                 }, function() {
-                    client.write(words);
+                    client.write(level + ';' + words);
+                    console.log(level + ';' + words)
                 });
 
                 client.setEncoding('utf8');

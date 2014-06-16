@@ -10,16 +10,8 @@
 	    	<input type="submit" class="btn btn-yellow inactive" value="Get lucky" /><a href="#" class="btn btn-yellow swapper lucky inactive btn-arrow-up"></a>
 	</p>
     <div class="level">
-        <label for="search_strict" class="checkbox rounded-checkbox">
-            <input  value="1" type="checkbox" id="search_strict" class="checkbox">
-            <span class="check"><span></span></span>
-            Recherche stricte
-        </label>
-        <label for="search_tolerante" class="checkbox rounded-checkbox">
-            <input  value="3" type="checkbox" id="search_tolerante" class="checkbox">
-            <span class="check"><span></span></span>
-            Recherche tolérante
-        </label>
+        <input type="radio" name="level" value="2" id="default"><label for="default">Recherche par défaut</label>
+        <input type="radio" name="level" value="3" id="tolerant"><label for="tolerant">Recherche tolérante</label>
     </div>
 </form>
 </div>

@@ -107,4 +107,11 @@ h2 {
     box-shadow: 0px 0px 3px #761509;
 }
 
+.level {
+    margin-top: 10px;
+}
+
+.level label {
+    margin: 20px;
+}
 
