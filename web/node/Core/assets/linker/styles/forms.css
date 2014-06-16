@@ -143,3 +143,48 @@ input[type=text], input[type=password], input[type=email] {
 .inactive {
 	display: none;
 }
+
+.rounded-checkbox input {
+    display: none;
+}
+
+.rounded-checkbox .check {
+    background-color: #fff;
+    border: 3px solid #bdc3c7;
+    width: 9px;
+    height: 9px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-left: -20px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.rounded-checkbox input:checked + span {
+    border-color: #2ecc71;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -ms-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.rounded-checkbox input:checked + span:after {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    background-color: #2ecc71;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -ms-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
