@@ -120,6 +120,7 @@ module.exports = {
 
   luck: function(req, res) {
       var words = req.param('search-words');
+      var level = 2;
       var completeData = '';
       var pages = new Array();
 
@@ -127,7 +128,7 @@ module.exports = {
           port: 3001,
           host: '192.168.1.24'
       }, function() {
-          client.write(words);
+          client.write(level + ';' + words);
       });
 
       client.setEncoding('utf8');
