@@ -1,4 +1,4 @@
-# SEARCH ENGINE - 2PJT SUPINFO
+# SEARCH ENGINE 
 
 ## Instructions de déploiement 
 
